@@ -5,5 +5,6 @@ export default function LijstSeizoen () {
     return <>
         <h1>Lijst Seizoen</h1>
         <Seizoen></Seizoen>
+        <Seizoen></Seizoen>
     </>
 }

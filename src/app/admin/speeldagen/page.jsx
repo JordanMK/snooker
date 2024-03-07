@@ -1,6 +1,8 @@
+'use client'
 import BaseLayout from "@/layout/BaseLayout";
 import "../../css/style.css";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function Speeldagen() {
   let seizoen = {
@@ -61,11 +63,17 @@ export default function Speeldagen() {
       },
     ],
   };
+  const router = useRouter();
+    const maakSpeeldagClick = () =>{
+        console.log('maakSpeeldagClick')
+        router.push('/admin/speeldagen/CreateSpeeldag');
+    }
   return (
     <BaseLayout>
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
+      <button type="button" className="" onClick={maakSpeeldagClick}>nieuw Speeldag</button>
       <div className="speeldag">
         <ul>
           {seizoen.speeldagen.map((speeldag) => (

@@ -23,6 +23,6 @@
       "@Layout/*": ["./src/layout"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/forgotPassword.js", "src/app/forgotPassword.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js"],
   "exclude": ["node_modules"]
 }

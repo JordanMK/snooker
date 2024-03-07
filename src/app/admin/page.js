@@ -3,7 +3,10 @@ import LijstSeizoen from "@/components/Admin/LijstSeizoen";
 export default function Home() {
   return (
     <BaseLayout>
-      <h1>Admin</h1>
+    <div className="header">
+      <h1>Dashboard Admin</h1>
+    </div>
+      
       <LijstSeizoen></LijstSeizoen>
     </BaseLayout>
   );

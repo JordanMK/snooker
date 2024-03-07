@@ -70,21 +70,24 @@ export default function Speeldagen() {
         <ul>
           {seizoen.speeldagen.map((speeldag) => (
             <li key={speeldag.speeldagNr}>
-              <h2>Speeldag {speeldag.speeldagNr}</h2>
-              <Link
-                href={{
-                  pathname: "admin/speeldagen",
-                }}
-              >
-                Pas aan
-              </Link>
+              <div className="speeldagHead">
+                <h2>Speeldag {speeldag.speeldagNr}</h2>
+                <Link
+                  href={{
+                    pathname: "",
+                  }}
+                >
+                  Pas aan
+                </Link>
+              </div>
+
               <ul>
                 {speeldag.wedstrijden.map((wedstrijd) => (
                   <li key={wedstrijd.id}>
                     Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.weg}
                     <Link
                       href={{
-                        pathname: "admin/speeldagen",
+                        pathname: "",
                       }}
                     >
                       Pas aan

@@ -1,7 +1,9 @@
+import "./components.css";
+
+
 export default function Footer() {
     return <>
         <footer className="site-footer" style={{
-                backgroundColor:'#afb3b2',
                 paddingLeft: "20px",
                 fontSize: "15px",
                 lineHeight: "24px",

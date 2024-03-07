@@ -1,36 +1,62 @@
-import React, {useContext, useEffect} from "react";
-import { Auth } from "firebase/auth";
+import React, { useContext, useState, useEffect } from "react"
+import { auth } from "../firebase"
 
-const AuthContext = react.createContext
+const AuthContext = React.createContext()
 
 export function useAuth() {
-    return useContext(AuthContext)
+  return useContext(AuthContext)
 }
 
-export function AuthProvider({children}) {
-    const [currentUser, setCurrentUser] = useState()
+export function AuthProvider({ children }) {
+  const [currentUser, setCurrentUser] = useState()
+  const [loading, setLoading] = useState(true)
 
-    function signup(email, password) {
-        auth.createUserWithEmailAndPassword(email, password)
-    }
+  function signup(email, password) {
+    return auth.createUserWithEmailAndPassword(email, password)
+  }
 
-    useEffect( () => {
-    const unsubcribe = auth.onAuthStateChanged(user => {
-        setCurrentUser(user)
-        return unsubcribe
+  function login(email, password) {
+    return auth.signInWithEmailAndPassword(email, password)
+  }
+
+  function logout() {
+    return auth.signOut()
+  }
+
+  function resetPassword(email) {
+    return auth.sendPasswordResetEmail(email)
+  }
+
+  function updateEmail(email) {
+    return currentUser.updateEmail(email)
+  }
+
+  function updatePassword(password) {
+    return currentUser.updatePassword(password)
+  }
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user)
+      setLoading(false)
     })
 
-    const value = {
-        currentUser,
-        signup
-    }
-}, [])
+    return unsubscribe
+  }, [])
 
-    
+  const value = {
+    currentUser,
+    login,
+    signup,
+    logout,
+    resetPassword,
+    updateEmail,
+    updatePassword
+  }
 
-    return (
-        <AuthContext.Provider>
-            {children}
-        </AuthContext.Provider>
-    )
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  )
 }

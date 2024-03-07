@@ -1,12 +1,14 @@
 export default function Footer() {
     return <>
         <footer className="site-footer" style={{
-                backgroundColor:'#1f2121',
-                padding: "10px",
+                backgroundColor:'#afb3b2',
+                paddingLeft: "20px",
                 fontSize: "15px",
                 lineHeight: "24px",
-                color: "#e8ebea",
-                boxShadow: "0 10px 20px rgba(0,0,0,0.5)",
+                color: "#000000",
+                position: "fixed",
+                bottom: "0",
+                width: "100%",
         }}>
             <div className="container">
                 <div className="row">

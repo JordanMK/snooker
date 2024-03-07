@@ -5,7 +5,7 @@ interface LoginFormProps {
     onLogin: (email: string, password: string) => void;
   }
   
-  const loginPage: React.FC<LoginFormProps> = ({ onLogin }) => {
+  const LoginPage: React.FC<LoginFormProps> = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
   
@@ -16,6 +16,7 @@ interface LoginFormProps {
   
     return (
       <>
+      <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <label>
             Email:
@@ -29,8 +30,12 @@ interface LoginFormProps {
           <br />
           <button type="submit">Login</button>
         </form>
+
+        <div>
+          <div>Don't have account yet? <a href=''>Register here</a></div>
+        </div>
       </>
     );
   };
 
-export default loginPage
+export default LoginPage

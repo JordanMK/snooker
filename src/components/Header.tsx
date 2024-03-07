@@ -10,6 +10,8 @@ const Navbar = () => {
           <div className="header-right">
             <Link href={{pathname: "/"}}>Home</Link>
             <Link href={{pathname: "admin"}}>Admin Page</Link>
+            {/* TODO check if user is admin, if he is admin show users */}
+            <Link href={{pathname: "admin/users"}}>Users</Link>
           </div>
         </div>
     </>

@@ -23,6 +23,6 @@
       "@Layout/*": ["./src/layout"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.tsx", "src/components/Footer.tsx"],
   "exclude": ["node_modules"]
 }

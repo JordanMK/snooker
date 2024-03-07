@@ -26,7 +26,7 @@
     width: 80%;
 }
 
-.seizoen a {
+.seizoen a, .speeldag a {
     float: right;
     margin-right: 15px;
     text-decoration: none;
@@ -34,7 +34,27 @@
     font-style: italic;
 }
 
-.seizoen a:hover {
+.seizoen a:hover, .speeldag a:hover {
     scale: 105%;
     text-decoration: underline;
+}
+
+.speeldag {
+    background-color: rgba(0, 0, 0, 0.284);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+    width: 80%;
+}
+
+.speeldag ul {
+    list-style-type: none;
+}
+
+.speeldag ul ul {
+    background-color: rgba(0, 0, 0, 0.284);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 5px;
+    width: 60%;
 }

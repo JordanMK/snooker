@@ -1,6 +1,6 @@
-import "./components.css"
+import "./components.css";
+import Link from "next/link";
 import React from "react";
-import "../app/page"
 
 const Navbar = () => {
   return (
@@ -8,8 +8,8 @@ const Navbar = () => {
         <div className="header">
           <a href="#index" className="logo">Snooker Pocket</a>
           <div className="header-right">
-            <a className="active" href="../app/page">Home</a>
-            <a href="../app/admin/page">Admin page</a>
+            <Link href={{pathname: "/"}}>Home</Link>
+            <Link href={{pathname: "admin"}}>Admin Page</Link>
           </div>
         </div>
     </>

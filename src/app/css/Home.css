@@ -1,0 +1,44 @@
+.pageContainer {
+    display: flex;
+    
+}
+
+.column {
+    flex: 50%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+}
+
+.smallColumn {
+    flex: 5%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.panelNav {
+    display: flex;
+}
+
+.panelNav > button {
+    flex: 50%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+  }

@@ -1,41 +1,36 @@
 'use client'
-import React, { useState } from 'react'
 
-interface LoginFormProps {
-    onLogin: (email: string, password: string) => void;
-  }
-  
-  const LoginPage: React.FC<LoginFormProps> = ({ onLogin }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-  
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      onLogin(email, password);
-    };
-  
-    return (
-      <>
-      <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Email:
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </label>
-          <br />
-          <button type="submit">Login</button>
-        </form>
+import { useState } from 'react';
 
-        <div>
-          <div>Don't have account yet? <a href=''>Register here</a></div>
-        </div>
-      </>
-    );
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Call your authentication API here with email and password
   };
 
-export default LoginPage
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>Login</h1>
+      <label htmlFor="email">Email</label><br />
+      <input
+        type="email"
+        name="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <br /><br />
+      <label htmlFor="password">Password</label><br />
+      <input
+        type="password"
+        name="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <br /><br />
+      <button type="submit">Login</button>
+    </form>
+  );
+}

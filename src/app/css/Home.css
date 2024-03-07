@@ -11,6 +11,14 @@
     padding: 1em;
 }
 
+.smallColumn {
+    flex: 5%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+}
+
 .flexColumn {
     display: flex;
     flex-direction: column;

@@ -1,9 +1,11 @@
 'use client'
 import BaseLayout from "@/layout/BaseLayout";
+import AdminPopup from '@/components/Popup'
 import "../../css/style.css";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-
+import 'reactjs-popup/dist/index.css';
+import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
 export default function Speeldagen() {
   let seizoen = {
     speeldagen: [
@@ -73,20 +75,14 @@ export default function Speeldagen() {
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
-      <button type="button" className="" onClick={maakSpeeldagClick}>nieuw Speeldag</button>
+      <AdminPopup popupContent={SpeelDagForm()} triggerButtonName="nieuw Speeldag" />
       <div className="speeldag">
         <ul>
           {seizoen.speeldagen.map((speeldag) => (
             <li key={speeldag.speeldagNr}>
               <div className="speeldagHead">
                 <h2>Speeldag {speeldag.speeldagNr}</h2>
-                <Link
-                  href={{
-                    pathname: "",
-                  }}
-                >
-                  Pas aan
-                </Link>
+                <AdminPopup popupContent={SpeelDagForm({schiftingsvraag:"vraag",schiftingsantwoord:"antwoord"})} triggerButtonName="pas aan" />
               </div>
 
               <ul>

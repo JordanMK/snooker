@@ -32,18 +32,32 @@ export default function Home() {
   ]}
 
   let user = {users:[
-    {userse:[{plaats:1,naam:"Daniil Samsonov",score:300}]},
-    {userse:[{plaats:2,naam:"Dirk Hostens",score:250}]},
-    {userse:[{plaats:3,naam:"Joshua Madd",score:245}]},
-    {userse:[{plaats:4,naam:"Tom Dhoine",score:230}]},
-    {userse:[{plaats:5,naam:"Thijs Geeraert",score:200}]},
-    {userse:[{plaats:6,naam:"Cedric Depré",score:186}]},
-    {userse:[{plaats:7,naam:"Abdu Tchop",score:162}]},
-    {userse:[{plaats:8,naam:"Robin Vandenbroucke",score:143}]},
-    {userse:[{plaats:9,naam:"Noah Van Steenlandt",score:127}]},
-    {userse:[{plaats:10,naam:"Justas Valutis",score:109}]},
-    {userse:[{plaats:11,naam:"Mateo Gheeraert",score:96}]},
-    
+    {userid:1,users:[
+      {plaats:1,naam:"Daniil Samsonov",score:300},
+      {plaats:2,naam:"Dirk Hostens",score:250},
+      {plaats:3,naam:"Joshua Madd",score:245},
+      {plaats:4,naam:"Tom Dhoine",score:230},
+      {plaats:5,naam:"Thijs Geeraert",score:200},
+      {plaats:6,naam:"Cedric Depré",score:186},
+      {plaats:7,naam:"Abdu Tchop",score:162},
+      {plaats:8,naam:"Robin Vandenbroucke",score:143},
+      {plaats:9,naam:"Noah Van Steenlandt",score:127},
+      {plaats:10,naam:"Justas Valutis",score:109},
+      {plaats:11,naam:"Mateo Gheeraert",score:96},
+    ]},
+    {userid:2,users:[
+      {plaats:1,naam:"Daniil Samsonov",score:300},
+      {plaats:2,naam:"Dirk Hostens",score:250},
+      {plaats:3,naam:"Joshua Madd",score:245},
+      {plaats:4,naam:"Tom Dhoine",score:230},
+      {plaats:5,naam:"Thijs Geeraert",score:200},
+      {plaats:6,naam:"Cedric Depré",score:186},
+      {plaats:7,naam:"Abdu Tchop",score:162},
+      {plaats:8,naam:"Robin Vandenbroucke",score:143},
+      {plaats:9,naam:"Noah Van Steenlandt",score:127},
+      {plaats:10,naam:"Justas Valutis",score:109},
+      {plaats:11,naam:"Mateo Gheeraert",score:96},
+    ]},
   ]}
     
 
@@ -65,7 +79,7 @@ export default function Home() {
           </div>
           <div>
           {leftPanelSelected ? (
-          <KlassementPanel user={user.users[selectedKlassement]}/>
+          <KlassementPanel use={user.users[selectedKlassement]}/>
         ) : (
           <WedstrijdPanel speeldag={seizoen.speeldagen[selectedSpeeldag]}/>
         )}

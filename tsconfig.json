@@ -23,6 +23,6 @@
       "@Layout/*": ["./src/layout"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/justasLogin/pages.jsx", "src/components/justasLogin/pages.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/Login/pages.jsx", "src/components/Login/pages.jsx"],
   "exclude": ["node_modules"]
 }

@@ -2,15 +2,14 @@
 import BaseLayout from "@/layout/BaseLayout";
 import Link from "next/link";
 import React from "react";
-import JustasLogin from "../components/justasLogin/page.jsx"
+import Login from "../components/Login"
 // import './globals.css';
 
-  
-export default function Home() {
+
+export default function Page() {
   return (
     <>
-    {/* <LoginPage></LoginPage> */}
-    <JustasLogin></JustasLogin>
+      <Login />
     </>
   );
 }

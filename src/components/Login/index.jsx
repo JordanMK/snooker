@@ -10,13 +10,12 @@ export default function Index(props) {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-
-    const buttonClick = () => {
+    const formSubmit = () => {
         // You'll update this function later...
     }
     
     return (
-        <div className={styles.mainContainer}>
+        <form onSubmit={formSubmit} className={styles.mainContainer}>
             <div className={styles.titleContainer}>
                 <div>Login</div>
             </div>
@@ -27,6 +26,7 @@ export default function Index(props) {
                     placeholder="Enter your email here"
                     onChange={(e) => setEmail(e.target.value)}
                     className={styles.inputBox}
+                    type='email'
                 />
                 <label className="errorLabel">{emailError}</label>
             </div>
@@ -37,17 +37,18 @@ export default function Index(props) {
                     placeholder="Enter your password here"
                     onChange={(e) => setPassword(e.target.value)}
                     className={styles.inputBox}
+                    type='password'
                 />
                 <label className={styles.errorLabel}>{passwordError}</label>
             </div>
             <br />
             <div className={styles.inputContainer}>
-                <input className={styles.button-23} type="button" onClick={buttonClick} value={'Log in'} />
+                <button className={styles.button} type="submit">Login</button>
             </div>
             <br />
             <div>Forgot password? <Link href="/reset-password">Click here</Link></div>
             <div>Don't have ann account? <a href="">Register here</a></div>
-        </div>
+        </form>
 
     )
 }

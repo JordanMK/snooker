@@ -8,3 +8,17 @@ table {
 th, td {
     border: 1px solid;
 }
+
+.a {
+    padding: 670px;
+}
+
+h1 {
+    text-align: center;
+}
+
+hr {
+    color: black;
+    size: 5px;
+    width: 100%;
+}

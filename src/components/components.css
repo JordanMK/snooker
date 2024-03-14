@@ -7,6 +7,19 @@ footer{
     width: 98%;
 }
 
+.jokerContainer{
+  margin-top: 1rem;
+}
+
+.schiftingsContainer{
+  margin-top: 2rem;
+}
+
+#schiftingsvraag{
+  height: 1.5rem;
+  width: 3rem;
+}
+
 
 .header {
     overflow: hidden;

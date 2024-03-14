@@ -1,3 +1,5 @@
+import "./components.css";
+
 export default function WedstrijdPanel ({speeldag}) {
     return (
         <>
@@ -30,11 +32,18 @@ export default function WedstrijdPanel ({speeldag}) {
                         </tr>
                 )}
             </table>
-            <label htmlFor="joker">Gebruik joker?</label>
-            <input type="checkbox" name="joker"/>
-            <h4>Extra vraag:</h4>
-            <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000 </label>
-            <input type="number" min="0" name="schiftingsvraag"/>
+            <div className="jokerContainer">
+                <label htmlFor="joker">Gebruik joker?</label>
+                <input type="checkbox" name="joker"/>
+            </div>
+            
+            <div className="schiftingsContainer">
+                <h4>Extra vraag:</h4>
+
+                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000 </label>
+                <input type="number" min="0" name="schiftingsvraag" id="schiftingsvraag"/>
+            </div>
+            
         </>
     );
 }

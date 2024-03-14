@@ -13,7 +13,7 @@ export default function Index(props) {
     const formSubmit = () => {
         // You'll update this function later...
     }
-    
+
     return (
         <form onSubmit={formSubmit} className={styles.mainContainer}>
             <div className={styles.titleContainer}>
@@ -47,7 +47,7 @@ export default function Index(props) {
             </div>
             <br />
             <div>Forgot password? <Link href="/reset-password">Click here</Link></div>
-            <div>Don't have ann account? <a href="">Register here</a></div>
+            <div>Don't have ann account? <Link href="/Register">Register here</Link></div>
         </form>
 
     )

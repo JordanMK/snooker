@@ -20,7 +20,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@Components/*": ["./src/components"],
-      "@Layout/*": ["./src/layout"]
+      "@Layout/*": ["./src/layout"],
+      "@styles/*": ["./src/app/css"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/Login/pages.jsx", "src/components/Login/pages.jsx"],

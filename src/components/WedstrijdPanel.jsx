@@ -12,6 +12,7 @@ export default function WedstrijdPanel ({speeldag}) {
                 {speeldag.wedstrijden.map(wedstrijd =>
                         <tr key={wedstrijd.id}>
                             <td>
+                                <span>{wedstrijd.id}. </span>
                                 <span>{wedstrijd.thuis}</span>
                                 <span> - </span>
                                 <span>{wedstrijd.weg}</span>
@@ -29,7 +30,8 @@ export default function WedstrijdPanel ({speeldag}) {
                         </tr>
                 )}
             </table>
-            <span>Joker?</span><input type="checkbox"/>
+            <label htmlFor="joker">Gebruik joker?</label>
+            <input type="checkbox" name="joker"/>
             <h3>Schiftingsvraag:</h3>
             <p>Gok nummer 1 tot 10000</p>
             <input type="number" min="0"/>

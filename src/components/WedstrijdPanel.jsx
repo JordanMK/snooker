@@ -32,9 +32,9 @@ export default function WedstrijdPanel ({speeldag}) {
             </table>
             <label htmlFor="joker">Gebruik joker?</label>
             <input type="checkbox" name="joker"/>
-            <h3>Schiftingsvraag:</h3>
-            <p>Gok nummer 1 tot 10000</p>
-            <input type="number" min="0"/>
+            <h4>Extra vraag:</h4>
+            <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000 </label>
+            <input type="number" min="0" name="schiftingsvraag"/>
         </>
     );
 }

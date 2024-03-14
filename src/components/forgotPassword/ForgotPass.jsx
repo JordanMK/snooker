@@ -1,49 +1,37 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.css'
-import { useRouter } from 'next/navigation';
+'use client'
+import React, { useState } from 'react';
+import styles from '../Login/styles.module.css'
+import Link from 'next/link'
 
 export default function ForgotPassword() {
-    /*moet nog backend maken*/
-    const email = "";
+  /*moet nog backend maken*/
+  const [email, setEmail] = useState('');
+  const [passwordError, setPasswordError] = useState('')
 
-    //form om email in te vullen
-    return <>
-    <div className="container d-flex flex-column">
-	    <div className="row justify-content-center align-items-center g-0 min-vh-100">
-		      <div className="col-lg-5 col-md-8 py-8 py-xl-0 col-md-offset-4">
-            
-            <div className="card shadow">
 
-              <div className="card-body p-6">
+  const formSubmit = () => {
+    //update this function later
+  }
 
-                <div className="mb-4 text-center">
-                  <h3><i className="fa fa-lock fa-4x"></i></h3>
-                  <h2>Wachtwoord vergeten?</h2>
-                  <p>Vul de form in om je wachtwoord te wijzigen.</p>
-                  <div className="panel-body">
-    
-                    <form id="register-form" role="form" autoComplete="off" className="form" method="post">
-    
-                      <div className="form-group">
-                  
-                          <span className="input-group-addon"><i className="glyphicon glyphicon-envelope color-blue"></i></span>
-                          <input id="email" name="email" placeholder="voer email in" className="form-control"  type="email"/>
-                      
-                      </div>
-
-                      <div className="mb-3 d-grid">
-                        <input name="recover-submit" className="btn btn-lg btn-primary btn-block mt-3" value="Reset Password" type="submit"/>
-                      </div>
-                      
-                      <span>Return to <a href="">login</a></span>
-                    </form>
-    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-	      </div>
+  //form om email in te vullen
+  return (
+    <form onSubmit={formSubmit} className={styles.mainContainer}>
+      <div className={styles.titleContainer}>
+        <div>Wachtwoord vergeten?</div>
       </div>
-    </>
+      <br />
+      <input
+        type="email"
+        placeholder='Typ je e-mail'
+        onChange={(e) => setEmail(e.target.value)}
+        className={styles.inputBox}
+      />
+      <label className={styles.errorLabel}>{passwordError}</label>
+      <br />
+      <button className={styles.button} type='submit'>Herstel wachwoord</button>
+      <br />
+      <div>Terug naar de login pagina <Link href='/login'>Klik hier</Link></div>
+
+    </form>
+  )
 }

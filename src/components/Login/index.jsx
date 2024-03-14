@@ -1,5 +1,5 @@
+'use client'
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import styles from "./styles.module.css"
 import Link from "next/link"
 
@@ -11,7 +11,7 @@ export default function Index(props) {
     const [passwordError, setPasswordError] = useState('')
 
     const formSubmit = () => {
-        // You'll update this function later...
+        //update this function later...
     }
 
     return (
@@ -20,34 +20,28 @@ export default function Index(props) {
                 <div>Login</div>
             </div>
             <br />
-            <div className={styles.inputContainer}>
-                <input
-                    value={email}
-                    placeholder="Enter your email here"
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={styles.inputBox}
-                    type="email"
-                />
-                <label className="errorLabel">{emailError}</label>
-            </div>
+            <input
+                value={email}
+                placeholder="Typ je e-mail "
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.inputBox}
+                type="email"
+            />
+            <label className="errorLabel">{emailError}</label>
             <br />
-            <div className={"inputContainer"}>
-                <input
-                    value={password}
-                    placeholder="Enter your password here"
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={styles.inputBox}
-                    type="password"
-                />
-                <label className={styles.errorLabel}>{passwordError}</label>
-            </div>
+            <input
+                value={password}
+                placeholder="Typ je wacthwoord"
+                onChange={(e) => setPassword(e.target.value)}
+                className={styles.inputBox}
+                type="password"
+            />
+            <label className={styles.errorLabel}>{passwordError}</label>
             <br />
-            <div className={styles.inputContainer}>
-                <button className={styles.button} type="submit">Login</button>
-            </div>
+            <button className={styles.button} type="submit">Login</button>
             <br />
-            <div>Forgot password? <Link href="/reset-password">Click here</Link></div>
-            <div>Don't have ann account? <Link href="/Register">Register here</Link></div>
+            <div>Wachtwoord vergeten?<Link href="/forgotpassword"> Klik hier</Link></div>
+            <div>Heb je nog geen account<Link href="/Register"> Registreer hier</Link></div>
         </form>
 
     )

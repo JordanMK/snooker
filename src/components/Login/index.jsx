@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styles from './styles.module.css'
-import Link from 'next/link'
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import styles from "./styles.module.css"
+import Link from "next/link"
 
 export default function Index(props) {
 
@@ -26,18 +26,18 @@ export default function Index(props) {
                     placeholder="Enter your email here"
                     onChange={(e) => setEmail(e.target.value)}
                     className={styles.inputBox}
-                    type='email'
+                    type="email"
                 />
                 <label className="errorLabel">{emailError}</label>
             </div>
             <br />
-            <div className={'inputContainer'}>
+            <div className={"inputContainer"}>
                 <input
                     value={password}
                     placeholder="Enter your password here"
                     onChange={(e) => setPassword(e.target.value)}
                     className={styles.inputBox}
-                    type='password'
+                    type="password"
                 />
                 <label className={styles.errorLabel}>{passwordError}</label>
             </div>

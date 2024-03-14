@@ -1,0 +1,71 @@
+table {
+    width: 100%;
+    text-align: center;
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 200%;
+}
+
+th, td {
+    border: 1px solid;
+}
+
+
+h1 {
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+}
+
+hr {
+    color: black;
+    size: 5px;
+    width: 100%;
+}
+
+.pageContainer {
+    display: flex;
+    
+}
+
+.column {
+    flex: 50%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+}
+
+.smallColumn {
+    flex: 5%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    height: 580px;
+}
+
+.panelNav {
+    display: flex;
+}
+
+.panelNav > button {
+    flex: 50%;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 1em;
+    text-align: center;
+}
+
+
+@media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+  }

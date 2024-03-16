@@ -6,6 +6,16 @@ table {
     width: 200%;
 }
 
+table tbody tr:nth-child(even) {
+    background-color: rgba(51,135,255);
+    color: #180472;
+  }
+  
+  table tbody tr:nth-child(odd) {
+    background-color: rgb(51,135,255, 0.8);
+    color: #180472;
+  }
+
 th, td {
     border: 1px solid;
 }
@@ -16,11 +26,16 @@ h1 {
     display: inline-block;
     width: 50%;
 }
+thead {
+    background-color: rgb(27,30,10);
+    color: rgb(220,220,220);
+}
 
 hr {
     color: black;
     size: 5px;
     width: 100%;
+    
 }
 
 .pageContainer {
@@ -61,6 +76,10 @@ hr {
     border-width: 1px;
     padding: 1em;
     text-align: center;
+}
+
+.score {
+    width: 100%;
 }
 
 

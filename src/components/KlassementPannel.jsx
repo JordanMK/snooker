@@ -27,6 +27,7 @@ export default function KlassementPannel() {
                   <th>Plaats</th>
                   <th>Naam</th>
                   <th>Score</th>
+                  {/*<th>Score per wedstrijd</th>*/}
                 </tr>
               </thead>
               <tbody>
@@ -35,6 +36,22 @@ export default function KlassementPannel() {
                     <td>{user.plaats}</td>
                     <td>{user.naam}</td>
                     <td>{user.score}</td>
+                    {/*<table className="score">
+                        <thead>
+                          <tr>
+                            <th>Wedstrijd</th>
+                            <th>Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {user.wed.map((wedstrijd) => (
+                            <tr key={wedstrijd.nr}>
+                              <td>{wedstrijd.nr}</td>
+                              <td>{wedstrijd.scores}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                          </table>*/}
                   </tr>
                 ))}
               </tbody>
@@ -45,6 +62,7 @@ export default function KlassementPannel() {
                   <th>Plaats</th>
                   <th>Naam</th>
                   <th>Score</th>
+                  {/*<th>Score per wedstrijd</th>*/}
                 </tr>
               </thead>
               <tbody>
@@ -53,6 +71,22 @@ export default function KlassementPannel() {
                     <td>{user.plaats}</td>
                     <td>{user.naam}</td>
                     <td>{user.score}</td>
+                    {/*<table className="score">
+                        <thead>
+                          <tr>
+                            <th>Wedstrijd</th>
+                            <th>Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {user.wed.map((wedstrijd) => (
+                            <tr key={wedstrijd.nr}>
+                              <td>{wedstrijd.nr}</td>
+                              <td>{wedstrijd.scores}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                          </table>*/}
                   </tr>
                 ))}
               </tbody>

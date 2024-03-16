@@ -1,22 +1,19 @@
-import "../app/css/Klassement.css"
-import getUsers from '../components/api_calls/call';
-import React from "react";
+import React, { useState, useEffect } from "react";
+import getUsers from "../components/api_calls/call";
+import "../app/css/Klassement.css";
 
 export default function KlassementPannel() {
-  // Fetch the user data using the getUsers function
-  const fetchUsers = async () => {
-    const userJson = await getUsers();
-    const data = JSON.parse(userJson);
-    return data;
-  }
+  const [users, setUsers] = useState([]);
 
-  // Call the fetchUsers function and use the returned data to display the user data
-  const [users, setUsers] = React.useState([]);
-  React.useEffect(() => {
-    fetchUsers().then(data => setUsers(data.users));
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getUsers();
+      setUsers(JSON.parse(result));
+    };
+
+    fetchData();
   }, []);
 
-  // Check if users is an array
   return (
     <>
       <div className="pageContainer">
@@ -24,25 +21,24 @@ export default function KlassementPannel() {
           <h1>Klassement Speeldag</h1>
           <h1>Klassement Seizoen </h1>
           <div className="panelNav">
-          <table>
-            <thead>
-              <tr>
-                <th>Plaats</th>
-                <th>Naam</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {console.log(users)}
-              {users.map((user) => (
-                <tr key={user.plaats}>
-                  <td>{user.plaats}</td>
-                  <td>{user.naam}</td>
-                  <td>{user.score}</td>
+            <table>
+              <thead>
+                <tr>
+                  <th>Plaats</th>
+                  <th>Naam</th>
+                  <th>Score</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.plaats}>
+                    <td>{user.plaats}</td>
+                    <td>{user.naam}</td>
+                    <td>{user.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             <table>
               <thead>
                 <tr>
@@ -63,10 +59,10 @@ export default function KlassementPannel() {
             </table>
             {/* <a className="a" href="">Show more</a>
             <a className="a" href="">Show more</a> */}
-            </div>
           </div>
         </div>
-      </>
-    );
-    
-  }
+      </div>
+    </>  
+  );
+}
+      

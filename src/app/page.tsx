@@ -36,10 +36,10 @@ export default function Home() {
         </div>
         <div className="column flexColumn">
           <div className="panelNav">
-            <button onClick={() => setLeftPanelSelected(true)} style={{backgroundColor: leftPanelSelected ? "grey" : "lightgrey"}}>
+            <button onClick={() => setLeftPanelSelected(true)} style={{backgroundColor: leftPanelSelected ? "#bc6c25" : "#dda15e"}}>
               Klassement
             </button>
-            <button onClick={() => setLeftPanelSelected(false)} style={{backgroundColor: !leftPanelSelected ? "grey" : "lightgrey"}}>
+            <button onClick={() => setLeftPanelSelected(false)} style={{backgroundColor: !leftPanelSelected ? "#bc6c25" : "#dda15e"}}>
               Wedstrijd
             </button>
           </div>

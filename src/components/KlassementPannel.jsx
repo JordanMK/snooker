@@ -9,11 +9,11 @@ export default function KlassementPannel({ use }) {
     return (
       <>
         <div className="pageContainer">
-          <div className="column smallColumn">
+          <div className="column">
             <h1>Klassement Speeldag {use.userid}</h1>
             <h1>Klassement Seizoen </h1>
             <div className="panelNav">
-            <table>
+            <table className="styled-table">
               <thead>
                 <tr>
                   <th>Plaats</th>
@@ -31,7 +31,7 @@ export default function KlassementPannel({ use }) {
                 ))}
               </tbody>
             </table>
-            <table>
+            <table className="styled-table">
               <thead>
                 <tr>
                   <th>Plaats</th>

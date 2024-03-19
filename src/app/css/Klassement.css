@@ -1,15 +1,7 @@
 table {
     width: 100%;
     text-align: center;
-    border: 1px solid;
-    border-collapse: collapse;
-    width: 200%;
 }
-
-th, td {
-    border: 1px solid;
-}
-
 
 h1 {
     text-align: center;
@@ -17,15 +9,8 @@ h1 {
     width: 50%;
 }
 
-hr {
-    color: black;
-    size: 5px;
-    width: 100%;
-}
-
-.pageContainer {
-    display: flex;
-    
+th {
+    text-align: center;
 }
 
 .column {
@@ -36,32 +21,50 @@ hr {
     padding: 1em;
 }
 
-.smallColumn {
-    flex: 5%;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 1em;
-}
-
-.flexColumn {
-    display: flex;
-    flex-direction: column;
-    height: 580px;
-}
-
 .panelNav {
     display: flex;
 }
 
-.panelNav > button {
-    flex: 50%;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 1em;
-    text-align: center;
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 20px;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
+
+.styled-table tr:hover {
+    color: #bc6c25;
+}
+
+.styled-table thead tr {
+    background-color: #606c38;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #606c38;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #606c38;
+}
+
 
 
 @media screen and (max-width: 600px) {

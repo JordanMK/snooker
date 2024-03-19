@@ -31,7 +31,7 @@ export default function Home() {
     <>
     <BaseLayout>
       <div className="pageContainer">
-        <div className="column smallColumn">
+        <div className="smallColumn">
           <SeizoenPanel onClick={onClickButton} speeldagen={seizoen.speeldagen}/>
         </div>
         <div className="column flexColumn">

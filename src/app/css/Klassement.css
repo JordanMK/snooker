@@ -8,6 +8,10 @@ h1 {
     display: inline-block;
     width: 50%;
 }
+thead {
+    background-color: rgb(27,30,10);
+    color: rgb(220,220,220);
+}
 
 th {
     text-align: center;

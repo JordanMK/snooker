@@ -11,10 +11,10 @@ footer {
   --active: #275EFE;
   --active-inner: #fff;
   --focus: 2px rgba(39, 94, 254, .3);
-  --border: #BBC1E1;
+  --border: #a7abc5;
   --border-hover: #275EFE;
   --background: #fff;
-  --disabled: #F6F8FF;
+  --disabled: #676b79;
   --disabled-inner: #E1E6F9;
   -webkit-appearance: none;
   -moz-appearance: none;

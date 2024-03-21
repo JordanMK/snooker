@@ -7,6 +7,12 @@ footer{
     width: 98%;
 }
 
+.speeldagTitel{
+  margin: 50px 0px 30px 0px;
+  font-size:xx-large;
+  font-weight: 700;
+}
+
 .jokerContainer{
   margin-top: 1rem;
 }

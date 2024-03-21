@@ -3,7 +3,7 @@ import "./components.css";
 export default function WedstrijdPanel ({speeldag}) {
     return (
         <>
-            <h1>Speeldag {speeldag.speeldagNr}</h1>
+            <p className="speeldagTitel">Speeldag {speeldag.speeldagNr}</p>
             <table style={{width: "100%"}}>
                 <tr>
                     <th>match</th>

@@ -67,7 +67,7 @@ export default function Page() {
                 className={styles.inputBox}
                 type="password"
             />
-            <label htmlFor="wachtwoord2">Wachtwoord</label>
+            <label htmlFor="wachtwoord2">Herhaal wachtwoord</label>
             <input
                 style={{ borderColor: passwordError ? 'grey' : 'red' }}
                 id="wachtwoord2"

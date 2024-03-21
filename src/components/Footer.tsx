@@ -1,5 +1,6 @@
 import "./components.css";
-
+import Image from 'next/image'
+import snooker from '../images/snooker.png'
 
 export default function Footer() {
     return <>
@@ -8,7 +9,11 @@ export default function Footer() {
                     <div className="">
                         <div className="">
                             <div className="">
-                                <img src="../images/snooker.png" width="110px" alt="Snooker Pocket uit Deerlijk"/>
+                            <Image
+      src={snooker}
+      width={110}
+      alt="Picture of the author"
+    />
                             </div>
                             <div className="uk-width-1-3@s uk-margin-top-remove@m uk-margin-top">
                                 <h3>Snooker Pocket</h3>

@@ -32,15 +32,16 @@ export default function WedstrijdPanel ({speeldag}) {
                         </tr>
                 )}
             </table>
-            <div className="jokerContainer">
-                <label htmlFor="joker">Gebruik joker?</label>
-                <input type="checkbox" name="joker"/>
+            <div className="jokerContainer checkbox-wrapper-13">
+                <label htmlFor="c1-13">Gebruik joker?</label>
+                <input type="checkbox" name="joker" id="c1-13"/>
+                
             </div>
             
             <div className="schiftingsContainer">
                 <h4>Schiftingsvraag:</h4>
 
-                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000 </label>
+                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000: </label>
                 <input type="number" min="0" name="schiftingsvraag" id="schiftingsvraag"/>
             </div>
             

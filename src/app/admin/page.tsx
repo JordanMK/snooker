@@ -1,5 +1,6 @@
 import BaseLayout from "@/layout/BaseLayout";
 import LijstSeizoen from "@/components/Admin/LijstSeizoen";
+import Users from "@/components/admin/users/users";
 
 export default function Home() {
   
@@ -9,8 +10,11 @@ export default function Home() {
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
-
-      <LijstSeizoen></LijstSeizoen>
+      <div className="container">
+        <LijstSeizoen></LijstSeizoen>
+        <Users></Users>
+      </div>
+      
     </BaseLayout>
   );
 }

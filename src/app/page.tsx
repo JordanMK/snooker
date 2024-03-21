@@ -2,7 +2,7 @@
 import BaseLayout from "@/layout/BaseLayout";
 import Link from "next/link";
 import React from "react";
-import Login from "../components/Login"
+import Login from "../components/login"
 // import './globals.css';
 
 import KlassementPanel from "@/Components/KlassementPannel"

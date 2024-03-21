@@ -15,6 +15,7 @@ export default function Users() {
           { plaats: 9, naam: "Noah Van Steenlandt", score: 127, betaald: true },
           { plaats: 10, naam: "Justas Valutis", score: 109, betaald: true },
           { plaats: 11, naam: "Daniil Samsonov", score: 108, betaald: true },
+          { plaats: 12, naam: "Jelle Gemin", score: 105, betaald: true },
         ],
       },
     ],

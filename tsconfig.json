@@ -1,4 +1,4 @@
-{https://github.com/AbinetVives/23-24_PE1_SnookerPocket/pull/22/conflict?name=tsconfig.json&ancestor_oid=f8b7bc223d8e5aae5268f4319cc873ed537b9fe3&base_oid=31c024d4873e4029153ba853e1796e3d78e5fa17&head_oid=2d8b5d751777f8ae62b2034f5f174f3a4c3151e8
+{
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -24,7 +24,6 @@
       "@styles/*": ["./src/app/css"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/Login/pages.jsx", "src/components/Login/pages.jsx"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.tsx", "src/components/Footer.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/Login/pages.jsx"],
   "exclude": ["node_modules"]
 }

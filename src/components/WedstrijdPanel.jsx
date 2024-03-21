@@ -41,8 +41,8 @@ export default function WedstrijdPanel ({speeldag}) {
             <div className="schiftingsContainer">
                 <h4>Schiftingsvraag:</h4>
 
-                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000: </label>
-                <input type="number" min="0" name="schiftingsvraag" id="schiftingsvraag"/>
+                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 500: </label>
+                <input type="number" min="1" max="500" name="schiftingsvraag" id="schiftingsvraag"/>
             </div>
             
         </>

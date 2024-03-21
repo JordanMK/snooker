@@ -7,17 +7,13 @@ import SeizoenPanel from "@/Components/SeizoenPanel"
 import WedstrijdPanel from "@/Components/WedstrijdPanel"
 import "./css/Home.css"
 import { useState } from "react";
-import FirebaseData from "../components/firebasedata";
-
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);
   const [selectedSpeeldag, setselectedSpeeldag] = useState(1);
-  const [selectedKlassement, setselectedKlassement] = useState(1);
 
   function onClickButton(i){
     setselectedSpeeldag(i)
-    setselectedKlassement(i)
     setLeftPanelSelected(false)
   }
 
@@ -30,6 +26,7 @@ export default function Home() {
     {speeldagNr:5,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]},
     {speeldagNr:6,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]}
   ]}
+
 
   let user = {users:[
     {userid:1,users:[
@@ -116,25 +113,26 @@ export default function Home() {
   ]}
     
 
+
   return (
     <>
     <BaseLayout>
       <div className="pageContainer">
-        <div className="column smallColumn">
+        <div className="smallColumn">
           <SeizoenPanel onClick={onClickButton} speeldagen={seizoen.speeldagen}/>
         </div>
         <div className="column flexColumn">
           <div className="panelNav">
-            <button onClick={() => setLeftPanelSelected(true)} style={{backgroundColor: leftPanelSelected ? "grey" : "lightgrey"}}>
+            <button onClick={() => setLeftPanelSelected(true)} style={{backgroundColor: leftPanelSelected ? "#bc6c25" : "#dda15e"}}>
               Klassement
             </button>
-            <button onClick={() => setLeftPanelSelected(false)} style={{backgroundColor: !leftPanelSelected ? "grey" : "lightgrey"}}>
+            <button onClick={() => setLeftPanelSelected(false)} style={{backgroundColor: !leftPanelSelected ? "#bc6c25" : "#dda15e"}}>
               Wedstrijd
             </button>
           </div>
           <div>
           {leftPanelSelected ? (
-          <KlassementPanel use={user.users[selectedKlassement]}/>
+          <KlassementPanel/>
         ) : (
           <WedstrijdPanel speeldag={seizoen.speeldagen[selectedSpeeldag]}/>
         )}

@@ -6,16 +6,20 @@ export default function WedstrijdPanel({ speeldag }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/users/')
+        fetch('http://localhost:3001/api/wedstrijden/')
             .then(response => response.json())
-            .then(json => setData(json))
+            .then(json => setData( JSON.parse(json)))
             .catch(error => console.error(error));
     }, []);
+
+
 
     return (
         <>
             <div>
-                {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
+                {data ? <pre> {
+                data.datum
+                }</pre> : 'Loading...'}
             </div>
 
             <p className="speeldagTitel">Speeldag {speeldag.speeldagNr}</p>

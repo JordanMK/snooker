@@ -8,7 +8,10 @@ export default function WedstrijdPanel({ speeldag }) {
     useEffect(() => {
         fetch('http://localhost:3001/api/wedstrijden/')
             .then(response => response.json())
-            .then(json => setData( JSON.parse(json)))
+            .then(json => {
+                const jsonData = JSON.parse(JSON.stringify(json)); // Convert JSON to Object
+                setData(jsonData);
+            })
             .catch(error => console.error(error));
     }, []);
 

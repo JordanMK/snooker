@@ -19,7 +19,7 @@ export default function WedstrijdPanel({ speeldag }) {
 
     return (
         <>
-            <div>
+            {/* <div>
                 {data ?
                     data.map(match => (
                         <div key={match._id}>
@@ -29,7 +29,7 @@ export default function WedstrijdPanel({ speeldag }) {
                     ))
                     : 'Loading...'}
 
-            </div>
+            </div> */}
 
             <div>
                 <p className="speeldagTitel">Speeldag {speeldag.speeldagNr}</p>
@@ -43,7 +43,7 @@ export default function WedstrijdPanel({ speeldag }) {
                     {data ? data.map(match => (
                         <tr key={match._id}>
                             <td>
-                                <span>{match._id}. </span>
+                                {/* <span>{match._id}. </span> */}
                                 <span>{match.thuis}</span>
                                 <span> - </span>
                                 <span>{match.uit}</span>

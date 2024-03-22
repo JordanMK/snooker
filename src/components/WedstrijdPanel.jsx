@@ -17,9 +17,15 @@ export default function WedstrijdPanel({ speeldag }) {
     return (
         <>
             <div>
-                {data ? <pre> {
-                data.datum
-                }</pre> : 'Loading...'}
+            {data ? 
+                data.map(match => (
+                    <div key={match._id}>
+                        <pre>{JSON.stringify(match, null, 2)}</pre>
+                        <p>{match.resultaat}</p>
+                    </div>
+                ))
+                : 'Loading...'}
+                
             </div>
 
             <p className="speeldagTitel">Speeldag {speeldag.speeldagNr}</p>

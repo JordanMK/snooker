@@ -6,9 +6,7 @@ export default function KlassementPannel() {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [seizoenen, setSeizoenen] = useState([]);
   const [klassement, setKlassement] = useState([]);
-  const [user, setUser] = useState({
-    username: "",
-  });
+  const [username, setUserName] = useState(null);
 
 
   useEffect(() => {
@@ -18,12 +16,25 @@ export default function KlassementPannel() {
         return getKlassement(speeldagen[0]._id);
       })
       .then((klassement) => {
+        console.log("Klassement",klassement);
+        return klassement
+      })
+      .then((klassement) => {
+        for (let i = 0; i < klassement.length; i++) {
+          const userId = klassement[i].user
+          fetch(`http://localhost:3001/api/users/${userId}`)
+          .then(response => response.json())
+          .then(json => {
+            const jsonData = JSON.parse(JSON.stringify(json));
+            klassement[i].user = jsonData.username
+          })
+        }
         setKlassement(klassement);
-        return getUserName(klassement[0].user);
-      })
-      .then((user) => {
-        setUser(user);
-      })
+        console.log("Klassement2",klassement);
+        }
+        
+        )
+
       .catch((error) => {
         console.error(error.message);
       });
@@ -50,7 +61,7 @@ export default function KlassementPannel() {
                 {klassement.map((item) => (
                   <tr key={item._id}>
                     <td>{item.plaats}</td>
-                    <td>{user.username}</td>
+                    <td>{item.user}</td>
                     <td>{item.score}</td>
                   </tr>
                 ))}
@@ -69,7 +80,7 @@ export default function KlassementPannel() {
                 {klassement.map((item) => (
                   <tr key={item._id}>
                     <td>{item.plaats}</td>
-                    <td>{user.username}</td>
+                    <td>{item.user}</td>
                     <td>{item.score}</td>
                   </tr>
                 ))}

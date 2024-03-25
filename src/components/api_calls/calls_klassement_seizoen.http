@@ -1,9 +1,0 @@
-@base_URL = http://localhost:3000/api/seizoenen
-
-### get klassement seizoen
-
-get {{base_URL}}/{id}/klassement
-
-#### refresh klassement
-
-post {{base_URL}}/{id}/klassement

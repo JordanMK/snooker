@@ -1,9 +1,0 @@
-@base_URL = http://localhost:3000/api/speeldagen
-
-### get klassement speeldagen
-
-get {{base_URL}}/{id}/klassement
-
-### refresh klassement speeldagen
-
-post {{base_URL}}/{id}/klassement

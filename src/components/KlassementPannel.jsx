@@ -4,9 +4,7 @@ import "../app/css/Klassement.css";
 
 export default function KlassementPannel() {
   const [speeldagen, setSpeeldagen] = useState([]);
-  const [seizoenen, setSeizoenen] = useState([]);
   const [klassement, setKlassement] = useState([]);
-  const [username, setUserName] = useState(null);
 
 
   useEffect(() => {
@@ -16,25 +14,21 @@ export default function KlassementPannel() {
         return getKlassement(speeldagen[0]._id);
       })
       .then((klassement) => {
-        console.log("Klassement",klassement);
-        return klassement
+        return Promise.all(
+          klassement.map((item) =>
+            fetch(`http://localhost:3001/api/users/${item.user}`)
+              .then((response) => response.json())
+              .then((json) => {
+                const userData = JSON.parse(JSON.stringify(json));
+                item.user = userData.username;
+                return item;
+              })
+          )
+        );
       })
-      .then((klassement) => {
-        for (let i = 0; i < klassement.length; i++) {
-          const userId = klassement[i].user
-          fetch(`http://localhost:3001/api/users/${userId}`)
-          .then(response => response.json())
-          .then(json => {
-            const jsonData = JSON.parse(JSON.stringify(json));
-            klassement[i].user = jsonData.username
-          })
-        }
-        setKlassement(klassement);
-        console.log("Klassement2",klassement);
-        }
-        
-        )
-
+      .then((modifiedKlassement) => {
+        setKlassement(modifiedKlassement);
+      })
       .catch((error) => {
         console.error(error.message);
       });

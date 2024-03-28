@@ -49,7 +49,7 @@ th {
 }
 
 .panelNav {
-    display: grid;
+    display: flex;
     width: auto;
     text-align: center;
 }

@@ -17,6 +17,15 @@ export default function Users() {
       });
   }, []);
 
+  const handleCheckboxChange = (event, userId) => {
+    const isChecked = event.target.checked;
+    setUsers(
+      users.map((user) =>
+        user._id === userId ? { ...user, betaald: isChecked } : user
+      )
+    );
+  };
+
   return (
     <div className="users">
       <h2>Users</h2>
@@ -31,8 +40,10 @@ export default function Users() {
             <span className="checkbox">
               <input
                 type="checkbox"
+                id={user._id}
                 name={user._id}
-                defaultChecked={user.betaald}
+                checked={user.betaald}
+                onChange={(e) => handleCheckboxChange(e, user._id)}
               />
               <label htmlFor={user._id}>Betaald</label>
             </span>

@@ -42,7 +42,7 @@ export default function KlassementPannel() {
   return (
     <>
       <div className="">
-        <div className="panelNav">
+        <div className="panelKlassement">
           <div className="klassementSpeeldag">
             <h1>Klassement Speeldag</h1>
             <table className="styled-table">
@@ -65,7 +65,7 @@ export default function KlassementPannel() {
               </tbody>
             </table>
           </div>
-          <div id='klassementSeizoen'>
+          <div className="klassementSpeeldag">
             <h1>Klassement Seizoen </h1>
             <table className="styled-table">
               <thead>

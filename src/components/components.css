@@ -4,7 +4,7 @@ footer {
   padding: 20px 10px;
   color: #000000;
   bottom: 0;
-  width: 98%;
+  width: auto;
 }
 
 
@@ -38,7 +38,7 @@ th {
   overflow: hidden;
   background-color: #f1f1f1;
   padding: 20px 10px;
-  width: 100%;
+  width: auto;
 }
 
 /* Style the header links */
@@ -94,11 +94,9 @@ th {
 /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
 @media screen and (max-width: 900px) {
   .header {
-    width: 100%;
     display: flex;
     flex-direction: column;
     padding: 3px;
-
   }
 
   .logo {

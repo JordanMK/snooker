@@ -97,3 +97,26 @@ export function getUserName(id){
     });
   });
 }
+
+export function getAllUsers() {
+  return new Promise((resolve, reject) => {
+    const request = get(usersUrl);
+    request.on('response', (response) => {
+      if (response.statusCode === 200) {
+        let data = '';
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+        response.on('end', () => {
+          const users = JSON.parse(data);
+          resolve(users);
+        });
+      } else {
+        reject(new Error('Failed to retrieve users'));
+      }
+    });
+    request.on('error', (error) => {
+      reject(error);
+    });
+  });
+}

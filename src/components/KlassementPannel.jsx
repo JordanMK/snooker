@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { getSpeeldagen, getKlassement, getUserName, getSeizoenen } from "./api_calls/call.js";
+import {
+  getSpeeldagen,
+  getKlassement,
+  getUserName,
+  getSeizoenen,
+} from "./api_calls/call.js";
 import "../app/css/Klassement.css";
 
 export default function KlassementPannel() {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
-
 
   useEffect(() => {
     getSpeeldagen()
@@ -33,7 +37,6 @@ export default function KlassementPannel() {
         console.error(error.message);
       });
   }, []);
-
 
   return (
     <>
@@ -85,7 +88,6 @@ export default function KlassementPannel() {
           </div>
         </div>
       </div>
-    </>  
+    </>
   );
 }
-      

@@ -3,6 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false,
     "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
@@ -24,6 +25,6 @@
       "@styles/*": ["./src/app/css"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/Login/pages.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/login/pages.jsx"],
   "exclude": ["node_modules"]
 }

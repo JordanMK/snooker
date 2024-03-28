@@ -26,7 +26,8 @@ body {
     border-style: solid;
     border-color: black;
     border-width: 1px;
-    padding: 1em;
+    padding: 0;
+    width: 20%;
 }
 
 .flexColumn {
@@ -47,7 +48,7 @@ body {
     text-align: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
     .column {
       width: 100%;
     }

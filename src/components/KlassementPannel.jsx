@@ -1,26 +1,50 @@
 import React, { useState, useEffect } from "react";
-import getUsers from "../components/api_calls/call";
+import {
+  getSpeeldagen,
+  getKlassement,
+  getUserName,
+  getSeizoenen,
+} from "./api_calls/call.js";
 import "../app/css/Klassement.css";
+import 'react-bootstrap'
 
 export default function KlassementPannel() {
-  const [users, setUsers] = useState([]);
+  const [speeldagen, setSpeeldagen] = useState([]);
+  const [klassement, setKlassement] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getUsers();
-      setUsers(JSON.parse(result));
-    };
-
-    fetchData();
+    getSpeeldagen()
+      .then((speeldagen) => {
+        setSpeeldagen(speeldagen);
+        return getKlassement(speeldagen[0]._id);
+      })
+      .then((klassement) => {
+        return Promise.all(
+          klassement.map((item) =>
+            fetch(`http://localhost:3001/api/users/${item.user}`)
+              .then((response) => response.json())
+              .then((json) => {
+                const userData = JSON.parse(JSON.stringify(json));
+                item.user = userData.username;
+                return item;
+              })
+          )
+        );
+      })
+      .then((modifiedKlassement) => {
+        setKlassement(modifiedKlassement);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   }, []);
 
   return (
     <>
-      <div className="pageContainer">
-        <div className="column">
-          <h1>Klassement Speeldag</h1>
-          <h1>Klassement Seizoen </h1>
-          <div className="panelNav">
+      <div className="">
+        <div className="panelNav">
+          <div className="klassementSpeeldag">
+            <h1>Klassement Speeldag</h1>
             <table className="styled-table">
               <thead>
                 <tr>
@@ -31,72 +55,42 @@ export default function KlassementPannel() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user.plaats}>
-                    <td>{user.plaats}</td>
-                    <td>{user.naam}</td>
-                    <td>{user.score}</td>
-                    {/*<table className="score">
-                        <thead>
-                          <tr>
-                            <th>Wedstrijd</th>
-                            <th>Score</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {user.wed.map((wedstrijd) => (
-                            <tr key={wedstrijd.nr}>
-                              <td>{wedstrijd.nr}</td>
-                              <td>{wedstrijd.scores}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                          </table>*/}
+                {klassement.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.plaats}</td>
+                    <td>{item.user}</td>
+                    <td>{item.score}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <table className="styled-table">
-              <thead>
-                <tr>
-                  <th>Plaats</th>
-                  <th>Naam</th>
-                  <th>Score</th>
-                  {/*<th>Score per wedstrijd</th>*/}
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.plaats}>
-                    <td>{user.plaats}</td>
-                    <td>{user.naam}</td>
-                    <td>{user.score}</td>
-                    {/*<table className="score">
-                        <thead>
-                          <tr>
-                            <th>Wedstrijd</th>
-                            <th>Score</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {user.wed.map((wedstrijd) => (
-                            <tr key={wedstrijd.nr}>
-                              <td>{wedstrijd.nr}</td>
-                              <td>{wedstrijd.scores}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                          </table>*/}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {/* <a className="a" href="">Show more</a>
-            <a className="a" href="">Show more</a> */}
           </div>
+          <div id='klassementSeizoen'>
+            <h1>Klassement Seizoen </h1>
+            <table className="styled-table">
+              <thead>
+                <tr>
+                  <th>Plaats</th>
+                  <th>Naam</th>
+                  <th>Score</th>
+                  {/*<th>Score per wedstrijd</th>*/}
+                </tr>
+              </thead>
+              <tbody>
+                {klassement.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.plaats}</td>
+                    <td>{item.user}</td>
+                    <td>{item.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* <a className="a" href="">Show more</a>
+            <a className="a" href="">Show more</a> */}
         </div>
       </div>
-    </>  
+    </>
   );
 }
-      

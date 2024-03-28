@@ -4,7 +4,7 @@ export default function WedstrijdPanel ({speeldag}) {
     return (
         <>
             <p className="speeldagTitel">Speeldag {speeldag.speeldagNr}</p>
-            <table style={{width: "100%"}}>
+            <table className="">
                 <tr>
                     <th>match</th>
                     <th>Winst ploeg 1</th>

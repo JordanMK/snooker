@@ -8,9 +8,10 @@ footer {
 }
 
 .speeldagTitel {
-  margin: 50px 0px 30px 0px;
+  margin: 15px;
   font-size: xx-large;
   font-weight: 700;
+  text-align: center;
 }
 
 .jokerContainer {
@@ -26,9 +27,7 @@ footer {
   width: 3rem;
 }
 
-
-td,
-th {
+td, th {
   padding: 10px 0px;
 }
 
@@ -120,8 +119,9 @@ th {
   }
 
   .footerFlex {
-    justify-content: none;
+    justify-content: center;
     flex-wrap: wrap;
+    
   }
 
   #address {
@@ -129,10 +129,16 @@ th {
     width: 70%;
     justify-content: center;
     flex-direction: column;
+    padding-top: 15px;
   }
 
   #address > * {
     width: auto;
     text-align: center;
+    margin: 0;
+  }
+
+  .imageFooter {
+    padding-top: 15px;
   }
 }

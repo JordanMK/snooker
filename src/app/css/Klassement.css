@@ -31,10 +31,16 @@ th {
     text-align: center;
 }
 
+#speeldagenList {
+    padding-left: 0;
+}
+
 #speeldagenList li {
     height: 50px;
     width: auto;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
 }
 
 #speeldagenList li button {
@@ -144,15 +150,17 @@ th {
         flex-wrap: wrap;
         margin-top: 5px;
         margin-bottom: 5px;
+        justify-content: center;
+        padding: 0px;
     }
     #speeldagenList li button {
-        width: auto;
+        width: 100%;
         margin: 0;
     }
 
     #speeldagenList li  {
         margin: 3px;
-        width: 30%;
+        width: 31%;
     }
 
     /* Klassement pannel */

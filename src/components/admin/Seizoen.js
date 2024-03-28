@@ -1,12 +1,12 @@
 import "../../app/css/style.css";
 import Link from "next/link";
 
-export default function Seizoen() {
+export default function Seizoen( { seizoen }) {
   return (
     <>
       <div className="seizoen">
         <p>
-          Seizoen 23-24{" "}
+          {seizoen.name}
           <Link
             href={{
               pathname: "admin/speeldagen",

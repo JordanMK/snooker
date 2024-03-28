@@ -1,13 +1,13 @@
 table {
-    width: 100%;
+    width: auto;
     text-align: center;
 }
 
 h1 {
     text-align: center;
-    display: inline-block;
-    width: 50%;
+    width: auto;
 }
+
 thead {
     background-color: rgb(27,30,10);
     color: rgb(220,220,220);
@@ -18,7 +18,7 @@ th {
 }
 
 .column {
-    flex: 50%;
+    flex: auto;
     border-style: solid;
     border-color: black;
     border-width: 1px;
@@ -27,44 +27,42 @@ th {
 
 /* Seizoen sideline */
 #seizoenTitle {
-    width: 100%;
+    width: auto;
+    text-align: center;
 }
 
 #speeldagenList li {
     height: 50px;
-    width: 100%;
+    width: auto;
     margin-bottom: 5px;
 }
 
-
 #speeldagenList li button {
     width: 80%;
-    height: 100%;
+    height: auto;
 }
 
 .panelNav {
     display: flex;
-    width: 100%;
+    width: auto;
     justify-content: space-around;
+    text-align: center;
 }
 
 /* Tables klassement */
-#klassementSpeelDag {
-    width: 48%;
+.klassementSpeelDag {
+    flex: auto;
+    width: auto;
+    justify-content: space-between;
 }
 
-#klassementSpeelDag h1 {
-    width: 100%;
+.klassementSpeeldag>h1, #klassementSeizoen>h1{
+    width: auto;
     margin-bottom: 0px;
 }
 
 #klassementSeizoen {
-    width: 48%;
-}
-
-#klassementSeizoen h1 {
-    width: 100%;
-    margin-bottom: 0px;
+    width: auto;
 }
 
 
@@ -73,7 +71,7 @@ th {
     margin: 25px 20px;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: 400px;
+    min-width: auto;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -116,27 +114,25 @@ th {
 
 @media screen and (max-width: 600px) {
     .column {
-      width: 100%;
+      width: auto;
     }
   }
 
   @media only screen and (max-device-width: 900px) {
     /* the whole page */
     .pageContainer {
-        width: 100%;
+        width: auto;
         display: flex;
         flex-direction: column;
-
     }
 
     /* Seizoen pannel after header */
     .smallColumn{
-        width: 100%;
+        width: auto;
         padding: 5px;
-
     }
     #seizoenTitle{
-        width: 100%;
+        width: auto;
         height: 2%;
         margin: 0;
     }
@@ -150,7 +146,7 @@ th {
         margin-bottom: 5px;
     }
     #speeldagenList li button {
-        width: 100%;
+        width: auto;
         margin: 0;
     }
 
@@ -161,27 +157,24 @@ th {
 
     /* Klassement pannel */
     .flexColumn{
-        width: 100%;
+        width: auto;
         padding: 0;
         border-top: none;
     }
 
     .panelNav {
-        width: 100%;
+        width: auto;
         display: flex;
         flex-direction: column;
     }
 
-    #klassementSpeelDag {
-        width: 100%;
-    }
-
     #klassementSeizoen {
-        width: 100%;
+        width: auto;
     }
 
     .styled-table {
-        margin: 0px;
+        width: auto;
+        margin: auto;
     }
 
     #styled-table thead tr th{
@@ -194,5 +187,4 @@ th {
     #styled-table tbody tr td{
         min-width: none;
     }
-    
   }

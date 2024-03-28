@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import getUsers from "../components/api_calls/call";
 import "../app/css/Klassement.css";
+import 'react-bootstrap'
 
 export default function KlassementPannel() {
   const [users, setUsers] = useState([]);
@@ -16,9 +17,9 @@ export default function KlassementPannel() {
 
   return (
     <>
-      <div className="pageContainer">
+      <div className="">
         <div className="panelNav">
-          <div id='klassementSpeelDag'>
+          <div className="klassementSpeeldag">
             <h1>Klassement Speeldag</h1>
             <table className="styled-table">
               <thead>

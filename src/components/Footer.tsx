@@ -24,7 +24,7 @@ export default function Footer() {
                 </div>
                 <div className="">
                     <h3>Volg ons</h3>
-                    <p className="textFooter">
+                    <p>
                         Via onze
                         <a href="https://www.facebook.com/Snooker-Pocket-790776524369943" target="_blank"> facebookpagina </a>
                         houden we je op de hoogte van alle updates en nieuwtjes

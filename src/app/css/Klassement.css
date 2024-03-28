@@ -25,9 +25,48 @@ th {
     padding: 1em;
 }
 
+/* Seizoen sideline */
+#seizoenTitle {
+    width: 100%;
+}
+
+#speeldagenList li {
+    height: 50px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+
+#speeldagenList li button {
+    width: 80%;
+    height: 100%;
+}
+
 .panelNav {
     display: flex;
+    width: 100%;
+    justify-content: space-around;
 }
+
+/* Tables klassement */
+#klassementSpeelDag {
+    width: 48%;
+}
+
+#klassementSpeelDag h1 {
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+#klassementSeizoen {
+    width: 48%;
+}
+
+#klassementSeizoen h1 {
+    width: 100%;
+    margin-bottom: 0px;
+}
+
 
 .styled-table {
     border-collapse: collapse;
@@ -69,10 +108,91 @@ th {
     color: #606c38;
 }
 
+#speeldagenList {
+    list-style: none;
+}
+
 
 
 @media screen and (max-width: 600px) {
     .column {
       width: 100%;
     }
+  }
+
+  @media only screen and (max-device-width: 900px) {
+    /* the whole page */
+    .pageContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    /* Seizoen pannel after header */
+    .smallColumn{
+        width: 100%;
+        padding: 5px;
+
+    }
+    #seizoenTitle{
+        width: 100%;
+        height: 2%;
+        margin: 0;
+    }
+
+    #speeldagenList {
+        display: flex;
+        padding-left: 5px;
+        padding-right: 5px;
+        flex-wrap: wrap;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #speeldagenList li button {
+        width: 100%;
+        margin: 0;
+    }
+
+    #speeldagenList li  {
+        margin: 3px;
+        width: 30%;
+    }
+
+    /* Klassement pannel */
+    .flexColumn{
+        width: 100%;
+        padding: 0;
+        border-top: none;
+    }
+
+    .panelNav {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #klassementSpeelDag {
+        width: 100%;
+    }
+
+    #klassementSeizoen {
+        width: 100%;
+    }
+
+    .styled-table {
+        margin: 0px;
+    }
+
+    #styled-table thead tr th{
+        min-width: none;
+    }
+    #styled-table thead {
+        min-width: none;
+    }
+
+    #styled-table tbody tr td{
+        min-width: none;
+    }
+    
   }

@@ -1,7 +1,7 @@
 'use client'
 import BaseLayout from "@/layout/BaseLayout";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Login from "../components/Login"
 // import './globals.css';
 
@@ -10,6 +10,7 @@ import SeizoenPanel from "@/Components/SeizoenPanel"
 import WedstrijdPanel from "@/Components/WedstrijdPanel"
 import "./css/Home.css"
 import { useState } from "react";
+import { getSpeeldagen } from "@/Components/api_calls/call";
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);
@@ -114,6 +115,19 @@ export default function Home() {
       {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
     ]},
   ]}
+
+  const [speeldagen, setSpeeldagen] = useState([]);
+
+
+  useEffect(() => {
+    getSpeeldagen()
+      .then((speeldagen) => {
+        setSpeeldagen(speeldagen);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+    },[])
     
 
 
@@ -122,7 +136,7 @@ export default function Home() {
     <BaseLayout>
       <div className="pageContainer">
         <div className="smallColumn">
-          <SeizoenPanel onClick={onClickButton} speeldagen={seizoen.speeldagen}/>
+          <SeizoenPanel onClick={onClickButton} speeldagen={speeldagen}/>
         </div>
         <div className="column flexColumn">
           <div className="panelNav">
@@ -137,7 +151,7 @@ export default function Home() {
           {leftPanelSelected ? (
           <KlassementPanel/>
         ) : (
-          <WedstrijdPanel speeldag={seizoen.speeldagen[selectedSpeeldag]}/>
+          <WedstrijdPanel speeldag={speeldagen[selectedSpeeldag]}/>
         )}
           </div>
         </div>

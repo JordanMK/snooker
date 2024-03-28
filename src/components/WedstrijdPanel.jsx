@@ -5,8 +5,12 @@ export default function WedstrijdPanel({ speeldag }) {
 
     const [data, setData] = useState(null);
 
+    const url = 'http://localhost:3001/api/speeldagen/ ' + speeldag._id+ '/wedstrijden/'
+
+    console.log(speeldag._id ); 
+
     useEffect(() => {
-        fetch('http://localhost:3001/api/wedstrijden/')
+        fetch(url)
             .then(response => response.json())
             .then(json => {
                 const jsonData = JSON.parse(JSON.stringify(json)); // Convert JSON to Object

@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
 export default function SeizoenForm(){
     function handleForm(formData){
         const naam = formData.get('naam');
@@ -21,7 +22,7 @@ export default function SeizoenForm(){
     return(
         <>
             <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group w-50">
             <label htmlFor="naam">Naam</label>
             <input name="naam" type="text" className="form-control" id="naam" placeholder="Name" />
         </div>

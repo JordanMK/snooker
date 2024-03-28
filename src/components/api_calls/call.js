@@ -1,4 +1,5 @@
 import { get } from "http";
+import { request } from 'http';
 const base_url = "http://localhost";
 const port = 3001;
 const speeldagenUrl = `${base_url}:${port}/api/speeldagen`;
@@ -118,5 +119,52 @@ export function getAllUsers() {
     request.on('error', (error) => {
       reject(error);
     });
+  });
+}
+
+
+export function updateUserBetaald(userId, newBetaaldValue) {
+  return new Promise((resolve, reject) => {
+    // Define the PATCH request options
+    const options = {
+      hostname: 'localhost',
+      port: 3001,
+      path: `/api/users/${userId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    // Define the data to be sent in the request body
+    const data = JSON.stringify({ betaald: newBetaaldValue });
+
+    // Create the PATCH request
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      // Concatenate response data chunks
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      // Resolve or reject the promise based on response status
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to update user ${userId}. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    // Handle errors
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    // Send the request body
+    req.write(data);
+    req.end();
   });
 }

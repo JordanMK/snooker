@@ -1,8 +1,8 @@
 footer {
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: black;
   padding: 20px 10px;
-  color: #000000;
+  color: white;
   bottom: 0;
   width: auto;
 }
@@ -80,6 +80,7 @@ td, th {
 
 .textFooter {
   padding-left: 20%;
+  font-family: 'Montserrat' !important;
   /*width: 400px;*/
 }
 

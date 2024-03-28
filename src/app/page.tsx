@@ -1,14 +1,16 @@
 'use client'
 import BaseLayout from "@/layout/BaseLayout";
 import Link from "next/link";
-import React from "react";
-import Login from "../components/login"
+import React, { useEffect } from "react";
+import Login from "../components/Login"
+// import './globals.css';
 
 import KlassementPanel from "@/Components/KlassementPannel"
 import SeizoenPanel from "@/Components/SeizoenPanel"
 import WedstrijdPanel from "@/Components/WedstrijdPanel"
 import "./css/Home.css"
 import { useState } from "react";
+import { getSpeeldagen } from "@/Components/api_calls/call";
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);
@@ -30,89 +32,18 @@ export default function Home() {
   ]}
 
 
-  let user = {users:[
-    {userid:1,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-      ,
-    ]},
-    {userid:2,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-      ,
-    ]},
-    {userid:3,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-      ,
-    ]},
-    {userid:4,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-    ]},
-    {userid:5,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-    ]},
-    {userid:6,users:[
-      {plaats:1,naam:"Mateo Gheeraert",score:320, betaald: true},
-      {plaats:2,naam:"Dirk Hostens",score:250 , betaald: true},
-      {plaats:3,naam:"Joshua Madd",score:245 , betaald: true},
-      {plaats:4,naam:"Tom Dhoine",score:230 , betaald: true},
-      {plaats:5,naam:"Thijs Geeraert",score:200 , betaald: true},
-      {plaats:6,naam:"Cedric Depré",score:186 , betaald: true},
-      {plaats:7,naam:"Abdu Tchop",score:162 , betaald: true},
-      {plaats:8,naam:"Robin Vandenbroucke",score:143 , betaald: true},
-      {plaats:9,naam:"Noah Van Steenlandt",score:127 , betaald: true},
-      {plaats:10,naam:"Justas Valutis",score:109 , betaald: true},
-      {plaats:11,naam:"Daniil Samsonov",score:108 , betaald: true},
-    ]},
-  ]}
+  const [speeldagen, setSpeeldagen] = useState([]);
+
+
+  useEffect(() => {
+    getSpeeldagen()
+      .then((speeldagen) => {
+        setSpeeldagen(speeldagen);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+    },[])
     
 
 
@@ -121,7 +52,7 @@ export default function Home() {
     <BaseLayout>
       <div className="pageContainer">
         <div className="smallColumn">
-          <SeizoenPanel onClick={onClickButton} speeldagen={seizoen.speeldagen}/>
+          <SeizoenPanel onClick={onClickButton} speeldagen={speeldagen}/>
         </div>
         <div className="column flexColumn">
           <div className="panelNav">
@@ -136,7 +67,7 @@ export default function Home() {
           {leftPanelSelected ? (
           <KlassementPanel/>
         ) : (
-          <WedstrijdPanel speeldag={seizoen.speeldagen[selectedSpeeldag]}/>
+          <WedstrijdPanel speeldag={speeldagen[selectedSpeeldag]}/>
         )}
           </div>
         </div>

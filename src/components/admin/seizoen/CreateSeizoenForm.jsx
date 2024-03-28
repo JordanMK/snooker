@@ -1,6 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
 export default function SeizoenForm(){
     function handleForm(formData){
         const naam = formData.get('naam');

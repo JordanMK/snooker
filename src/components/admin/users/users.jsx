@@ -9,7 +9,7 @@ export default function Users() {
   useEffect(() => {
     getAllUsers()
       .then((fetchedUsers) => {
-        console.log(fetchedUsers);
+        console.log('users',fetchedUsers);
         setUsers(fetchedUsers);
       })
       .catch((error) => {

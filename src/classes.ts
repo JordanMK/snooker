@@ -85,3 +85,13 @@ class SpeeldagKlassement {
         
     }
 }
+
+interface Match {
+    _id: string;
+    wedstrijdVotes: any[]; // Assuming the type of wedstrijdVotes is an array of any data type
+    datum: Date;
+    resultaat: string;
+    thuis: string;
+    uit: string;
+    __v: number;
+}

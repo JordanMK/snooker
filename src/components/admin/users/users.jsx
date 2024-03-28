@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getAllUsers } from "../../api_calls/call.js";
+import { getAllUsers, updateUserBetaald } from "../../api_calls/call.js";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -17,21 +17,34 @@ export default function Users() {
       });
   }, []);
 
-  const handleCheckboxChange = (event, userId) => {
+  const handleCheckboxChange = async (event, userId) => {
     const isChecked = event.target.checked;
     setUsers(
       users.map((user) =>
         user._id === userId ? { ...user, betaald: isChecked } : user
       )
     );
+
+    try {
+      // Call updateUserBetaald function to update betaald field
+      await updateUserBetaald(userId, isChecked);
+    } catch (error) {
+      console.error("Failed to update user:", error);
+      // Revert the checkbox state if the update fails
+      setUsers(
+        users.map((user) =>
+          user._id === userId ? { ...user, betaald: !isChecked } : user
+        )
+      );
+    }
   };
 
   return (
     <div className="users">
       <h2>Users</h2>
-      {users.map((user, index) => (
+      {users.map((user) => (
         <div
-          key={index}
+          key={user._id}
           className="user"
           style={{ backgroundColor: user.betaald ? "lightgreen" : "red" }}
         >

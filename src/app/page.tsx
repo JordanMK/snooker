@@ -18,6 +18,7 @@ export default function Home() {
 
   function onClickButton(i){
     setselectedSpeeldag(i)
+    console.log('i',i)
     setLeftPanelSelected(false)
   }
 
@@ -67,7 +68,7 @@ export default function Home() {
           {leftPanelSelected ? (
           <KlassementPanel/>
         ) : (
-          <WedstrijdPanel speeldag={speeldagen[selectedSpeeldag]}/>
+          <WedstrijdPanel speeldag_id={speeldagen[selectedSpeeldag]._id}/>
         )}
           </div>
         </div>

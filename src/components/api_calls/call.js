@@ -2,7 +2,7 @@ import { get } from "http";
 import { request } from 'http';
 const base_url = "http://localhost";
 const port = 3001;
-const speeldagenUrl = `${base_url}:${port}/api/speeldagen`;
+const speeldagenUrl = `${base_url}:${port}/api/speeldagen/`;
 const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
 const usersUrl = `${base_url}:${port}/api/users/`;
 const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
@@ -22,6 +22,28 @@ export function getSpeeldagen() {
         });
       } else {
         reject(new Error('Failed to retrieve speeldagen'));
+      }
+    });
+    request.on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+export function getSpeeldag(id){
+  return new Promise((resolve, reject) => {
+    const request = get(`${speeldagenUrl}${id}/wedstrijden`);
+    request.on('response', (response) => {
+      if (response.statusCode === 200) {
+        let data = '';
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+        response.on('end', () => {
+          const speeldag = JSON.parse(data);
+          resolve(speeldag);
+        });
+      } else {
+        reject(new Error(`Failed to retrieve speeldag with id ${id}`));
       }
     });
     request.on('error', (error) => {

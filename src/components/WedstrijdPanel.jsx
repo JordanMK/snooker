@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import "./components.css";
-
-export default function WedstrijdPanel({ speeldag }) {
+import {
+    getSpeeldag
+  } from "./api_calls/call.js";
+export default function WedstrijdPanel({ speeldag_id }) {
 
     const [f_speeldag,setSpeeldag] = useState(null);
 
-    const url = 'http://localhost:3001/api/speeldagen/65fd5e79ce506aba992e9bbb/wedstrijden/'
+    console.log('binnen',speeldag_id);
 
     useEffect(() => {
-        get(url)
-            .then(response => response.json())
+        getSpeeldag(speeldag_id)
             .then(json => {
                 const jsonData = JSON.parse(JSON.stringify(json)); // Convert JSON to Object
                 setSpeeldag(jsonData);
-                crossOriginIsolated.log(jsonData);
+
+                console.log(jsonData);
             })
             .catch(error => console.error(error));
     }, []);
 
-    console.log('speeldag',f_speeldag);
+    
 
     return (
         <>
@@ -35,7 +37,7 @@ export default function WedstrijdPanel({ speeldag }) {
             </div> */}
 
             <div>
-                <p className="speeldagTitel">Speeldag {f_speeldag.speeldagNr}</p>
+                <p className="speeldagTitel">Speeldag</p>
                 <table style={{ width: "100%" }}>
                     <tr>
                         <th>match</th>
@@ -43,7 +45,7 @@ export default function WedstrijdPanel({ speeldag }) {
                         <th>Gelijkspel</th>
                         <th>Winst ploeg 2</th>
                     </tr>
-                    {f_speeldag ? f_speeldag.map(match => (
+                    {f_speeldag ? f_speeldag.wedstrijden.map(match => (
                         <tr key={match._id}>
                             <td>
                                 {/* <span>{match._id}. </span> */}

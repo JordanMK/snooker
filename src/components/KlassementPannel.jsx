@@ -8,15 +8,18 @@ import {
 import "../app/css/Klassement.css";
 import 'react-bootstrap'
 
-export default function KlassementPannel() {
+export default function KlassementPannel(speeldag_id) {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
+
+  console.log('speeldagID',speeldag_id.speeldag_id);
 
   useEffect(() => {
     getSpeeldagen()
       .then((speeldagen) => {
         setSpeeldagen(speeldagen);
-        return getKlassement(speeldagen[0]._id);
+        console.log('klassment',getKlassement(speeldag_id.speeldag_id))
+        return getKlassement(speeldag_id.speeldag_id);
       })
       .then((klassement) => {
         return Promise.all(
@@ -40,7 +43,10 @@ export default function KlassementPannel() {
   }, []);
 
   return (
-    <>
+    <> 
+    {console.log('klassement',klassement)}
+    {klassement.length > 0 && (
+      <>
       <div className="">
         <div className="panelNav">
           <div className="klassementSpeeldag">
@@ -92,5 +98,7 @@ export default function KlassementPannel() {
         </div>
       </div>
     </>
+    )}<p>Geen speeldagKlassment beschikbaar</p>
+      </>
   );
 }

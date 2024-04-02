@@ -51,14 +51,23 @@ th {
 .panelNav {
     display: flex;
     width: auto;
-    justify-content: space-around;
     text-align: center;
 }
+
+.panelKlassement {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap:5px;
+    width: auto;
+    text-align: center;
+}
+
+
 
 /* Tables klassement */
 .klassementSpeelDag {
     flex: auto;
-    width: auto;
+    width: 100%;
     justify-content: space-between;
 }
 
@@ -67,17 +76,16 @@ th {
     margin-bottom: 0px;
 }
 
-#klassementSeizoen {
-    width: auto;
-}
+
 
 
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 20px;
+    margin: 0;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: auto;
+    width: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -176,12 +184,14 @@ th {
         flex-direction: column;
     }
 
-    #klassementSeizoen {
+    .panelKlassement {
         width: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     .styled-table {
-        width: auto;
+        width: 100%;
         margin: auto;
     }
 

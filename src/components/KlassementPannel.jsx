@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getSpeeldagen,
   getKlassement,
-  getUserName,
+  getUser,
   getSeizoenen,
 } from "./api_calls/call.js";
 import "../app/css/Klassement.css";
@@ -18,17 +18,14 @@ export default function KlassementPannel(speeldag_id) {
     getSpeeldagen()
       .then((speeldagen) => {
         setSpeeldagen(speeldagen);
-        console.log('klassment',getKlassement(speeldag_id.speeldag_id))
         return getKlassement(speeldag_id.speeldag_id);
       })
       .then((klassement) => {
         return Promise.all(
           klassement.map((item) =>
-            fetch(`http://localhost:3001/api/users/${item.user}`)
-              .then((response) => response.json())
-              .then((json) => {
-                const userData = JSON.parse(JSON.stringify(json));
-                item.user = userData.username;
+            getUser(item.user)
+              .then((user) => {
+                item.user = user.username;
                 return item;
               })
           )
@@ -98,7 +95,11 @@ export default function KlassementPannel(speeldag_id) {
         </div>
       </div>
     </>
-    )}<p>Geen speeldagKlassment beschikbaar</p>
+    )}
+    {klassement.length  === 0 && (
+                <p>Geen speeldagKlassment beschikbaar</p>
+            )}
+    
       </>
   );
 }

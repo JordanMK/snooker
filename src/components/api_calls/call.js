@@ -6,6 +6,7 @@ const speeldagenUrl = `${base_url}:${port}/api/speeldagen/`;
 const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
 const usersUrl = `${base_url}:${port}/api/users/`;
 const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
+const speeldagVotesUrl = `${base_url}:${port}/api/speeldagvotes/`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
@@ -31,7 +32,7 @@ export function getSpeeldagen() {
 }
 export function getSpeeldag(id){
   return new Promise((resolve, reject) => {
-    const request = get(`${speeldagenUrl}${id}/wedstrijden`);
+    const request = get(`${speeldagenUrl}${id}`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -98,7 +99,7 @@ export function getKlassement(id) {
   });
 }
 
-export function getUserName(id){
+export function getUser(id){
   return new Promise((resolve, reject) => {
     const request = get(`${usersUrl}${id}`);
     request.on('response', (response) => {
@@ -190,3 +191,66 @@ export function updateUserBetaald(userId, newBetaaldValue) {
     req.end();
   });
 }
+
+export function putSpeeldagVote(speeldagId, obj) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      path: `${speeldagenUrl}${speeldagId}/speeldagVotes`,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const data = JSON.stringify(obj);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to put speeldag vote. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
+export function getUserVotesBySpeeldagId(speeldagId){
+  const loggedInUser = '65fd662229e6cb1a392fa77f'
+  return new Promise((resolve, reject) => {
+    const request = get(`${speeldagVotesUrl}${speeldagId}/${loggedInUser}/votes`);
+    request.on('response', (response) => {
+      if (response.statusCode === 200) {
+        let data = '';
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+        response.on('end', () => {
+          const users = JSON.parse(data);
+          resolve(users);
+        });
+      } else {
+        reject(new Error('Failed to retrieve users'));
+      }
+    });
+    request.on('error', (error) => {
+      reject(error);
+    });
+  });
+      
+}
+

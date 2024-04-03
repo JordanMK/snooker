@@ -6,7 +6,7 @@ const speeldagenUrl = `${base_url}:${port}/api/speeldagen/`;
 const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
 const usersUrl = `${base_url}:${port}/api/users/`;
 const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
-const speeldagVotesUrl = `${base_url}:${port}/api/speeldagvotes/`
+const speeldagVotesUrl = `${base_url}:${port}/api/speeldagVotes/`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
@@ -192,11 +192,46 @@ export function updateUserBetaald(userId, newBetaaldValue) {
   });
 }
 
-export function putSpeeldagVote(speeldagId, obj) {
+export function postSpeeldagVote(obj, speeldagId){
   return new Promise((resolve, reject) => {
     const options = {
-      path: `${speeldagenUrl}${speeldagId}/speeldagVotes`,
-      method: 'PUT',
+      path: `${speeldagVotesUrl}${speeldagId}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const data = JSON.stringify(obj);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to Post speeldag vote. Status code: ${res.statusCode}`));
+          resolve(JSON.parse([]));
+        }
+      });
+    });
+
+    req.write(data);
+    req.end();
+  })
+
+  
+}
+
+export function patchSpeeldagVote(speeldagVoteId, obj) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      path: `${speeldagVotesUrl}update/${speeldagVoteId}`,
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -216,12 +251,9 @@ export function putSpeeldagVote(speeldagId, obj) {
           resolve(JSON.parse(responseData));
         } else {
           reject(new Error(`Failed to put speeldag vote. Status code: ${res.statusCode}`));
+          resolve(JSON.parse([]));
         }
       });
-    });
-
-    req.on('error', (error) => {
-      reject(error);
     });
 
     req.write(data);
@@ -240,11 +272,11 @@ export function getUserVotesBySpeeldagId(speeldagId){
           data += chunk;
         });
         response.on('end', () => {
-          const users = JSON.parse(data);
-          resolve(users);
+          const votes = JSON.parse(data);
+          resolve(votes);
         });
       } else {
-        reject(new Error('Failed to retrieve users'));
+        reject(new Error('Failed to retrieve votes'));
       }
     });
     request.on('error', (error) => {

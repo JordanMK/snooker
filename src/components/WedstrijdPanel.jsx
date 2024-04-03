@@ -1,112 +1,145 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./components.css";
-import { getSpeeldag,putSpeeldagVote,getUserVotesBySpeeldagId } from "./api_calls/call.js";
+import { getSpeeldag, patchSpeeldagVote,postSpeeldagVote ,getUserVotesBySpeeldagId } from "./api_calls/call.js";
 
 export default function WedstrijdPanel({ speeldag_id }) {
-  const [speeldag, setSpeeldag] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [jokerChecked, setJokerChecked] = useState(false);
-  const [schiftingsAntwoord, setSchiftingsAntwoord] = useState('');
-  const [canUpdateJokerAndSchiftingAntwoord,setCanUpdateJokerAndSchiftingAntwoord] = useState(true);
+  const [state, setState] = useState({
+    speeldag: null,
+    loading: true,
+    error: null,
+    selectedOptions: [],
+    jokerChecked: false,
+    schiftingsAntwoord: '',
+    canUpdateJokerAndSchiftingAntwoord: true,
+    eindObject: {}
+  });
+  const latestState = useRef(state);
 
   useEffect(() => {
-    getSpeeldag(speeldag_id)
-      .then((speeldag) => {
-        setSpeeldag(speeldag);
-        setLoading(false);
-        setError(null);
-      })
-      .catch((error) => {
+    latestState.current = state;
+  }, [state]);
+
+  const fetchUserVotes = async () => {
+    try {
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      if (speeldagVotes.votes && speeldagVotes.votes.length > 0) {
+        speeldagVotes.votes.forEach(vote => {
+            console.log(speeldagVotes);
+            if (vote._id.length > 0) {
+                setState(prevState => ({ ...prevState, eindObject: { _id: speeldagVotes._id, jokerGebruikt: speeldagVotes.jokerGebruikt, schiftingsvraagAntwoord: speeldagVotes.SchiftingsvraagAntwoord }, jokerChecked: speeldagVotes.jokerGebruikt, schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord }));
+            }
+            handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+        })
+      } else {
+        setState(prevState => ({...prevState, jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: true }));
+      }
+    } catch (error) {
+      console.error(error);
+      setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const speeldag = await getSpeeldag(speeldag_id);
+        setState(prevState => ({ ...prevState, speeldag, loading: false, error: null, selectedOptions: [], jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: false, eindObject: {} }));
+        // Call fetchUserVotes after successfully fetching speeldag data
+        await fetchUserVotes();
+      } catch (error) {
         console.error(error);
-        setLoading(false);
-        setError("Error fetching data");
-      });
+        setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+      }
+    };
+    fetchData();
   }, [speeldag_id]);
 
   useEffect(() => {
-    getUserVotesBySpeeldagId(speeldag_id)
-    .then(speeldagVotes => {
-      speeldagVotes.votes.forEach(vote => {
-        console.log(vote)
-        handleOptionChange(vote.wedstrijd,vote.vote)
-        setJokerChecked(speeldagVotes.jokerGebruikt)
-        setSchiftingsAntwoord(speeldagVotes.SchiftingsvraagAntwoord)
-        setCanUpdateJokerAndSchiftingAntwoord(false)
-      })
-    })
-    .catch((error) => {
+    setInitialUserVoteData();
+  }, []);
+
+  const setInitialUserVoteData = async () => {
+    try {
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      const jokerUsed = speeldagVotes.jokerGebruikt;
+      const schiftingsvraagAntwoord = speeldagVotes.SchiftingsvraagAntwoord;
+      const canUpdate = !(jokerUsed || schiftingsvraagAntwoord);
+      setState(prevState => ({
+        ...prevState,
+        jokerChecked: jokerUsed,
+        schiftingsAntwoord: schiftingsvraagAntwoord,
+        canUpdateJokerAndSchiftingAntwoord: canUpdate,
+        loading: false,
+        error: null
+      }));
+    } catch (error) {
       console.error(error);
-      setLoading(false);
-      setError("Error fetching data");
-    });
-  },[])
+      setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+    }
+  };
 
-  const handleOptionChange = (matchId, option) => {
-    console.log(matchId,option);
-  // Check if the option already exists in selectedOptions
-  const existingOptionIndex = selectedOptions.findIndex(item => item.wedstrijdId === matchId);
-
-  if (existingOptionIndex !== -1) {
-    // If the option already exists, update its vote
-    const updatedOptions = [...selectedOptions];
-    updatedOptions[existingOptionIndex] = { ...updatedOptions[existingOptionIndex], vote: option };
-    setSelectedOptions(updatedOptions);
-  } else {
-    // If the option doesn't exist, add it to selectedOptions
-    setSelectedOptions(prevOptions => [...prevOptions, { wedstrijdId: matchId, vote: option }]);
-  }
-
-    
-    setSelectedOptions(prevState => {
-      const updatedOptions = prevState.map(item => {
-        if (item.wedstrijdId === matchId) {
-          return { ...item, vote: option };
-        }
-        return item;
-      });
-      return updatedOptions;
+  const handleOptionChange = (matchId, option, wedstrijdId) => {
+    setState(prevState => {
+      const existingOptionIndex = prevState.selectedOptions.findIndex(item => item.wedstrijd === matchId);
+      if (existingOptionIndex !== -1) {
+        const updatedOptions = [...prevState.selectedOptions];
+        updatedOptions[existingOptionIndex] = { ...updatedOptions[existingOptionIndex], vote: option };
+        return { ...prevState, selectedOptions: updatedOptions };
+      } else {
+        return { ...prevState, selectedOptions: [...prevState.selectedOptions, { _id: wedstrijdId, vote: option, wedstrijd: matchId }] };
+      }
     });
   };
 
-  
-
   const handleJokerChange = (event) => {
-    setJokerChecked(event.target.checked);
+    if (state.canUpdateJokerAndSchiftingAntwoord) {
+      setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
+    }
   };
 
   const handleSchiftingsvraagChange = (event) => {
-    setSchiftingsAntwoord(event.target.value);
+    if (state.canUpdateJokerAndSchiftingAntwoord) {
+      setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
+    }
   };
 
   const handleSubmit = () => {
-
-    let loggedinUserId = '65fd662229e6cb1a392fa77f'
+    let loggedinUserId = '65fd662229e6cb1a392fa77f';
     let obj = {
-      "userID": loggedinUserId,
-      "jokerGebruikt": jokerChecked,
+      "_id": latestState.current.eindObject._id,
+      "jokerGebruikt": latestState.current.eindObject.jokerGebruikt || state.jokerChecked,
       "user": loggedinUserId,
-      "SchiftingsvraagAntwoord": schiftingsAntwoord,
-      "wedstrijdVotes": selectedOptions
+      "SchiftingsvraagAntwoord": latestState.current.eindObject.schiftingsvraagAntwoord || state.schiftingsAntwoord,
+      "wedstrijdVotes": latestState.current.selectedOptions
+    };
+    console.log('eindobj', obj);
+    if(state.canUpdateJokerAndSchiftingAntwoord){
+      postSpeeldagVote(obj, '6605868758af03cfd7e2a128')
+    } else {
+      patchSpeeldagVote(latestState.current.eindObject._id, obj);
     }
-    console.log('eindobj',obj);
-
-    putSpeeldagVote(speeldag_id,obj)
-
+    
   };
+
+  const renderSubmitButton = useMemo(() => {
+    return state.schiftingsAntwoord && state.schiftingsAntwoord.toString().length > 0 ? (
+      <input type="button" value="submit" onClick={handleSubmit} />
+    ) : (
+      <p>Schiftingsantwoord is verplicht</p>
+    );
+  }, [state.schiftingsAntwoord]);
 
   return (
     <>
       <div>
         <p className="speeldagTitel">Speeldag</p>
-        {loading && !speeldag ? (
+        {state.loading && !state.speeldag ? (
           <div>Loading...</div>
-        ) : error ? (
-          <div>Error: {error}</div>
+        ) : state.error ? (
+          <div>Error: {state.error}</div>
         ) : (
           <>
-            {speeldag.wedstrijden.length > 0 && (
+            {state.speeldag && state.speeldag.wedstrijden.length > 0 && (
               <>
                 <table style={{ width: "100%" }}>
                   <thead>
@@ -118,40 +151,39 @@ export default function WedstrijdPanel({ speeldag_id }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {speeldag &&
-                      speeldag.wedstrijden.map((match) => (
-                        <tr key={match._id}>
-                          <td>
-                            <span>
-                              {match.thuis} - {match.uit}
-                            </span>
-                          </td>
-                          <td>
-                            <input
-                              type="radio"
-                              value="1"
-                              checked={selectedOptions.find(item => item.wedstrijdId === match._id)?.vote === '1' || false}
-                              onChange={() => handleOptionChange(match._id, '1')}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="radio"
-                              value="x"
-                              checked={selectedOptions.find(item => item.wedstrijdId === match._id)?.vote === 'x' || false}
-                              onChange={() => handleOptionChange(match._id, 'x')}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="radio"
-                              value="2"
-                              checked={selectedOptions.find(item => item.wedstrijdId === match._id)?.vote === '2' || false}
-                              onChange={() => handleOptionChange(match._id, '2')}
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                    {state.speeldag.wedstrijden.map((match) => (
+                      <tr key={match._id}>
+                        <td>
+                          <span>
+                            {match.thuis} - {match.uit}
+                          </span>
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="1"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '1' || false}
+                            onChange={() => handleOptionChange(match._id, '1')}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="x"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === 'x' || false}
+                            onChange={() => handleOptionChange(match._id, 'x')}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="2"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '2' || false}
+                            onChange={() => handleOptionChange(match._id, '2')}
+                          />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
                 <div className="jokerContainer checkbox-wrapper-13">
@@ -159,37 +191,32 @@ export default function WedstrijdPanel({ speeldag_id }) {
                   <input
                     type="checkbox"
                     id="c1-13"
-                    checked={jokerChecked}
+                    checked={state.jokerChecked}
                     onChange={handleJokerChange}
-                    disabled={!canUpdateJokerAndSchiftingAntwoord}
+                    disabled={!state.canUpdateJokerAndSchiftingAntwoord}
                   />
                 </div>
                 <div className="schiftingsContainer">
                   <h4>Schiftingsvraag:</h4>
                   <label htmlFor="schiftingsvraag">
-                    {speeldag.schiftingsvraag}
+                    {state.speeldag.schiftingsvraag}
                   </label>
                   <input
                     type="number"
                     min="0"
                     max="10000"
                     id="schiftingsAntwoord"
-                    value={schiftingsAntwoord}
+                    value={state.schiftingsAntwoord}
                     onChange={handleSchiftingsvraagChange}
                     required
-                    disabled={!canUpdateJokerAndSchiftingAntwoord}
+                    disabled={!state.canUpdateJokerAndSchiftingAntwoord}
                   />
                 </div>
-                {schiftingsAntwoord.length > 0 && (
-                  <input type="button" value="submit" onClick={handleSubmit}/>
-                )}
-                {schiftingsAntwoord.length === 0 && (
-                  <p>Schiftingsantwoord is verplicht</p>
-                )}
+                {renderSubmitButton}
               </>
             )}
-            {speeldag.wedstrijden.length === 0 && (
-                <p>Geen wedstrijden</p>
+            {state.speeldag && state.speeldag.wedstrijden.length === 0 && (
+              <p>Geen wedstrijden</p>
             )}
           </>
         )}

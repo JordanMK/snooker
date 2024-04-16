@@ -2,30 +2,30 @@ import React, { useState, useEffect } from "react";
 import {
   getSpeeldagen,
   getKlassement,
-  getUserName,
+  getUser,
   getSeizoenen,
 } from "./api_calls/call.js";
 import "../app/css/Klassement.css";
 import 'react-bootstrap'
 
-export default function KlassementPannel() {
+export default function KlassementPannel(speeldag_id) {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
+
+  console.log('speeldagID',speeldag_id.speeldag_id);
 
   useEffect(() => {
     getSpeeldagen()
       .then((speeldagen) => {
         setSpeeldagen(speeldagen);
-        return getKlassement(speeldagen[0]._id);
+        return getKlassement(speeldag_id.speeldag_id);
       })
       .then((klassement) => {
         return Promise.all(
           klassement.map((item) =>
-            fetch(`http://localhost:3001/api/users/${item.user}`)
-              .then((response) => response.json())
-              .then((json) => {
-                const userData = JSON.parse(JSON.stringify(json));
-                item.user = userData.username;
+            getUser(item.user)
+              .then((user) => {
+                item.user = user.username;
                 return item;
               })
           )
@@ -40,7 +40,10 @@ export default function KlassementPannel() {
   }, []);
 
   return (
-    <>
+    <> 
+    {console.log('klassement',klassement)}
+    {klassement.length > 0 && (
+      <>
       <div className="">
         <div className="panelKlassement">
           <div className="klassementSpeeldag">
@@ -92,5 +95,11 @@ export default function KlassementPannel() {
         </div>
       </div>
     </>
+    )}
+    {klassement.length  === 0 && (
+                <p>Geen speeldagKlassment beschikbaar</p>
+            )}
+    
+      </>
   );
 }

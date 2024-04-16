@@ -14,23 +14,14 @@ import { getSpeeldagen } from "@/Components/api_calls/call";
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);
-  const [selectedSpeeldag, setselectedSpeeldag] = useState(1);
+  const [selectedSpeeldag, setselectedSpeeldag] = useState(0);
+  const [showSeizoenklassementPanel, setSeizoenklassementPanel] = useState(true);
 
   function onClickButton(i){
     setselectedSpeeldag(i)
+    setSeizoenklassementPanel(false)
     setLeftPanelSelected(false)
   }
-
-
-  let seizoen = {speeldagen:[
-    {speeldagNr:1,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]},
-    {speeldagNr:2,wedstrijden:[{id:1,thuis: "ploeg b", weg: "ploeg a"},{id:2,thuis: "ploeg c", weg: "ploeg a"},{id:3,thuis: "ploeg d", weg: "ploeg b"},{id:4,thuis: "ploeg b", weg: "ploeg a"}]},
-    {speeldagNr:3,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]},
-    {speeldagNr:4,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]},
-    {speeldagNr:5,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]},
-    {speeldagNr:6,wedstrijden:[{id:1,thuis: "ploeg a", weg: "ploeg b"},{id:2,thuis: "ploeg a", weg: "ploeg c"},{id:3,thuis: "ploeg b", weg: "ploeg d"},{id:4,thuis: "ploeg a", weg: "ploeg b"}]}
-  ]}
-
 
   const [speeldagen, setSpeeldagen] = useState([]);
 
@@ -64,10 +55,15 @@ export default function Home() {
             </button>
           </div>
           <div>
-          {leftPanelSelected ? (
-          <KlassementPanel/>
+          {showSeizoenklassementPanel ? (
+            <p>seizoenklassement</p>
         ) : (
-          <WedstrijdPanel speeldag={speeldagen[selectedSpeeldag]}/>
+          <>
+            {leftPanelSelected ?(
+                <KlassementPanel speeldag_id={speeldagen[selectedSpeeldag]._id}/>
+            ): <WedstrijdPanel speeldag_id={speeldagen[selectedSpeeldag]._id}/>
+            }
+          </>
         )}
           </div>
         </div>

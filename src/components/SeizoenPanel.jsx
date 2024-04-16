@@ -1,13 +1,28 @@
-export default function SeizoenPanel ({onClick, speeldagen}) {
-    console.log('speeldagen',speeldagen);
-    return (
-        <>
-            <h1 id='seizoenTitle'>Seizoen 24-25</h1>
-            <ul id='speeldagenList'>
-                {speeldagen.map(speeldag =>
-                    <li key={speeldag.speeldagNr}><button onClick={() => onClick(speeldag.speeldagNr-1)}>Speeldag {speeldag.speeldagNr}</button></li>
-                    )}
-            </ul>
-        </>
-    );
+import React, { useState } from "react";
+
+export default function SeizoenPanel({ onClick, speeldagen }) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const handleClick = (index) => {
+    onClick(index);
+    setSelectedIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  return (
+    <>
+      <h1 id="seizoenTitle">Seizoen 24-25</h1>
+      <ul id="speeldagenList">
+        {speeldagen.map((_, index) => (
+          <li key={index}>
+            <button
+              onClick={() => handleClick(index)}
+              style={selectedIndex === index ? { backgroundColor: "green" } : null}
+            >
+              Speeldag {index + 1}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
 }

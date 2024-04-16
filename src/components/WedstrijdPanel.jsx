@@ -1,85 +1,226 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./components.css";
+import { getSpeeldag, patchSpeeldagVote,postSpeeldagVote ,getUserVotesBySpeeldagId } from "./api_calls/call.js";
 
-export default function WedstrijdPanel({ speeldag }) {
+export default function WedstrijdPanel({ speeldag_id }) {
+  const [state, setState] = useState({
+    speeldag: null,
+    loading: true,
+    error: null,
+    selectedOptions: [],
+    jokerChecked: false,
+    schiftingsAntwoord: '',
+    canUpdateJokerAndSchiftingAntwoord: true,
+    eindObject: {}
+  });
+  const latestState = useRef(state);
 
-    const [f_speeldag,setSpeeldag] = useState(null);
+  useEffect(() => {
+    latestState.current = state;
+  }, [state]);
 
-    const url = 'http://localhost:3001/api/speeldagen/65fd5e79ce506aba992e9bbb/wedstrijden/'
+  const fetchUserVotes = async () => {
+    try {
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      if (speeldagVotes.votes && speeldagVotes.votes.length > 0) {
+        speeldagVotes.votes.forEach(vote => {
+            console.log(speeldagVotes);
+            if (vote._id.length > 0) {
+                setState(prevState => ({ ...prevState, eindObject: { _id: speeldagVotes._id, jokerGebruikt: speeldagVotes.jokerGebruikt, schiftingsvraagAntwoord: speeldagVotes.SchiftingsvraagAntwoord }, jokerChecked: speeldagVotes.jokerGebruikt, schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord }));
+            }
+            handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+        })
+      } else {
+        setState(prevState => ({...prevState, jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: true }));
+      }
+    } catch (error) {
+      console.error(error);
+      setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+    }
+  };
 
-    useEffect(() => {
-        get(url)
-            .then(response => response.json())
-            .then(json => {
-                const jsonData = JSON.parse(JSON.stringify(json)); // Convert JSON to Object
-                setSpeeldag(jsonData);
-                crossOriginIsolated.log(jsonData);
-            })
-            .catch(error => console.error(error));
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const speeldag = await getSpeeldag(speeldag_id);
+        setState(prevState => ({ ...prevState, speeldag, loading: false, error: null, selectedOptions: [], jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: false, eindObject: {} }));
+        // Call fetchUserVotes after successfully fetching speeldag data
+        await fetchUserVotes();
+      } catch (error) {
+        console.error(error);
+        setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+      }
+    };
+    fetchData();
+  }, [speeldag_id]);
 
-    console.log('speeldag',f_speeldag);
+  useEffect(() => {
+    setInitialUserVoteData();
+  }, []);
 
-    return (
-        <>
-            {/* <div>
-                {data ?
-                    data.map(match => (
-                        <div key={match._id}>
-                            <pre>{JSON.stringify(match, null, 2)}</pre>
-                            <p>{match.resultaat}</p>
-                        </div>
-                    ))
-                    : 'Loading...'}
+  const setInitialUserVoteData = async () => {
+    try {
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      const jokerUsed = speeldagVotes.jokerGebruikt;
+      const schiftingsvraagAntwoord = speeldagVotes.SchiftingsvraagAntwoord;
+      const canUpdate = !(jokerUsed || schiftingsvraagAntwoord);
+      setState(prevState => ({
+        ...prevState,
+        jokerChecked: jokerUsed,
+        schiftingsAntwoord: schiftingsvraagAntwoord,
+        canUpdateJokerAndSchiftingAntwoord: canUpdate,
+        loading: false,
+        error: null
+      }));
+    } catch (error) {
+      console.error(error);
+      setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+    }
+  };
 
-            </div> */}
+  const handleOptionChange = (matchId, option, wedstrijdId) => {
+    setState(prevState => {
+      const existingOptionIndex = prevState.selectedOptions.findIndex(item => item.wedstrijd === matchId);
+      if (existingOptionIndex !== -1) {
+        const updatedOptions = [...prevState.selectedOptions];
+        updatedOptions[existingOptionIndex] = { ...updatedOptions[existingOptionIndex], vote: option };
+        return { ...prevState, selectedOptions: updatedOptions };
+      } else {
+        return { ...prevState, selectedOptions: [...prevState.selectedOptions, { _id: wedstrijdId, vote: option, wedstrijd: matchId }] };
+      }
+    });
+  };
 
-            <div>
-                <p className="speeldagTitel">Speeldag {f_speeldag.speeldagNr}</p>
-                <table style={{ width: "100%" }}>
-                    <tr>
-                        <th>match</th>
-                        <th>Winst ploeg 1</th>
-                        <th>Gelijkspel</th>
-                        <th>Winst ploeg 2</th>
-                    </tr>
-                    {f_speeldag ? f_speeldag.map(match => (
-                        <tr key={match._id}>
-                            <td>
-                                {/* <span>{match._id}. </span> */}
-                                <span>{match.thuis}</span>
-                                <span> - </span>
-                                <span>{match.uit}</span>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="check" />
-                            </td>
-                            <td>
-                                <input type="checkbox" name="check" />
-                            </td>
-                            <td>
-                                <input type="checkbox" name="check" />
-                            </td>
+  const handleJokerChange = (event) => {
+    if (state.canUpdateJokerAndSchiftingAntwoord) {
+      setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
+    }
+  };
 
-                        </tr>
-                    )) 
-                    : 'Loading...'}
-                </table>
-            </div>
+  const handleSchiftingsvraagChange = (event) => {
+    if (state.canUpdateJokerAndSchiftingAntwoord) {
+      setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
+    }
+  };
 
-            <div className="jokerContainer checkbox-wrapper-13">
-                <label htmlFor="c1-13">Gebruik joker?</label>
-                <input type="checkbox" name="joker" id="c1-13" />
+  const handleSubmit = () => {
+    let loggedinUserId = '65fd662229e6cb1a392fa77f';
+    let obj = {
+      "_id": latestState.current.eindObject._id,
+      "jokerGebruikt": latestState.current.eindObject.jokerGebruikt || state.jokerChecked,
+      "user": loggedinUserId,
+      "SchiftingsvraagAntwoord": latestState.current.eindObject.schiftingsvraagAntwoord || state.schiftingsAntwoord,
+      "wedstrijdVotes": latestState.current.selectedOptions
+    };
+    console.log('eindobj', obj);
+    if(state.canUpdateJokerAndSchiftingAntwoord){
+      postSpeeldagVote(obj, '6605868758af03cfd7e2a128')
+    } else {
+      patchSpeeldagVote(latestState.current.eindObject._id, obj);
+    }
+    
+  };
 
-            </div>
-
-            <div className="schiftingsContainer">
-                <h4>Schiftingsvraag:</h4>
-
-                <label htmlFor="schiftingsvraag">Gok nummer 1 tot 10000: </label>
-                <input type="number" min="0" max="10000" name="schiftingsvraag" id="schiftingsvraag"/>
-            </div>
-
-        </>
+  const renderSubmitButton = useMemo(() => {
+    return state.schiftingsAntwoord && state.schiftingsAntwoord.toString().length > 0 ? (
+      <input type="button" value="submit" onClick={handleSubmit} />
+    ) : (
+      <p>Schiftingsantwoord is verplicht</p>
     );
+  }, [state.schiftingsAntwoord]);
+
+  return (
+    <>
+      <div>
+        <p className="speeldagTitel">Speeldag</p>
+        {state.loading && !state.speeldag ? (
+          <div>Loading...</div>
+        ) : state.error ? (
+          <div>Error: {state.error}</div>
+        ) : (
+          <>
+            {state.speeldag && state.speeldag.wedstrijden.length > 0 && (
+              <>
+                <table style={{ width: "100%" }}>
+                  <thead>
+                    <tr>
+                      <th>Match</th>
+                      <th>Winst ploeg 1</th>
+                      <th>Gelijkspel</th>
+                      <th>Winst ploeg 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {state.speeldag.wedstrijden.map((match) => (
+                      <tr key={match._id}>
+                        <td>
+                          <span>
+                            {match.thuis} - {match.uit}
+                          </span>
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="1"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '1' || false}
+                            onChange={() => handleOptionChange(match._id, '1')}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="x"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === 'x' || false}
+                            onChange={() => handleOptionChange(match._id, 'x')}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            value="2"
+                            checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '2' || false}
+                            onChange={() => handleOptionChange(match._id, '2')}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="jokerContainer checkbox-wrapper-13">
+                  <label htmlFor="c1-13">Gebruik joker?</label>
+                  <input
+                    type="checkbox"
+                    id="c1-13"
+                    checked={state.jokerChecked}
+                    onChange={handleJokerChange}
+                    disabled={!state.canUpdateJokerAndSchiftingAntwoord}
+                  />
+                </div>
+                <div className="schiftingsContainer">
+                  <h4>Schiftingsvraag:</h4>
+                  <label htmlFor="schiftingsvraag">
+                    {state.speeldag.schiftingsvraag}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="10000"
+                    id="schiftingsAntwoord"
+                    value={state.schiftingsAntwoord}
+                    onChange={handleSchiftingsvraagChange}
+                    required
+                    disabled={!state.canUpdateJokerAndSchiftingAntwoord}
+                  />
+                </div>
+                {renderSubmitButton}
+              </>
+            )}
+            {state.speeldag && state.speeldag.wedstrijden.length === 0 && (
+              <p>Geen wedstrijden</p>
+            )}
+          </>
+        )}
+      </div>
+    </>
+  );
 }

@@ -148,7 +148,6 @@ export function getAllUsers() {
 
 export function updateUserBetaald(userId, newBetaaldValue) {
   return new Promise((resolve, reject) => {
-    // Define the PATCH request options
     const options = {
       hostname: 'localhost',
       port: 3001,
@@ -158,20 +157,12 @@ export function updateUserBetaald(userId, newBetaaldValue) {
         'Content-Type': 'application/json'
       }
     };
-
-    // Define the data to be sent in the request body
     const data = JSON.stringify({ betaald: newBetaaldValue });
-
-    // Create the PATCH request
     const req = request(options, (res) => {
       let responseData = '';
-
-      // Concatenate response data chunks
       res.on('data', (chunk) => {
         responseData += chunk;
       });
-
-      // Resolve or reject the promise based on response status
       res.on('end', () => {
         if (res.statusCode === 200) {
           resolve(JSON.parse(responseData));

@@ -2,6 +2,8 @@
 import { useState } from "react"
 import styles from '../Login/styles.module.css'
 import Link from 'next/link'
+import { signup } from '@/app/actions/auth'
+
 
 
 export default function Page() {
@@ -25,7 +27,7 @@ export default function Page() {
     }
 
     return (
-        <form onSubmit={formSubmit} className={styles.mainContainer}>
+        <form onSubmit={signup} className={styles.mainContainer}>
             <div className={styles.titleContainer}>
                 <div>Register</div>
             </div>

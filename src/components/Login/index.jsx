@@ -10,8 +10,13 @@ export default function Index(props) {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const formSubmit = () => {
-        //update this function later...
+    const formSubmit = async(e) => {
+        try {
+
+        }
+        catch  {
+
+        }
     }
 
     return (

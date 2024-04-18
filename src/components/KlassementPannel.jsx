@@ -37,9 +37,10 @@ export default function KlassementPannel(speeldag_id) {
       .catch((error) => {
         console.error(error.message);
       });
-  }, []);
+  }, [speeldag_id.speeldag_id]);
 
   return (
+    
     <> 
     {console.log('klassement',klassement)}
     {klassement.length > 0 && (

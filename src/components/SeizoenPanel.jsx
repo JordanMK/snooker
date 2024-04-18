@@ -18,7 +18,7 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
               onClick={() => handleClick(index)}
               style={selectedIndex === index ? { backgroundColor: "green" } : null}
             >
-              Speeldag {index + 1}
+              Speeldag {speeldagen.length - index}
             </button>
           </li>
         ))}

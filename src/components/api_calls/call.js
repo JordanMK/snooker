@@ -150,7 +150,7 @@ export function updateUserBetaald(userId, newBetaaldValue) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 3001,
+      port: port,
       path: `/api/users/${userId}`,
       method: 'PATCH',
       headers: {
@@ -220,7 +220,7 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 3001,
+      port: port,
       path: `/api/speeldagen/${speeldagId}/wedstrijden`,
       method: 'POST',
       headers: {
@@ -264,7 +264,7 @@ export function deleteWedstrijd(wedstrijdId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 3001,
+      port: port,
       path: `/api/wedstrijden/${wedstrijdId}`,
       method: 'DELETE',
     };

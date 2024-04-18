@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import "reactjs-popup/dist/index.css";
 import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
 import WedstrijdForm from "@/components/admin/speeldag/CreateWedstrijd";
+import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 
 import {
   getSpeeldagen,
@@ -34,27 +35,6 @@ export default function Speeldagen() {
     router.push("/admin/speeldagen/CreateSpeeldag");
   };
 
-  const handleVerwijderClick = (wedstrijdId) => {
-    if (
-      window.confirm("Weet je zeker dat je deze wedstrijd wilt verwijderen?")
-    ) {
-      deleteWedstrijd(wedstrijdId)
-        .then(() => {
-          console.log("Wedstrijd successfully deleted");
-          // Update state to reflect the deletion
-          const updatedSpeeldagen = speeldagen.map((speeldag) => ({
-            ...speeldag,
-            wedstrijden: speeldag.wedstrijden.filter(
-              (wedstrijd) => wedstrijd.id !== wedstrijdId
-            ),
-          }));
-          setSpeeldagen(updatedSpeeldagen);
-        })
-        .catch((error) => {
-          console.error("Failed to delete wedstrijd:", error.message);
-        });
-    }
-  };
   return (
     <BaseLayout>
       <div className="header">
@@ -83,23 +63,9 @@ export default function Speeldagen() {
                 />
               </div>
 
-              <ul>
-                {speeldag.wedstrijden.map((wedstrijd) => (
-                  <li key={wedstrijd.id}>
-                    Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.uit}
-                    <button class="btn btn-light btn-sm m-1" id="pasaan">
-                      Pas aan
-                    </button>
-                    <button
-                      class="btn btn-light btn-sm m-1"
-                      id="delete"
-                      onClick={() => handleVerwijderClick(wedstrijd.id)}
-                    >
-                      Verwijder
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <WedstrijdAdmin
+                wedstrijden={speeldag.wedstrijden}
+              ></WedstrijdAdmin>
             </li>
           ))}
         </ul>

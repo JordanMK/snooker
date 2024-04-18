@@ -14,6 +14,9 @@ export default function WedstrijdForm(id) {
       .then((data) => {
         // Handle success, if needed
         console.log("Wedstrijd posted successfully:", data);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((error) => {
         // Handle error, if needed

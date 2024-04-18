@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import styles from "./styles.module.css"
 import Link from "next/link"
-import Home from "@/app/page"
+
 
 export default function Index(props) {
 
@@ -10,9 +10,7 @@ export default function Index(props) {
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
-
     const [loginFailed, setLoginFailed] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
     const formSubmit = async (e) => {
@@ -29,8 +27,7 @@ export default function Index(props) {
         }
 
         try {
-            // Send data to the serverÆ
-            const response = await fetch('/api/login', {
+            const response = await fetch('http://localhost:3001/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,22 +35,19 @@ export default function Index(props) {
                 body: JSON.stringify({ email, password }),
             });
 
-            // Handle response
             if (response.ok) {
-                setIsLoggedIn(true);
+                const data = await response.json();
+                const token = data.token;
+                console.log('Authentication token:', token);
+
+                localStorage.setItem('authToken', token);
+                window.location.href = "/";
             } else {
-                // Handle authentication error
-                // For example, display an error message
+                setLoginFailed("Geef de juiste email adress of wachtwoord")
+                console.log('Login NIET GELUKT')
             }
         } catch (error) {
-            console.error('Error:', error);Æ
-            // Handle network or other errors
-        }
-
-        if (isLoggedIn) {
-            return <Home />;
-        } else {
-            setLoginFailed("Geef de juiste email adress of wachtwoord")
+            console.error('Error:', error);
         }
     };
 
@@ -87,6 +81,5 @@ export default function Index(props) {
             <div>Wachtwoord vergeten?<Link href="/forgotpassword"> Klik hier</Link></div>
             <div>Heb je nog geen account<Link href="/Register"> Registreer hier</Link></div>
         </form>
-
     )
 }

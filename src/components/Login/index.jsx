@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import styles from "./styles.module.css"
 import Link from "next/link"
+import Home from "@/app/page"
 
 export default function Index(props) {
 
@@ -10,17 +11,55 @@ export default function Index(props) {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const formSubmit = async(e) => {
+    const [loginFailed, setLoginFailed] = useState('')
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+    const formSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Client-side validation
+        if (!email) {
+            setEmailError('Email is required');
+            return;
+        }
+        if (!password) {
+            setPasswordError('Password is required');
+            return;
+        }
+
         try {
+            // Send data to the serverÆ
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
+            // Handle response
+            if (response.ok) {
+                setIsLoggedIn(true);
+            } else {
+                // Handle authentication error
+                // For example, display an error message
+            }
+        } catch (error) {
+            console.error('Error:', error);Æ
+            // Handle network or other errors
         }
-        catch  {
 
+        if (isLoggedIn) {
+            return <Home />;
+        } else {
+            setLoginFailed("Geef de juiste email adress of wachtwoord")
         }
-    }
+    };
 
     return (
         <form onSubmit={formSubmit} className={styles.mainContainer}>
+            <label className={styles.errorLabel}>{loginFailed}</label>
             <div className={styles.titleContainer}>
                 <div>Login</div>
             </div>
@@ -32,7 +71,7 @@ export default function Index(props) {
                 className={styles.inputBox}
                 type="email"
             />
-            <label className="errorLabel">{emailError}</label>
+            <label className={styles.errorLabel}>{emailError}</label>
             <br />
             <input
                 value={password}

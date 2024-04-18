@@ -5,31 +5,35 @@ import { getAllUsers, updateUserBetaald } from "../../api_calls/call.js";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getAllUsers()
       .then((fetchedUsers) => {
-        console.log('users',fetchedUsers);
         setUsers(fetchedUsers);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error(error.message);
+        setError(error.message);
+        setLoading(false);
       });
   }, []);
 
   const handleCheckboxChange = async (event, userId) => {
     const isChecked = event.target.checked;
-    setUsers(
-      users.map((user) =>
-        user._id === userId ? { ...user, betaald: isChecked } : user
-      )
+    const updatedUsers = users.map((user) =>
+      user._id === userId ? { ...user, betaald: isChecked } : user
     );
+    setUsers(updatedUsers);
 
     try {
       // Call updateUserBetaald function to update betaald field
       await updateUserBetaald(userId, isChecked);
     } catch (error) {
       console.error("Failed to update user:", error);
+      setError("Failed to update user.");
       // Revert the checkbox state if the update fails
       setUsers(
         users.map((user) =>
@@ -39,10 +43,27 @@ export default function Users() {
     }
   };
 
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="users">
       <h2>Users</h2>
-      {users.map((user) => (
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      {filteredUsers.map((user) => (
         <div
           key={user._id}
           className="user"
@@ -66,3 +87,4 @@ export default function Users() {
     </div>
   );
 }
+

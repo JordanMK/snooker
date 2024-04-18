@@ -214,9 +214,85 @@ export function postSpeeldagVote(obj, speeldagId){
     req.write(data);
     req.end();
   })
-
-  
 }
+
+export function postWedstrijd(date, thuis, uit, speeldagId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: 3001,
+      path: `/api/speeldagen/${speeldagId}/wedstrijden`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const wedstrijdData = {
+      datum: date,
+      thuis: thuis,
+      uit: uit
+    };
+    const data = JSON.stringify(wedstrijdData);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to post wedstrijd. Status code: ${res.statusCode}`));
+          resolve([]);
+        }
+      });
+    });
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
+export function deleteWedstrijd(wedstrijdId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: 3001,
+      path: `/api/wedstrijden/${wedstrijdId}`,
+      method: 'DELETE',
+    };
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 204) {
+          resolve(); // Successfully deleted
+        } else {
+          reject(new Error(`Failed to delete wedstrijd. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
+}
+
 
 export function patchSpeeldagVote(speeldagVoteId, obj) {
   return new Promise((resolve, reject) => {

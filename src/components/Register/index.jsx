@@ -3,10 +3,12 @@ import { useState } from "react"
 import styles from '../Login/styles.module.css'
 import Link from 'next/link'
 import { signup } from '@/app/actions/auth'
+import { useFormState } from 'react-dom'
 
 
 
-export default function Page() {
+
+export default function SignupForm() {
     const [voornaam, setVoornaam] = useState('')
     const [familieNaam, setFamilieNaam] = useState('')
     const [email, setEmail] = useState('')
@@ -14,6 +16,9 @@ export default function Page() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     var [passwordError, setPasswordError] = useState(true);
+
+    const [state, action] = useFormState(signup, undefined)
+
 
 
     const formSubmit = (event) => {
@@ -27,7 +32,7 @@ export default function Page() {
     }
 
     return (
-        <form onSubmit={signup} className={styles.mainContainer}>
+        <form action={action} className={styles.mainContainer}>
             <div className={styles.titleContainer}>
                 <div>Register</div>
             </div>
@@ -41,6 +46,8 @@ export default function Page() {
                 className={styles.inputBox}
                 type="text"
             />
+            {/* {state.errors.voornaam && <p>{state.errors.voornaam}</p>} */}
+
             <label htmlFor="familieNaam">Familienaam</label>
             <input
                 value={familieNaam}
@@ -50,6 +57,8 @@ export default function Page() {
                 className={styles.inputBox}
                 type="text"
             />
+            {/* <div>{state.errors.familieNaam && <p>{state.errors.familieNaam}</p>}</div> */}
+
             <label htmlFor="email">Email</label>
             <input
                 value={email}

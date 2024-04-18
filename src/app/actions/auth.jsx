@@ -1,11 +1,10 @@
 import { SignupFormSchema } from '@/app/lib/definitions'
 
-export async function signup(formData: FormData) {
+export async function signup(state, formData) {
     // Validate form fields
     const validatedFields = SignupFormSchema.safeParse({
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
+      voornaam: formData.get('voornaam'),
+      familieNaam: formData.get('familieNaam'),
     })
    
     // If any form fields are invalid, return early

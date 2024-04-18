@@ -6,7 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "reactjs-popup/dist/index.css";
 import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
-import { getSpeeldagen } from "../../../components/api_calls/call";
+import WedstrijdForm from "@/components/admin/speeldag/CreateWedstrijd";
+import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
+
+import {
+  getSpeeldagen,
+  deleteWedstrijd,
+} from "../../../components/api_calls/call";
 import React, { useState, useEffect } from "react";
 import Index from "@/components/Login";
 
@@ -28,6 +34,7 @@ export default function Speeldagen() {
     console.log("maakSpeeldagClick");
     router.push("/admin/speeldagen/CreateSpeeldag");
   };
+
   return (
     <BaseLayout>
       <div className="header">
@@ -40,7 +47,7 @@ export default function Speeldagen() {
       <div className="speeldag">
         <ul>
           {speeldagen.map((speeldag, index) => (
-            <li key={speeldag.speeldagNr}>
+            <li key={speeldag._id}>
               <div className="speeldagHead">
                 <h2>Speeldag {1 + index}</h2>
                 <AdminPopup
@@ -50,22 +57,15 @@ export default function Speeldagen() {
                   })}
                   triggerButtonName="pas aan"
                 />
+                <AdminPopup
+                  popupContent={WedstrijdForm(speeldag._id)}
+                  triggerButtonName="Nieuwe wedstrijd"
+                />
               </div>
 
-              <ul>
-                {speeldag.wedstrijden.map((wedstrijd) => (
-                  <li key={wedstrijd.id}>
-                    Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.weg}
-                    <Link
-                      href={{
-                        pathname: "",
-                      }}
-                    >
-                      Pas aan
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <WedstrijdAdmin
+                wedstrijden={speeldag.wedstrijden}
+              ></WedstrijdAdmin>
             </li>
           ))}
         </ul>

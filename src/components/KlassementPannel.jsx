@@ -9,7 +9,6 @@ import {
 } from "./api_calls/call.js";
 import "../app/css/Klassement.css";
 import 'react-bootstrap';
-import { error } from "console";
 import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
 
 

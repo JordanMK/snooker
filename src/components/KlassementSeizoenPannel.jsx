@@ -7,9 +7,8 @@ import {
 } from "./api_calls/call.js";
 import "../app/css/Klassement.css";
 import 'react-bootstrap';
-import { error } from "console";
 
-export default function KlassementPannel(speeldag_id) {
+export default function KlassementSeizoenPannel(speeldag_id) {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
 

@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   getSpeeldagen,
-  getKlassement,
   getUser,
   getSeizoenen,
-  getKlassementSpeeldag,
   getKlassementSeizoen,
 } from "./api_calls/call.js";
 import "../app/css/Klassement.css";
 import 'react-bootstrap';
 import { error } from "console";
-import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
-
 
 export default function KlassementPannel(speeldag_id) {
   const [speeldagen, setSpeeldagen] = useState([]);
@@ -23,7 +19,7 @@ export default function KlassementPannel(speeldag_id) {
     getSpeeldagen()
       .then((speeldagen) => {
         setSpeeldagen(speeldagen);
-        return getKlassementSpeeldag(speeldag_id.speeldag_id);
+        return getKlassementSeizoen(speeldag_id.speeldag_id);
       })
       .then((klassement) => {
         return Promise.all(
@@ -53,7 +49,7 @@ export default function KlassementPannel(speeldag_id) {
       <div className="">
         <div className="panelKlassement">
           <div className="klassementSpeeldag">
-            <h1>Klassement Speeldag</h1>
+            <h1>Klassement Seizoen</h1>
             <table className="styled-table">
               <thead>
                 <tr>
@@ -74,7 +70,6 @@ export default function KlassementPannel(speeldag_id) {
               </tbody>
             </table>
           </div>
-          <KlassementSeizoenPannel speeldag_id= {speeldagen[selectedSpeeldag]._id}/>
           {/* <a className="a" href="">Show more</a>
             <a className="a" href="">Show more</a> */}
         </div>

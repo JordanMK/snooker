@@ -78,7 +78,7 @@ export function getSeizoenen() {
   });
 }
 
-export function getKlassement(id) {
+export function getKlassementSpeeldag(id) {
   return new Promise((resolve, reject) => {
     const request = get(`${klassementUrl}${id}/klassement`);
     request.on('response', (response) => {
@@ -94,6 +94,30 @@ export function getKlassement(id) {
         });
       } else {
         reject(new Error(`Failed to retrieve klassement for speeldagen with id ${id}`));
+      }
+    });
+    request.on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
+export function getKlassementSeizoen(id) {
+  return new Promise((resolve, reject) => {
+    const request = get(`${seizoenenUrl}${id}/klassement`);
+    request.on('response', (response) => {
+      if (response.statusCode === 200) {
+        let data = '';
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+        response.on('end', () => {
+          const klassement = JSON.parse(data);
+          resolve(klassement);
+          console.log("Klassement is: " + klassement);
+        });
+      } else {
+        reject(new Error(`Failed to retrieve klassement for seizoen with id ${id}`));
       }
     });
     request.on('error', (error) => {

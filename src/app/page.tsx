@@ -6,6 +6,7 @@ import Login from "../components/Login"
 // import './globals.css';
 
 import KlassementPanel from "@/Components/KlassementPannel"
+import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
 import SeizoenPanel from "@/Components/SeizoenPanel"
 import WedstrijdPanel from "@/Components/WedstrijdPanel"
 import "./css/Home.css"
@@ -56,7 +57,7 @@ export default function Home() {
           </div>
           <div>
           {showSeizoenklassementPanel ? (
-            <p>seizoenklassement</p>
+            <KlassementSeizoenPannel speeldag_id= {speeldagen[selectedSpeeldag]._id}/>
         ) : (
           <>
             {leftPanelSelected ?(

@@ -16,11 +16,11 @@ import { getSpeeldagen } from "@/Components/api_calls/call";
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);
   const [selectedSpeeldag, setselectedSpeeldag] = useState(0);
-  const [showSeizoenklassementPanel, setSeizoenklassementPanel] = useState(true);
+  const [showklassementSeizoenPannel, setklassementSeizoenPannel] = useState(true);
 
   function onClickButton(i){
     setselectedSpeeldag(i)
-    setSeizoenklassementPanel(false)
+    setklassementSeizoenPannel(false)
     setLeftPanelSelected(false)
   }
 
@@ -56,8 +56,9 @@ export default function Home() {
             </button>
           </div>
           <div>
-          {showSeizoenklassementPanel ? (
-            <KlassementSeizoenPannel speeldag_id= {speeldagen[selectedSpeeldag]._id}/>
+          {showklassementSeizoenPannel ? (
+            //<KlassementSeizoenPannel speeldag_id={speeldagen[0]._id}/>
+            <p>Geen seizoenklassement</p>
         ) : (
           <>
             {leftPanelSelected ?(

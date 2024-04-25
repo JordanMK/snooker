@@ -36,12 +36,14 @@ export default function SignupForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({admin: false, username, email, password }),
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Registratie response:', data);
+                console.log('Registratie is gelukt met response:', data);
+                window.alert("Wachtwoorden momenteel zijn NIET gehashed")
+                window.location.href = "/login";
             } else {
                 setRegistratieFailed("Dit username of email address is bezet");
                 console.log('Registratie is NIET GELUKT');

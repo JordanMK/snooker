@@ -8,48 +8,64 @@ import { useFormState } from 'react-dom'
 
 
 export default function SignupForm() {
-    const [voornaam, setVoornaam] = useState('')
-    const [familieNaam, setFamilieNaam] = useState('')
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     var [passwordError, setPasswordError] = useState(true);
+    const [registratieFailed, setRegistratieFailed] = useState('')
 
 
 
-    const register = (event) => {
+
+    const register = async (event) => {
         event.preventDefault();
-        if (password !== confirmPassword) {
-            setPasswordError(false)
+        if (password !== confirmPassword || !password || !email || !username) {
+            setPasswordError(false);
+            setRegistratieFailed("Gegeven velden moet ingevuld zijn");
+            return;
         } else {
-            setPasswordError(true)
+            setRegistratieFailed(null);
+            setPasswordError(true);
         }
+        console.log(username, email, password);
+        try {
+            const response = await fetch('http://localhost:3001/api/users/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, email, password }),
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Registratie response:', data);
+            } else {
+                setRegistratieFailed("Dit username of email address is bezet");
+                console.log('Registratie is NIET GELUKT');
+            }
+        } catch (error) {
+            setRegistratieFailed("Geen response van server");
+            console.log('Error met de server');
+            console.error('Error:', error);
+        }
     }
 
     return (
         <form onSubmit={register} className={styles.mainContainer}>
+            <label className={styles.errorLabel}>{registratieFailed}</label>
             <div className={styles.titleContainer}>
                 <div>Register</div>
             </div>
             <br />
-            <label htmlFor="voornaam">Naam</label>
+            <label htmlFor="username">Username</label>
             <input
-                id='voornaam'
-                value={voornaam}
-                placeholder="Geef je naam"
-                onChange={(e) => setVoornaam(e.target.value.setVoornaam)}
-                className={styles.inputBox}
-                type="text"
-            />
-
-            <label htmlFor="familieNaam">Familienaam</label>
-            <input
-                value={familieNaam}
-                id='famielieNaam'
-                placeholder="Geef je familienaam"
-                onChange={(e) => setFamilieNaam(e.target.value.familieNaam)}
+                id='username'
+                value={username}
+                placeholder="username"
+                onChange={(e) => setUsername(e.target.value)}
                 className={styles.inputBox}
                 type="text"
             />
@@ -58,7 +74,7 @@ export default function SignupForm() {
             <input
                 value={email}
                 placeholder="Geef je email adress"
-                onChange={(e) => setEmail(e.target.value.setEmail)}
+                onChange={(e) => setEmail(e.target.value)}
                 className={styles.inputBox}
                 type="email"
             />

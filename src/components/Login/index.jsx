@@ -16,7 +16,6 @@ export default function Index(props) {
     const formSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
 
-        // Client-side validation
         if (!email) {
             setEmailError('Email is required');
             return;
@@ -47,6 +46,7 @@ export default function Index(props) {
                 console.log('Login NIET GELUKT')
             }
         } catch (error) {
+            setLoginFailed("Geen response van server")
             console.error('Error:', error);
         }
     };

@@ -17,7 +17,7 @@ export default function KlassementPannel(speeldag_id) {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
 
-  console.log('speeldagID',speeldag_id.speeldag_id);
+  console.log('speeldagID', speeldag_id.speeldag_id);
 
   useEffect(() => {
     getSpeeldagen()
@@ -45,7 +45,6 @@ export default function KlassementPannel(speeldag_id) {
   }, [speeldag_id.speeldag_id]);
 
   return (
-    
     <> 
     {console.log('klassement',klassement)}
     {klassement.length > 0 && (

@@ -58,6 +58,32 @@ export default function WedstrijdPanel({ speeldag_id }) {
     setInitialUserVoteData();
   }, []);
 
+  // voor datum
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval)
+  }, []);
+
+  const isVotingAllowed = (matchDate) => {
+    const currentDate = currentDateTime;
+    const matchDateObj = new Date(matchDate);
+
+    // calc
+    const timeDiff = matchDateObj.getTime() - currentDate.getTime();
+
+    //test
+    /*console.log("Current Date:", currentDate);
+    console.log("Match Date:", matchDateObj);
+    console.log("Time Difference (hours):", hoursDiff);*/
+    
+    return (currentDate > matchDateObj);
+  }
+
   const setInitialUserVoteData = async () => {
     try {
       const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
@@ -164,6 +190,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="1"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '1' || false}
                             onChange={() => handleOptionChange(match._id, '1')}
+                            disabled={isVotingAllowed(match.datum)}
                           />
                         </td>
                         <td>
@@ -172,6 +199,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="x"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === 'x' || false}
                             onChange={() => handleOptionChange(match._id, 'x')}
+                            disabled={isVotingAllowed(match.datum)}
                           />
                         </td>
                         <td>
@@ -180,6 +208,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="2"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '2' || false}
                             onChange={() => handleOptionChange(match._id, '2')}
+                            disabled={isVotingAllowed(match.datum)}
                           />
                         </td>
                       </tr>

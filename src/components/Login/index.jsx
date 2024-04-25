@@ -38,8 +38,6 @@ export default function Index(props) {
                 const data = await response.json();
                 const token = data.token;
                 console.log('Authentication token:', token);
-
-                localStorage.setItem('authToken', token);
                 window.location.href = "/";
             } else {
                 setLoginFailed("Geef de juiste email adress of wachtwoord")

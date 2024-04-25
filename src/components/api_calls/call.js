@@ -11,7 +11,7 @@ export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
     const request = get(seizoenenUrl);
     request.on('response', (response) => {
-      if (response.statusCode === 201) {
+      if (response.statusCode === 200) {
         let data = '';
         response.on('data', (chunk) => {
           data += chunk;

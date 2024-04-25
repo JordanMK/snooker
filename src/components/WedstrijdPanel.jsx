@@ -58,6 +58,12 @@ export default function WedstrijdPanel({ speeldag_id }) {
     setInitialUserVoteData();
   }, []);
 
+  const isMatchDatePassed = (matchDate) => {
+    const currentDate = new Date();
+    const matchDateObj = new Date(matchDate);
+    return currentDate > matchDateObj;
+  }
+
   const setInitialUserVoteData = async () => {
     try {
       const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
@@ -164,6 +170,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="1"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '1' || false}
                             onChange={() => handleOptionChange(match._id, '1')}
+                            disabled={isMatchDatePassed(match.datum)}
                           />
                         </td>
                         <td>
@@ -172,6 +179,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="x"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === 'x' || false}
                             onChange={() => handleOptionChange(match._id, 'x')}
+                            disabled={isMatchDatePassed(match.datum)}
                           />
                         </td>
                         <td>
@@ -180,6 +188,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                             value="2"
                             checked={state.selectedOptions.find(item => item.wedstrijd === match._id)?.vote === '2' || false}
                             onChange={() => handleOptionChange(match._id, '2')}
+                            disabled={isMatchDatePassed(match.datum)}
                           />
                         </td>
                       </tr>

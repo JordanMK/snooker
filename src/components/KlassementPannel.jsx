@@ -37,61 +37,60 @@ export default function KlassementPannel(speeldag_id) {
       .catch((error) => {
         console.error(error.message);
       });
-  }, []);
+  }, [speeldag_id.speeldag_id]);
 
   return (
-    <>
-      {console.log('klassement', klassement)}
-      {klassement.length > 0 && (
-        <>
-          <div className="">
-            <div className="panelKlassement">
-              <div className="klassementSpeeldag">
-                <h1>Klassement Speeldag</h1>
-                <table className="styled-table">
-                  <thead>
-                    <tr>
-                      <th>Plaats</th>
-                      <th>Naam</th>
-                      <th>Score</th>
-                      {/*<th>Score per wedstrijd</th>*/}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {klassement.map((item) => (
-                      <tr key={item._id}>
-                        <td>{item.plaats}</td>
-                        <td>{item.user}</td>
-                        <td>{item.score}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="klassementSpeeldag">
-                <h1>Klassement Seizoen </h1>
-                <table className="styled-table">
-                  <thead>
-                    <tr>
-                      <th>Plaats</th>
-                      <th>Naam</th>
-                      <th>Score</th>
-                      {/*<th>Score per wedstrijd</th>*/}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {klassement.map((item) => (
-                      <tr key={item._id}>
-                        <td>{item.plaats}</td>
-                        <td>{item.user}</td>
-                        <td>{item.score}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {/* <a className="a" href="">Show more</a>
-            <a className="a" href="">Show more</a> */}
+    <> 
+    {console.log('klassement',klassement)}
+    {klassement.length > 0 && (
+      <>
+      <div className="">
+        <div className="panelKlassement">
+          <div className="klassementSpeeldag">
+            <h1>Klassement Speeldag</h1>
+            <table className="styled-table">
+              <thead>
+                <tr>
+                  <th>Plaats</th>
+                  <th>Naam</th>
+                  <th>Score</th>
+                  {/*<th>Score per wedstrijd</th>*/}
+                </tr>
+              </thead>
+              <tbody>
+                {klassement.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.plaats}</td>
+                    <td>{item.user}</td>
+                    <td>{item.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="klassementSpeeldag">
+            <h1>Klassement Seizoen </h1>
+            <table className="styled-table">
+              <thead>
+                <tr>
+                  <th>Plaats</th>
+                  <th>Naam</th>
+                  <th>Score</th>
+                  {/*<th>Score per wedstrijd</th>*/}
+                </tr>
+              </thead>
+              <tbody>
+                {klassement.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.plaats}</td>
+                    <td>{item.user}</td>
+                    <td>{item.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* <a className="a" href="">Show more</a>*/
             </div>
           </div>
         </>

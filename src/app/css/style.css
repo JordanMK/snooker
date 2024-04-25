@@ -28,10 +28,13 @@
 .seizoen a, .speeldag a {
     float: right;
     margin-right: 15px;
+    margin-top: 10px;
     text-decoration: none;
     color: black;
     font-style: italic;
 }
+
+
 
 .seizoen a:hover, .speeldag a:hover {
     scale: 105%;
@@ -94,3 +97,4 @@
     display: flex;
     
 }
+

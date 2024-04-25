@@ -2,24 +2,25 @@ import { get } from "http";
 import { request } from 'http';
 const base_url = "http://localhost";
 const port = 3001;
-const speeldagenUrl = `${base_url}:${port}/api/speeldagen/`;
 const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
 const usersUrl = `${base_url}:${port}/api/users/`;
-const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
+const seizoenenUrl = `${base_url}:${port}/api/seizoenen/`;
 const speeldagVotesUrl = `${base_url}:${port}/api/speeldagVotes/`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
-    const request = get(speeldagenUrl);
+    const request = get(seizoenenUrl);
     request.on('response', (response) => {
-      if (response.statusCode === 200) {
+      if (response.statusCode === 201) {
         let data = '';
         response.on('data', (chunk) => {
           data += chunk;
         });
         response.on('end', () => {
-          const speeldagen = JSON.parse(data);
+          const seizoenen = JSON.parse(data);
+          const speeldagen = seizoenen[0].speeldagen;
           resolve(speeldagen);
+          console.log(speeldagen);
         });
       } else {
         reject(new Error('Failed to retrieve speeldagen'));
@@ -30,9 +31,10 @@ export function getSpeeldagen() {
     });
   });
 }
+
 export function getSpeeldag(id){
   return new Promise((resolve, reject) => {
-    const request = get(`${speeldagenUrl}${id}`);
+    const request = get(`${klassementUrl}${id}`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -150,7 +152,7 @@ export function updateUserBetaald(userId, newBetaaldValue) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 3001,
+      port: port,
       path: `/api/users/${userId}`,
       method: 'PATCH',
       headers: {
@@ -214,9 +216,85 @@ export function postSpeeldagVote(obj, speeldagId){
     req.write(data);
     req.end();
   })
-
-  
 }
+
+export function postWedstrijd(date, thuis, uit, speeldagId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: port,
+      path: `/api/speeldagen/${speeldagId}/wedstrijden`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const wedstrijdData = {
+      datum: date,
+      thuis: thuis,
+      uit: uit
+    };
+    const data = JSON.stringify(wedstrijdData);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to post wedstrijd. Status code: ${res.statusCode}`));
+          resolve([]);
+        }
+      });
+    });
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
+export function deleteWedstrijd(wedstrijdId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: port,
+      path: `/api/wedstrijden/${wedstrijdId}`,
+      method: 'DELETE',
+    };
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 204) {
+          resolve(); // Successfully deleted
+        } else {
+          reject(new Error(`Failed to delete wedstrijd. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
+}
+
 
 export function patchSpeeldagVote(speeldagVoteId, obj) {
   return new Promise((resolve, reject) => {

@@ -90,6 +90,7 @@ export function getKlassement(id) {
         response.on('end', () => {
           const klassement = JSON.parse(data);
           resolve(klassement);
+          console.log("Klassement is: " + klassement);
         });
       } else {
         reject(new Error(`Failed to retrieve klassement for speeldagen with id ${id}`));

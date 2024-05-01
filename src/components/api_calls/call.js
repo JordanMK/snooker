@@ -4,12 +4,12 @@ const base_url = "http://localhost";
 const port = 3001;
 const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
 const usersUrl = `${base_url}:${port}/api/users/`;
-const seizoenenUrl = `${base_url}:${port}/api/seizoenen/`;
+const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
 const speeldagVotesUrl = `${base_url}:${port}/api/speeldagVotes/`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
-    const request = get(seizoenenUrl);
+    const request = get(`${seizoenenUrl}/`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -57,7 +57,7 @@ export function getSpeeldag(id){
 
 export function getSeizoenen() {
   return new Promise((resolve, reject) => {
-    const request = get(seizoenenUrl);
+    const request = get(`${seizoenenUrl}/`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -102,9 +102,9 @@ export function getKlassementSpeeldag(id) {
   });
 }
 
-export function getKlassementSeizoen(id) {
+export function getKlassementSeizoen() {
   return new Promise((resolve, reject) => {
-    const request = get(`${seizoenenUrl}${id}/klassement`);
+    const request = get(`${seizoenenUrl}/klassement`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -117,7 +117,7 @@ export function getKlassementSeizoen(id) {
           console.log("Klassement is: " + klassement);
         });
       } else {
-        reject(new Error(`Failed to retrieve klassement for seizoen with id ${id}`));
+        reject(new Error(`Failed to retrieve klassement for seizoen with id`));
       }
     });
     request.on('error', (error) => {

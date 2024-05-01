@@ -8,17 +8,15 @@ import {
 import "../app/css/Klassement.css";
 import 'react-bootstrap';
 
-export default function KlassementSeizoenPannel(speeldag_id) {
+export default function KlassementSeizoenPannel() {
   const [speeldagen, setSpeeldagen] = useState([]);
   const [klassement, setKlassement] = useState([]);
-
-  console.log('speeldagID',speeldag_id.speeldag_id);
 
   useEffect(() => {
     getSpeeldagen()
       .then((speeldagen) => {
         setSpeeldagen(speeldagen);
-        return getKlassementSeizoen(speeldag_id.speeldag_id);
+        return getKlassementSeizoen();
       })
       .then((klassement) => {
         return Promise.all(
@@ -37,7 +35,7 @@ export default function KlassementSeizoenPannel(speeldag_id) {
       .catch((error) => {
         console.error(error.message);
       });
-  }, [speeldag_id.speeldag_id]);
+  });
 
   return (
     

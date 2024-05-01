@@ -57,8 +57,7 @@ export default function Home() {
           </div>
           <div>
           {showklassementSeizoenPannel ? (
-            //<KlassementSeizoenPannel speeldag_id={speeldagen[0]._id}/>
-            <p>Geen seizoenklassement</p>
+            <KlassementSeizoenPannel/>
         ) : (
           <>
             {leftPanelSelected ?(

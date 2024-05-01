@@ -72,7 +72,7 @@ export default function KlassementPannel(speeldag_id) {
               </tbody>
             </table>
           </div>
-          <KlassementSeizoenPannel speeldag_id= {speeldagen[selectedSpeeldag]._id}/>
+          <KlassementSeizoenPannel/>
           {/* <a className="a" href="">Show more</a>
             <a className="a" href="">Show more</a> */}
         </div>

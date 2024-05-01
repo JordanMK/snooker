@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": false,
@@ -19,12 +23,35 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@Components/*": ["./src/components"],
-      "@Layout/*": ["./src/layout"],
-      "@styles/*": ["./src/app/css"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@Components/*": [
+        "./src/components"
+      ],
+      "@Layout/*": [
+        "./src/layout"
+      ],
+      "@styles/*": [
+        "./src/app/css"
+      ]
+    },
+    "strictNullChecks": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/layout/BaseLayout.js", "src/layout/HTMLLayout.js", "src/components/Header.js", "src/components/Footer.js", "src/app/page.tsx", "src/app/test/test.js", "src/components/login/pages.jsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/layout/BaseLayout.js",
+    "src/layout/HTMLLayout.js",
+    "src/components/Header.js",
+    "src/components/Footer.js",
+    "src/app/page.tsx",
+    "src/app/test/test.js",
+    "src/components/login/pages.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

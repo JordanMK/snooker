@@ -8,7 +8,7 @@ export default function LijstSeizoen () {
     const router = useRouter();
     const maakSeizoenClick = () =>{
         console.log('maakSeizoenClick')
-        router.push('/admin/seizoen/CreateSeizoen');
+        router.push('/admin/createSeizoen');
     }
     const [seizoenen, setSeizoenen] = useState([]);
 

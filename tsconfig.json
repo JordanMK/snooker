@@ -39,17 +39,7 @@
     "strictNullChecks": true
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/layout/BaseLayout.js",
-    "src/layout/HTMLLayout.js",
-    "src/components/Header.js",
-    "src/components/Footer.js",
-    "src/app/page.tsx",
-    "src/app/test/test.js",
-    "src/components/login/pages.jsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -1,10 +1,11 @@
+
 import BaseLayout from "@/layout/BaseLayout";
-import Register from '../../components/Register'
+import Login from "@/Components/login";
 
 export default function Home() {
   return (
     <BaseLayout>
-        <Register/>     
+      <Login/>
     </BaseLayout>
   );
 }

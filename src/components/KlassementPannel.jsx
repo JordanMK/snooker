@@ -7,7 +7,7 @@ import {
   getKlassementSpeeldag,
   getKlassementSeizoen,
 } from "./api_calls/call.js";
-import "../app/css/Klassement.css";
+import "@/styles/Klassement.css"
 import 'react-bootstrap';
 import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
 

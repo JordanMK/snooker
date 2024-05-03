@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react"
-import styles from "./styles.module.css"
+import "@/styles/login.css"
 import Link from "next/link"
 
 
@@ -50,9 +50,9 @@ export default function Index(props) {
     };
 
     return (
-        <form onSubmit={formSubmit} className={styles.mainContainer}>
-            <label className={styles.errorLabel}>{loginFailed}</label>
-            <div className={styles.titleContainer}>
+        <form onSubmit={formSubmit} className="mainContainer">
+            <label className="errorLabel">{loginFailed}</label>
+            <div className="titleContainer">
                 <div>Login</div>
             </div>
             <br />
@@ -60,21 +60,21 @@ export default function Index(props) {
                 value={email}
                 placeholder="Typ je e-mail "
                 onChange={(e) => setEmail(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="email"
             />
-            <label className={styles.errorLabel}>{emailError}</label>
+            <label className="errorLabel">{emailError}</label>
             <br />
             <input
                 value={password}
                 placeholder="Typ je wacthwoord"
                 onChange={(e) => setPassword(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="password"
             />
-            <label className={styles.errorLabel}>{passwordError}</label>
+            <label className="errorLabel">{passwordError}</label>
             <br />
-            <button className={styles.button} type="submit">Login</button>
+            <button className="button" type="submit">Login</button>
             <br />
             <div>Wachtwoord vergeten?<Link href="/forgotpassword"> Klik hier</Link></div>
             <div>Heb je nog geen account<Link href="/Register"> Registreer hier</Link></div>

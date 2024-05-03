@@ -5,7 +5,7 @@ import {
   getSeizoenen,
   getKlassementSeizoen,
 } from "./api_calls/call.js";
-import "../app/css/Klassement.css";
+import "@/styles/Klassement.css"
 import 'react-bootstrap';
 
 export default function KlassementSeizoenPannel() {

@@ -1,8 +1,7 @@
 "use client";
 import BaseLayout from "@/layout/BaseLayout";
 import AdminPopup from "@/components/Popup";
-import "../../css/style.css";
-import Link from "next/link";
+import "@/styles/style.css";
 import { useRouter } from "next/navigation";
 import "reactjs-popup/dist/index.css";
 import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
@@ -11,10 +10,8 @@ import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 
 import {
   getSpeeldagen,
-  deleteWedstrijd,
-} from "../../../components/api_calls/call";
+} from "@/Components/api_calls/call";
 import React, { useState, useEffect } from "react";
-import Index from "@/components/Login";
 
 export default function Speeldagen() {
   const [speeldagen, setSpeeldagen] = useState([]);

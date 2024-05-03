@@ -1,5 +1,5 @@
 import BaseLayout from "@/layout/BaseLayout";
-import LijstSeizoen from "@/components/Admin/LijstSeizoen";
+import LijstSeizoen from "@/Components/Admin/LijstSeizoen";
 import Users from "@/components/admin/users/users";
 
 export default function Home() {

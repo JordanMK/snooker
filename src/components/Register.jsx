@@ -1,11 +1,7 @@
 'use client'
 import { useState } from "react"
-import styles from '../Login/styles.module.css'
+import  "@/styles/Login.css"
 import Link from 'next/link'
-import { useFormState } from 'react-dom'
-
-
-
 
 export default function SignupForm() {
     const [username, setUsername] = useState('')
@@ -56,9 +52,9 @@ export default function SignupForm() {
     }
 
     return (
-        <form onSubmit={register} className={styles.mainContainer}>
-            <label className={styles.errorLabel}>{registratieFailed}</label>
-            <div className={styles.titleContainer}>
+        <form onSubmit={register} className="mainContainer">
+            <label className="errorLabel">{registratieFailed}</label>
+            <div className="titleContainer">
                 <div>Register</div>
             </div>
             <br />
@@ -68,7 +64,7 @@ export default function SignupForm() {
                 value={username}
                 placeholder="username"
                 onChange={(e) => setUsername(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="text"
             />
 
@@ -77,10 +73,10 @@ export default function SignupForm() {
                 value={email}
                 placeholder="Geef je email adress"
                 onChange={(e) => setEmail(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="email"
             />
-            <label className={styles.errorLabel}>{emailError}</label>
+            <label className="errorLabel">{emailError}</label>
             <label htmlFor="wachtwoord" >Wachtwoord</label>
             <input
                 style={{ borderColor: passwordError ? 'grey' : 'red' }}
@@ -88,7 +84,7 @@ export default function SignupForm() {
                 value={password}
                 placeholder="Typ je wacthwoord"
                 onChange={(e) => setPassword(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="password"
             />
             <label htmlFor="wachtwoord2">Herhaal wachtwoord</label>
@@ -98,11 +94,11 @@ export default function SignupForm() {
                 value={confirmPassword}
                 placeholder="Typ je wacthwoord"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className={styles.inputBox}
+                className="inputBox"
                 type="password"
             />
             <br />
-            <button className={styles.button} type='submit'>Registreer</button>
+            <button className="button" type='submit'>Registreer</button>
             <br />
             <div>Terug naar de login pagina <Link href='/login'>Klik hier</Link></div>
         </form>

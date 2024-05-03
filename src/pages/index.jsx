@@ -1,15 +1,13 @@
 'use client'
 import BaseLayout from "@/layout/BaseLayout";
-import Link from "next/link";
 import React, { useEffect } from "react";
-import Login from "../components/Login"
 // import './globals.css';
 
 import KlassementPanel from "@/Components/KlassementPannel"
 import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
 import SeizoenPanel from "@/Components/SeizoenPanel"
 import WedstrijdPanel from "@/Components/WedstrijdPanel"
-import "./css/Home.css"
+import "@/styles/Home.css"
 import { useState } from "react";
 import { getSpeeldagen } from "@/Components/api_calls/call";
 
@@ -41,6 +39,7 @@ export default function Home() {
 
   return (
     <>
+
     <BaseLayout>
       <div className="pageContainer">
         <div className="smallColumn">

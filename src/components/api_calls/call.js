@@ -233,7 +233,6 @@ export function postSpeeldagVote(obj, speeldagId){
           resolve(JSON.parse(responseData));
         } else {
           reject(new Error(`Failed to Post speeldag vote. Status code: ${res.statusCode}`));
-          resolve(JSON.parse([]));
         }
       });
     });
@@ -356,7 +355,7 @@ export function patchSpeeldagVote(speeldagVoteId, obj) {
 }
 
 export function getUserVotesBySpeeldagId(speeldagId){
-  const loggedInUser = '65fd662229e6cb1a392fa77f'
+  const loggedInUser = localStorage.getItem('userID');
   return new Promise((resolve, reject) => {
     const request = get(`${speeldagVotesUrl}${speeldagId}/${loggedInUser}/votes`);
     request.on('response', (response) => {

@@ -130,7 +130,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
   };
 
   const handleSubmit = () => {
-    let loggedinUserId = '65fd662229e6cb1a392fa77f';
+    let loggedinUserId = localStorage.getItem('userID');
     let obj = {
       "_id": latestState.current.eindObject._id,
       "jokerGebruikt": latestState.current.eindObject.jokerGebruikt || state.jokerChecked,
@@ -140,7 +140,8 @@ export default function WedstrijdPanel({ speeldag_id }) {
     };
     console.log('eindobj', obj);
     if(state.canUpdateJokerAndSchiftingAntwoord){
-      postSpeeldagVote(obj, '6605868758af03cfd7e2a128')
+      console.log('state.speeldag._id', state.speeldag._id);
+      postSpeeldagVote(obj, state.speeldag._id);
     } else {
       patchSpeeldagVote(latestState.current.eindObject._id, obj);
     }

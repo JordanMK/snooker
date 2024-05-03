@@ -5,7 +5,7 @@ import "@/styles/style.css";
 import { useRouter } from "next/navigation";
 import "reactjs-popup/dist/index.css";
 import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
-import WedstrijdForm from "@/components/admin/speeldag/CreateWedstrijd";
+import WedstrijdForm from "@/components/admin/wedstrijd/CreateWedstrijd";
 import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 
 import {

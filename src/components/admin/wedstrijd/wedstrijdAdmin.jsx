@@ -26,7 +26,8 @@ export default function WedstrijdAdmin({ wedstrijden }) {
                 wedstrijd._id,
                 wedstrijd.thuis,
                 wedstrijd.uit,
-                wedstrijd.datum
+                wedstrijd.datum,
+                wedstrijd.resultaat
               )}
               triggerButtonName="Pas aan"
             />

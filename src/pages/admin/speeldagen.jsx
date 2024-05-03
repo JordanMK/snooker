@@ -12,6 +12,7 @@ import {
   getSpeeldagen,
 } from "@/Components/api_calls/call";
 import React, { useState, useEffect } from "react";
+import PasSpeeldagAan from "@/components/admin/speeldag/PasSpeeldagAan";
 
 export default function Speeldagen() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function Speeldagen() {
               <div className="speeldagHead">
                 <h2>Speeldag {1 + index}</h2>
                 <AdminPopup
-                  popupContent={SpeelDagForm()}
+                  popupContent={PasSpeeldagAan(speeldag.schiftingsvraag,speeldag.schiftingsantwoord,speeldag.eindDatum,speeldag._id)}
                   triggerButtonName="pas aan"
                 />
                 <AdminPopup
@@ -55,6 +56,7 @@ export default function Speeldagen() {
 
               <WedstrijdAdmin
                 wedstrijden={speeldag.wedstrijden}
+                speeldagId={speeldag._id}
               ></WedstrijdAdmin>
             </li>
           ))}

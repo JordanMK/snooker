@@ -1,7 +1,7 @@
 import { Form, Button } from "react-bootstrap";
-import { patchWedstrijd } from "../../api_calls/call.js";
+import { patchWedstrijd, updateSpeeldagKlassement } from "../../api_calls/call.js";
 
-export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
+export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat,speeldagId) {
   function handlePatchSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -15,6 +15,7 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
       .then((data) => {
         // Handle success, if needed
         console.log("Wedstrijd patched successfully:", data);
+        //updateSpeeldagKlassement(speeldagId)
         setTimeout(() => {
           window.location.reload();
         }, 1000);

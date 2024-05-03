@@ -4,7 +4,7 @@ import AdminPopup from "@/components/Popup";
 import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
 
 
-export default function WedstrijdAdmin({ wedstrijden }) {
+export default function WedstrijdAdmin({ wedstrijden, speeldagId }) {
   const handleVerwijderClick = (wedstrijdId) => {
     if (
       window.confirm("Weet je zeker dat je deze wedstrijd wilt verwijderen?")
@@ -27,7 +27,8 @@ export default function WedstrijdAdmin({ wedstrijden }) {
                 wedstrijd.thuis,
                 wedstrijd.uit,
                 wedstrijd.datum,
-                wedstrijd.resultaat
+                wedstrijd.resultaat,
+                speeldagId
               )}
               triggerButtonName="Pas aan"
             />

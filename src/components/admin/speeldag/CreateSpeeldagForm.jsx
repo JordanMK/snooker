@@ -1,42 +1,61 @@
-'use client'
-import React from 'react';
-/**
- * 
- * @param {Speeldag} obj (optional) => data for update
- */
-export default function SpeelDagForm(obj) {
-    if(!obj){
-        obj= {schiftingsvraag:"",schiftingsantwoord:""}
+import React from "react";
+import { Form, Button } from "react-bootstrap";
+import { postSpeeldag } from "@/Components/api_calls/call.js";
+import { useRouter } from "next/router";
+
+
+export default function SpeelDagForm() {
+    const router = useRouter();
+    const { seizoenId } = router.query;
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const date = formData.get("einddatum");
+      const schiftingsvraag = formData.get("schiftingsvraag");
+      const schiftingantwoord = formData.get("schiftingantwoord");
+  
+      // Call postWedstrijd function with form data and speeldagId (id)
+      postSpeeldag(schiftingsvraag, schiftingantwoord, date, seizoenId)
+        .then((data) => {
+          // Handle success, if needed
+          console.log("Speeldag posted successfully:", data);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        })
+        .catch((error) => {
+          // Handle error, if needed
+          console.error("Failed to post speeldag:", error.message);
+        });
     }
-    function handleForm(formData){
-        const schiftingsvraag = formData.get('schiftingsvraag');
-        const schiftingsantwoord = formData.get('schiftingsantwoord');
-        console.log(schiftingsvraag, schiftingsantwoord);
-        }
-        const handleSubmit = (e) => {
-            e.preventDefault();
-        
-            const form = e.target;
-            const formData = new FormData(form);
-        
-            handleForm(formData);
-          };
-    return(
-        <>
-            <form onSubmit={handleSubmit}>
-        <div className="form-group">
-            <label htmlFor="schiftingsvraag">schiftingsvraag</label>
-            <input name="schiftingsvraag" type="text" className="form-control" id="schiftingsvraag" placeholder="Name" defaultValue={obj.schiftingsvraag} />
-        </div>
-        <div className="form-group">
-            <label htmlFor="schiftingsantwoord">schiftingsantwoord</label>
-            <input name="schiftingsantwoord" type="text" className="form-control" id="schiftingsantwoord" placeholder="Date" defaultValue={obj.schiftingsantwoord} />
-        </div>
-        <div className="form-group">
-            <input type="submit" value="Nieuw speeldag"/>
-        </div>
-    </form>
-        </>
-    )
-    
-}
+    return (
+      <>
+        <Form onSubmit={handleFormSubmit}>
+          <Form.Group controlId="schiftingsVraag">
+            <Form.Label>Schiftingsvraag:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Schiftingsvraag"
+              name="schiftingsvraag"
+            />
+          </Form.Group>
+          <Form.Group controlId="schiftingsAntwoord">
+            <Form.Label>Schiftingsantwoord:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Schiftingsantwoord"
+              name="schiftingantwoord"
+            />
+          </Form.Group>
+          <Form.Group controlId="einddatum">
+            <Form.Label>Einddatum:</Form.Label>
+            <Form.Control type="date" placeholder="Einddatum" name="einddatum" />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </>
+    );
+  }
+  

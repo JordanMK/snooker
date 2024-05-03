@@ -20,7 +20,7 @@ const AdminPopup = ({ popupContent, triggerButtonName }) => (
       modal
       contentStyle={contentStyle}
       trigger={
-        <button class="btn btn-sm btn-light m-1">{triggerButtonName}</button>
+        <button className="btn btn-sm btn-light m-1">{triggerButtonName}</button>
       }
       position="right center"
     >

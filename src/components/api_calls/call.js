@@ -286,6 +286,99 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
   });
 }
 
+export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: port,
+      path: `/api/wedstrijden/${wedstrijdId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const wedstrijdData = {
+      datum: date,
+      resultaat: resultaat,
+      thuis: thuis,
+      uit: uit
+    };
+    const data = JSON.stringify(wedstrijdData);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to post wedstrijd. Status code: ${res.statusCode}`));
+          resolve([]);
+        }
+      });
+    });
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
+export function postSpeeldag(schiftingsvraag, schiftingsantwoord, einddatum, seizoenId ) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: port,
+      path: `/api/seizoenen/${seizoenId}/speeldagen`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const speeldagData = {
+      schiftingsantwoord: schiftingsantwoord,
+      schiftingsvraag: schiftingsvraag,
+      wedstrijden: [],
+      speeldagVotes: [],
+      klassement: [],
+      eindDatum: einddatum
+    };
+    console.log(seizoenId);
+    const data = JSON.stringify(speeldagData);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to post speeldag. Status code: ${res.statusCode}`));
+          resolve([]);
+        }
+      });
+    });
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
 export function deleteWedstrijd(wedstrijdId) {
   return new Promise((resolve, reject) => {
     const options = {
@@ -318,7 +411,6 @@ export function deleteWedstrijd(wedstrijdId) {
     req.end();
   });
 }
-
 
 export function patchSpeeldagVote(speeldagVoteId, obj) {
   return new Promise((resolve, reject) => {

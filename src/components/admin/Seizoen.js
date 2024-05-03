@@ -10,6 +10,9 @@ export default function Seizoen( { seizoen }) {
           <Link
             href={{
               pathname: "admin/speeldagen",
+              query: {
+                seizoenId: seizoen._id,
+              },
             }}
           >
             Toon speeldagen

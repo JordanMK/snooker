@@ -14,8 +14,9 @@ import {
 import React, { useState, useEffect } from "react";
 
 export default function Speeldagen() {
-  const [speeldagen, setSpeeldagen] = useState([]);
+  const router = useRouter();
 
+  const [speeldagen, setSpeeldagen] = useState([]);
   useEffect(() => {
     getSpeeldagen()
       .then((fetchedSpeeldagen) => {
@@ -26,11 +27,6 @@ export default function Speeldagen() {
         console.error(error.message);
       });
   }, []);
-  const router = useRouter();
-  const maakSpeeldagClick = () => {
-    console.log("maakSpeeldagClick");
-    router.push("/admin/speeldagen/CreateSpeeldag");
-  };
 
   return (
     <BaseLayout>
@@ -48,10 +44,7 @@ export default function Speeldagen() {
               <div className="speeldagHead">
                 <h2>Speeldag {1 + index}</h2>
                 <AdminPopup
-                  popupContent={SpeelDagForm({
-                    schiftingsvraag: "vraag",
-                    schiftingsantwoord: "antwoord",
-                  })}
+                  popupContent={SpeelDagForm()}
                   triggerButtonName="pas aan"
                 />
                 <AdminPopup

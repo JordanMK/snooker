@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { deleteWedstrijd } from "../../api_calls/call";
+import { deleteWedstrijd,pas } from "../../api_calls/call";
+import AdminPopup from "@/components/Popup";
+import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
+
 
 export default function WedstrijdAdmin({ wedstrijden }) {
   const handleVerwijderClick = (wedstrijdId) => {
@@ -18,9 +21,15 @@ export default function WedstrijdAdmin({ wedstrijden }) {
         {wedstrijden.map((wedstrijd) => (
           <li key={wedstrijd._id}>
             Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.uit}
-            <button className="btn btn-light btn-sm m-1" id="pasaan">
-              Pas aan
-            </button>
+            <AdminPopup
+              popupContent={PasWedstrijdAan(
+                wedstrijd._id,
+                wedstrijd.thuis,
+                wedstrijd.uit,
+                wedstrijd.datum
+              )}
+              triggerButtonName="Pas aan"
+            />
             <button
               className="btn btn-light btn-sm m-1"
               id="delete"

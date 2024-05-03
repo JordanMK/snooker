@@ -36,8 +36,8 @@ export default function Index(props) {
 
             if (response.ok) {
                 const data = await response.json();
-                const token = data.token;
-                console.log('Authentication token:', token);
+                console.log('Login gelukt met response:', data);
+                localStorage.setItem('userID', data.user._id);
                 window.location.href = "/";
             } else {
                 setLoginFailed("Geef de juiste email adress of wachtwoord")

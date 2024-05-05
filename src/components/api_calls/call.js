@@ -20,8 +20,8 @@ export function getSpeeldagen() {
         response.on('end', () => {
           const seizoenen = JSON.parse(data);
           const speeldagen = seizoenen[0].speeldagen;
+          speeldagen.seizoenID = seizoenen[0]._id;
           resolve(speeldagen);
-          console.log("Speeldagen: " + speeldagen);
         });
       } else {
         reject(new Error('Failed to retrieve speeldagen'));
@@ -103,9 +103,9 @@ export function getKlassementSpeeldag(id) {
   });
 }
 
-export function getKlassementSeizoen() {
+export function getKlassementSeizoen(seizoenID) {
   return new Promise((resolve, reject) => {
-    const request = get(`${seizoenenUrl}/klassement`);
+    const request = get(`${seizoenenUrl}/${seizoenID}/klassement`);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';

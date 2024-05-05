@@ -8,34 +8,29 @@ import {
 import "@/styles/Klassement.css"
 import 'react-bootstrap';
 
-export default function KlassementSeizoenPannel() {
-  const [speeldagen, setSpeeldagen] = useState([]);
+export default function KlassementSeizoenPannel({seizoen_id}) {
   const [klassement, setKlassement] = useState([]);
 
   useEffect(() => {
-    getSpeeldagen()
-      .then((speeldagen) => {
-        setSpeeldagen(speeldagen);
-        return getKlassementSeizoen();
-      })
-      .then((klassement) => {
-        return Promise.all(
-          klassement.map((item) =>
-            getUser(item.user)
-              .then((user) => {
-                item.user = user.username;
-                return item;
-              })
-          )
-        );
-      })
-      .then((modifiedKlassement) => {
-        setKlassement(modifiedKlassement);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  });
+    getKlassementSeizoen(seizoen_id)
+    .then((klassement) => {
+      return Promise.all(
+        klassement.map((item) =>
+          getUser(item.user)
+            .then((user) => {
+              item.user = user.username;
+              return item;
+            })
+        )
+      );
+    })
+    .then((modifiedKlassement) => {
+      setKlassement(modifiedKlassement);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+  },[]);
 
   return (
     
@@ -74,7 +69,7 @@ export default function KlassementSeizoenPannel() {
     </>
     )}
     {klassement.length  === 0 && (
-                <p>Geen speeldagKlassement beschikbaar</p>
+                <p>Geen seizoen klassement beschikbaar</p>
             )}
     
       </>

@@ -5,7 +5,7 @@ import Router from 'next/router';
 class MyApp extends App {
   componentDidMount() {
     // Perform your condition check here
-    const isUserLoggedIn = localStorage.getItem("userID") !== undefined; // Example condition
+    const isUserLoggedIn = localStorage.getItem("userID") !== null; // Example condition
     const isAdminPage = window.location.pathname.startsWith('/admin');
 
     // Redirect the user based on the condition

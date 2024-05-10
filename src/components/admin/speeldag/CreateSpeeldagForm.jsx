@@ -10,12 +10,17 @@ export default function SpeelDagForm() {
     function handleFormSubmit(event) {
       event.preventDefault();
       const formData = new FormData(event.target);
-      const date = formData.get("einddatum");
+      const startdatum = formData.get("startdatum");
+      const startUur = formData.get("startUur");
+      const eindDatum = formData.get("eindatum");
+      const eindUur = formData.get("einduur");
       const schiftingsvraag = formData.get("schiftingsvraag");
       const schiftingantwoord = formData.get("schiftingantwoord");
-  
-      // Call postWedstrijd function with form data and speeldagId (id)
-      postSpeeldag(schiftingsvraag, schiftingantwoord, date, seizoenId)
+
+      const startDate = new Date(startdatum + " " + startUur).toISOString();
+      const eindDate = new Date(eindDatum + " " + eindUur).toISOString();
+
+      postSpeeldag(schiftingsvraag, schiftingantwoord, startDate, eindDate, seizoenId)
         .then((data) => {
           // Handle success, if needed
           console.log("Speeldag posted successfully:", data);
@@ -28,6 +33,7 @@ export default function SpeelDagForm() {
           console.error("Failed to post speeldag:", error.message);
         });
     }
+    
     return (
       <>
         <Form onSubmit={handleFormSubmit}>
@@ -47,9 +53,29 @@ export default function SpeelDagForm() {
               name="schiftingantwoord"
             />
           </Form.Group>
-          <Form.Group controlId="einddatum">
-            <Form.Label>Einddatum:</Form.Label>
-            <Form.Control type="date" placeholder="Einddatum" name="einddatum" />
+          <Form.Group controlId="startdatum">
+            <Form.Label>startDatum::</Form.Label>
+            <Form.Control type="date" placeholder="startdatum" name="startdatum" />
+          </Form.Group>
+          <Form.Group controlId="startUur">
+            <Form.Label>startUur:</Form.Label>
+            <Form.Control type="time" placeholder="startUur" name="startUur" />
+          </Form.Group>
+          <Form.Group controlId="eindatum">
+            <Form.Label>eindatum invullen</Form.Label>
+            <Form.Control
+              type="date"
+              placeholder="eindatum"
+              name="eindatum"
+            />
+          </Form.Group>
+          <Form.Group controlId="einduur">
+            <Form.Label>einduur invullen</Form.Label>
+            <Form.Control
+              type="time"
+              placeholder="einduur"
+              name="einduur"
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit

@@ -7,33 +7,46 @@ import { patchSpeeldag, updateKlassementen } from '../../api_calls/call';
 
 import { useRouter } from "next/router";
 
+function formattedDate(date) {
+  const localDate = new Date(date);
+  const offset = localDate.getTimezoneOffset(); // Get the timezone offset in minutes
+  const localISODate = new Date(localDate.getTime() - (offset * 60000)).toISOString();
+  return localISODate.split('T')[0];
+}
 
+function formattedTime(date) {
+  const localDate = new Date(date);
+  const offset = localDate.getTimezoneOffset(); // Get the timezone offset in minutes
+  const localISOTime = new Date(localDate.getTime() - (offset * 60000)).toISOString();
+  return localISOTime.split('T')[1].split('.')[0];
+}
 
-export default function PasSpeeldagAan(schiftingsvraag,schiftingsantwoord,eindDatum,speeldagId) {
+export default function PasSpeeldagAan(schiftingsvraag,schiftingsantwoord,startDatum,eindatum,speeldagId) {
   const router = useRouter();
   const { seizoenId } = router.query;
-    var date = new Date(eindDatum);
 
-  // Get the month, day, and year
-  var month = date.getMonth() + 1; // Months are zero-based, so we add 1
-  var day = date.getDate();
-  var year = date.getFullYear();
+  const formattedStartDatum = formattedDate(new Date(startDatum));
+  const formattedStartUur = formattedTime(new Date(startDatum));
 
-  // Pad single digits with leading zeros
-  month = month < 10 ? '0' + month : month;
-  day = day < 10 ? '0' + day : day;
+  const formattedEindDatum = formattedDate(new Date(eindatum));
+  const formattedEindUur = formattedTime(new Date(eindatum));
 
-  var formattedDate = year + '-' + month + '-' + day;
 
   console.log("datum", formattedDate);
   function handlePatchSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const einddatum = formData.get("einddatum");
+      const startdatum = formData.get("startdatum");
+      const startUur = formData.get("startUur");
+      const eindDatum = formData.get("eindatum");
+      const eindUur = formData.get("einduur");
       const schiftingsvraag = formData.get("schiftingsvraag");
       const schiftingantwoord = formData.get("schiftingantwoord");
+
+      const startDate = new Date(startdatum + " " + startUur).toISOString();
+      const eindDate = new Date(eindDatum + " " + eindUur).toISOString();
     
-    patchSpeeldag(schiftingsvraag, schiftingantwoord, einddatum, speeldagId)
+    patchSpeeldag(schiftingsvraag, schiftingantwoord, startDate, eindDate, speeldagId)
     .then((data) => {
       // Handle success, if needed
       console.log("Wedstrijd patched successfully:", data);
@@ -49,8 +62,7 @@ export default function PasSpeeldagAan(schiftingsvraag,schiftingsantwoord,eindDa
     }
     return(
         <>
-
-            <Form onSubmit={handlePatchSubmit}>
+        <Form onSubmit={handlePatchSubmit}>
           <Form.Group controlId="schiftingsVraag">
             <Form.Label>Schiftingsvraag:</Form.Label>
             <Form.Control
@@ -69,9 +81,31 @@ export default function PasSpeeldagAan(schiftingsvraag,schiftingsantwoord,eindDa
               defaultValue={schiftingsantwoord}
             />
           </Form.Group>
-          <Form.Group controlId="einddatum">
-            <Form.Label>Einddatum:</Form.Label>
-            <Form.Control type="date" placeholder="Einddatum" name="einddatum" defaultValue={formattedDate} />
+          <Form.Group controlId="startdatum">
+            <Form.Label>startDatum::</Form.Label>
+            <Form.Control type="date" placeholder="startdatum" name="startdatum" defaultValue={formattedStartDatum}  />
+          </Form.Group>
+          <Form.Group controlId="startUur">
+            <Form.Label>startUur:</Form.Label>
+            <Form.Control type="time" placeholder="startUur" name="startUur" defaultValue={formattedStartUur} format="HH:mm"/>
+          </Form.Group>
+          <Form.Group controlId="eindatum">
+            <Form.Label>eindatum invullen</Form.Label>
+            <Form.Control
+              type="date"
+              placeholder="eindatum"
+              name="eindatum"
+              defaultValue={formattedEindDatum}
+            />
+          </Form.Group>
+          <Form.Group controlId="einduur">
+            <Form.Label>einduur invullen</Form.Label>
+            <Form.Control
+              type="time"
+              placeholder="einduur"
+              name="einduur"
+              defaultValue={formattedEindUur}
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit

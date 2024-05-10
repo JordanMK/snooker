@@ -91,7 +91,7 @@ export function getKlassementSpeeldag(id) {
         response.on('end', () => {
           const klassement = JSON.parse(data);
           resolve(klassement);
-          console.log("Klassement is: " + klassement);
+          console.log("speeldagklassement is: " + JSON.stringify(klassement));
         });
       } else {
         reject(new Error(`Failed to retrieve klassement for speeldagen with id ${id}`));
@@ -104,6 +104,7 @@ export function getKlassementSpeeldag(id) {
 }
 
 export function getKlassementSeizoen(seizoenID) {
+  console.log("id is in getklassmentespeeldag: " + seizoenID)
   return new Promise((resolve, reject) => {
     const request = get(`${seizoenenUrl}/${seizoenID}/klassement`);
     request.on('response', (response) => {
@@ -323,7 +324,7 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
   });
 }
 
-export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId) {
+export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoenId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
@@ -353,6 +354,7 @@ export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId) {
       res.on('end', () => {
         if (res.statusCode === 201) {
           resolve(JSON.parse(responseData));
+          updateKlassementen(seizoenId);
         } else {
           reject(new Error(`Failed to post wedstrijd. Status code: ${res.statusCode}`));
           resolve([]);
@@ -367,7 +369,8 @@ export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId) {
     req.end();
   });
 }
-export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, einddatum, speeldagId) {
+
+export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, startDatum, eindDatum, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
       path: `${speeldagenUrl}${speeldagId}`,
@@ -378,9 +381,10 @@ export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, einddatum, spe
     };
 
     const speeldagData = {
+      schiftingsantwoord: Number(schiftingsantwoord),
       schiftingsvraag: schiftingsvraag,
-      schiftingsantwoord: schiftingsantwoord,
-      einddatum: einddatum,
+      startDatum: startDatum,
+      eindDatum: eindDatum
     };
     const data = JSON.stringify(speeldagData);
 
@@ -566,8 +570,10 @@ export function updateKlassementen(seizoenId){
 
       res.on('end', () => {
         if (res.statusCode === 200) {
-          getSpeeldag(seizoenId).then((speeldagen) => {
-            speeldagen &&  speeldagen.forEach(speeldag => {
+          getSpeeldagen().then((seizoenen) => {
+            console.log(seizoenen)
+            seizoenen[0] &&  seizoenen.forEach(speeldag => {
+              console.log("Updating klassement for speeldag: " + speeldag._id);
               updateSpeeldagKlassement(speeldag._id)
             });
           })

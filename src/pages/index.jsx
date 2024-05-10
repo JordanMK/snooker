@@ -55,6 +55,7 @@ export default function Home() {
             </button>
           </div>
           <div>
+            {console.log('speeldagen',speeldagen.seizoenID)}
           {showklassementSeizoenPannel ? (
             <KlassementSeizoenPannel seizoen_id={speeldagen.seizoenID}/>
         ) : (

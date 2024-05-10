@@ -1,7 +1,14 @@
 import { Form, Button } from "react-bootstrap";
 import { patchWedstrijd, updateSpeeldagKlassement } from "../../api_calls/call.js";
+import { useRouter } from "next/router";
 
-export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat,speeldagId) {
+
+export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
+
+  const router = useRouter();
+  const { seizoenId } = router.query;
+
+
   function handlePatchSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -11,13 +18,13 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat,speeldag
     const resultaat = formData.get("resultaat");
 
     // Call patchWedstrijd function with form data and speeldagId (id)
-    patchWedstrijd(date, homeTeam, awayTeam, resultaat, id)
+    patchWedstrijd(date, homeTeam, awayTeam, resultaat, id,seizoenId)
       .then((data) => {
         // Handle success, if needed
         console.log("Wedstrijd patched successfully:", data);
         //updateSpeeldagKlassement(speeldagId)
         setTimeout(() => {
-          window.location.reload();
+          //window.location.reload();
         }, 1000);
       })
       .catch((error) => {

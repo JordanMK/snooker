@@ -9,10 +9,12 @@ import "@/styles/Klassement.css"
 import 'react-bootstrap';
 
 export default function KlassementSeizoenPannel({seizoen_id}) {
+  console.log('seizoen_id in klassementSeizoen', seizoen_id);
   const [klassement, setKlassement] = useState([]);
 
   useEffect(() => {
-    getKlassementSeizoen(seizoen_id)
+    if(seizoen_id){
+      getKlassementSeizoen(seizoen_id)
     .then((klassement) => {
       return Promise.all(
         klassement.map((item) =>
@@ -30,7 +32,9 @@ export default function KlassementSeizoenPannel({seizoen_id}) {
     .catch((error) => {
       console.error(error.message);
     });
-  },[]);
+    }
+    
+  },[seizoen_id]);
 
   return (
     

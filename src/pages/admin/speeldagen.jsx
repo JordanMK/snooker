@@ -10,7 +10,7 @@ import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 
 import {
   getSpeeldagen,
-} from "@/Components/api_calls/call";
+} from "../../components/api_calls/call";
 import React, { useState, useEffect } from "react";
 import PasSpeeldagAan from "@/components/admin/speeldag/PasSpeeldagAan";
 

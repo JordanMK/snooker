@@ -1,5 +1,5 @@
 import BaseLayout from "@/layout/BaseLayout";
-import SeizoenForm from "@/components/admin/seizoen/CreateSeizoenForm";
+import SeizoenForm from "../../components/admin/seizoen/CreateSeizoenForm";
 
 export default function Home() {
   return (

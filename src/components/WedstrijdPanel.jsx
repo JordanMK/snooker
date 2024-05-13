@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import "./components.css";
-import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId } from "./api_calls/call.js";
+import React, { useState, useEffect, useRef } from "react";
+import { getSpeeldag, patchSpeeldagVote, getUserVotesBySpeeldagId } from "../components/api_calls/call";
 
 export default function WedstrijdPanel({ speeldag_id }) {
   const [state, setState] = useState({
@@ -18,42 +17,39 @@ export default function WedstrijdPanel({ speeldag_id }) {
     latestState.current = state;
   }, [state]);
 
-  const fetchUserVotes = async () => {
-  try {
-    const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
-    console.log(speeldagVotes);
-    setState(prevState => ({
-      ...prevState,
-      speeldagVoteID: speeldagVotes._id ,
-      jokerChecked: speeldagVotes.jokerGebruikt,
-      schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
-    }));
-  
-    if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
-      speeldagVotes.wedstrijdVotes.forEach(vote => {
-        handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    setState(prevState => ({
-      ...prevState,
-      loading: false,
-      error: "Error fetching data"
-    }));
-  }
-};
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const speeldag = await getSpeeldag(speeldag_id);
         setState(prevState => ({ ...prevState, speeldag, loading: false, error: null, selectedOptions: [], jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: false, eindObject: {} }));
-        
+
+        const fetchUserVotes = async () => {
+          try {
+            const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+            console.log(speeldagVotes);
+            setState(prevState => ({
+              ...prevState,
+              speeldagVoteID: speeldagVotes._id,
+              jokerChecked: speeldagVotes.jokerGebruikt,
+              schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
+            }));
+
+            if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
+              speeldagVotes.wedstrijdVotes.forEach(vote => {
+                handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+              });
+            }
+          } catch (error) {
+            console.error(error);
+            setState(prevState => ({
+              ...prevState,
+              loading: false,
+              error: "Error fetching data"
+            }));
+          }
+        };
         await fetchUserVotes();
-        
-        
+
       } catch (error) {
         console.error(error);
         setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
@@ -76,19 +72,16 @@ export default function WedstrijdPanel({ speeldag_id }) {
   };
 
   const handleJokerChange = (event) => {
-      setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
+    setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
   };
 
   const handleSchiftingsvraagChange = (event) => {
-      setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
+    setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
   };
 
   function isBeforeToday(datum) {
-    let output = new Date(datum) < new Date()
-    return output ;
-}
-
-
+    return new Date(datum) < new Date();
+  }
 
   return (
     <>
@@ -114,9 +107,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
                 )}
                 {isBeforeToday(state.speeldag.eindDatum) && (
                   <VoteResultPanel state={state} />
-                )} 
-                
-                
+                )}
               </>
             )}
           </>

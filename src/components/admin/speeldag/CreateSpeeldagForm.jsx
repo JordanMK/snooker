@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { postSpeeldag } from "@/Components/api_calls/call.js";
+import { postSpeeldag } from "../../api_calls/call";
 import { useRouter } from "next/router";
 
 

@@ -34,17 +34,19 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="header">
-        <a href="#index" className="logo">Snooker Pocket</a>
-        <div className="header-right">
-          <Link href={{ pathname: "/" }}>Home</Link>
+      {userMail &&
+        <div className="header">
+          <a href="#index" className="logo">Snooker Pocket</a>
+          <div className="header-right">
+            <Link href={{ pathname: "/" }}>Home</Link>
 
-          {isAdmin && <Link href={{ pathname: "admin" }}>Admin Page</Link> }
-          {/* Display userMail if available */}
-          {userMail && <p>{userMail}</p>}
-          <a onClick={uitloggen}>Log uit</a>
+            {isAdmin && <Link href={{ pathname: "admin" }}>Admin Page</Link>}
+            {/* Display userMail if available */}
+            {userMail && <p>{userMail}</p>}
+            <a onClick={uitloggen}>Log uit</a>
+          </div>
         </div>
-      </div>
+      }
     </>
   );
 };

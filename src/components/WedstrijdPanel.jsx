@@ -304,8 +304,8 @@ const VoteResultPanel = ({ state }) => {
           backgroundColor,
           borderRadius: "50%",
           display: "inline-block",
-          width: "10px",
-          height: "10px",
+          width: "15px",
+          height: "15px",
           marginLeft: "0px"
         }}
       ></span>

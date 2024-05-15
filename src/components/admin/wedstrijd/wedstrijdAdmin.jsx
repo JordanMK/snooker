@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { deleteWedstrijd,pas } from "../../api_calls/call";
+import { deleteWedstrijd } from "../../api_calls/call";
 import AdminPopup from "@/components/Popup";
 import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
 

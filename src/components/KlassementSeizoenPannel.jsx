@@ -4,7 +4,7 @@ import {
   getUser,
   getSeizoenen,
   getKlassementSeizoen,
-} from "./api_calls/call.js";
+} from "../components/api_calls/call";
 import "@/styles/Klassement.css"
 import 'react-bootstrap';
 

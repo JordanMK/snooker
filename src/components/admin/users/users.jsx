@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getAllUsers, updateUserBetaald } from "../../api_calls/call.js";
+import { getAllUsers, updateUserBetaald } from "../../api_calls/call";
 
 export default function Users() {
   const [users, setUsers] = useState([]);

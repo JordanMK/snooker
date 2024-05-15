@@ -201,9 +201,11 @@ const VotePanel = ({ state, handleOptionChange }) => {
           )}
         </tbody>
       </table>
-      <p>Schiftingsvraag: {state.speeldag.schiftingsvraag}</p>
-      <p>jouw antwoord: {state.schiftingsAntwoord}</p>
-      <p>joker gebruikt: <input type="checkbox" checked={state.jokerChecked || false}/></p>
+      <SchiftingsvraagInfo
+        schiftingsvraag={state.speeldag.schiftingsvraag}
+        schiftingsAntwoord={state.schiftingsAntwoord}
+        jokerChecked={state.jokerChecked}
+      />
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
       {submissionSuccess && <p>Submission successful!</p>}
@@ -211,6 +213,17 @@ const VotePanel = ({ state, handleOptionChange }) => {
     </>
   );
 };
+
+const SchiftingsvraagInfo = ({schiftingsvraag, schiftingsAntwoord,jokerChecked}) => {
+  return (
+    <>
+      <p>Schiftingsvraag: {schiftingsvraag}</p>
+      <p>jouw antwoord: {schiftingsAntwoord}</p>
+      <p>joker gebruikt: <input type="checkbox" checked={jokerChecked || false}/></p>
+    </>
+  );
+};
+
 
 const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -344,6 +357,11 @@ const VoteResultPanel = ({ state }) => {
           )}
         </tbody>
       </table>
+      <SchiftingsvraagInfo
+        schiftingsvraag={state.speeldag.schiftingsvraag}
+        schiftingsAntwoord={state.schiftingsAntwoord}
+        jokerChecked={state.jokerChecked}
+      />
     </>
   );
 };

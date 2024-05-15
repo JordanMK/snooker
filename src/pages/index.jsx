@@ -3,13 +3,13 @@ import BaseLayout from "@/layout/BaseLayout";
 import React, { useEffect } from "react";
 // import './globals.css';
 
-import KlassementPanel from "@/Components/KlassementPannel"
-import KlassementSeizoenPannel from "@/Components/KlassementSeizoenPannel";
-import SeizoenPanel from "@/Components/SeizoenPanel"
-import WedstrijdPanel from "@/Components/WedstrijdPanel"
+import KlassementPanel from "../components/KlassementPannel"
+import KlassementSeizoenPannel from "../components/KlassementSeizoenPannel";
+import SeizoenPanel from "../components/SeizoenPanel"
+import WedstrijdPanel from "../components/WedstrijdPanel"
 import "@/styles/Home.css"
 import { useState } from "react";
-import { getSpeeldagen } from "@/Components/api_calls/call";
+import { getSpeeldagen } from "../components/api_calls/call";
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true);

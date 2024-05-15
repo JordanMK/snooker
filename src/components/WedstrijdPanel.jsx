@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./components.css";
-import { getSpeeldag, patchSpeeldagVote, getUserVotesBySpeeldagId, getUser } from "./api_calls/call.js";
+import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId,getUser } from "../components/api_calls/call"
 
 export default function WedstrijdPanel({ speeldag_id }) {
   const [state, setState] = useState({

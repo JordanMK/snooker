@@ -1,5 +1,5 @@
 import { Form, Button } from "react-bootstrap";
-import { patchWedstrijd, updateSpeeldagKlassement } from "../../api_calls/call";
+import { patchWedstrijd } from "../../api_calls/call";
 import { useRouter } from "next/router";
 
 

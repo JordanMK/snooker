@@ -78,9 +78,6 @@ export default function Index(props) {
             </button>
             <br />
             <div>
-                Wachtwoord vergeten? <Link href="/forgotpassword">Klik hier</Link>
-            </div>
-            <div>
                 Heb je nog geen account? <Link href="/Register">Registreer hier</Link>
             </div>
         </form>

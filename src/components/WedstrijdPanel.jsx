@@ -201,9 +201,11 @@ const VotePanel = ({ state, handleOptionChange }) => {
           )}
         </tbody>
       </table>
-      <p>Schiftingsvraag: {state.speeldag.schiftingsvraag}</p>
-      <p>jouw antwoord: {state.schiftingsAntwoord}</p>
-      <p>joker gebruikt: <input type="checkbox" checked={state.jokerChecked || false}/></p>
+      <SchiftingsvraagInfo
+        schiftingsvraag={state.speeldag.schiftingsvraag}
+        schiftingsAntwoord={state.schiftingsAntwoord}
+        jokerChecked={state.jokerChecked}
+      />
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
       {submissionSuccess && <p>Submission successful!</p>}
@@ -211,6 +213,17 @@ const VotePanel = ({ state, handleOptionChange }) => {
     </>
   );
 };
+
+const SchiftingsvraagInfo = ({schiftingsvraag, schiftingsAntwoord,jokerChecked}) => {
+  return (
+    <>
+      <p>Schiftingsvraag: {schiftingsvraag}</p>
+      <p>jouw antwoord: {schiftingsAntwoord}</p>
+      <p>joker gebruikt: <input type="checkbox" checked={jokerChecked || false}/></p>
+    </>
+  );
+};
+
 
 const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -270,9 +283,85 @@ const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagCh
 }
 
 const VoteResultPanel = ({ state }) => {
+  // Function to generate circle span element
+  const renderCircle = (matchResult, selectedVote, voteSign) => {
+    let backgroundColor;
+    if (matchResult === selectedVote?.toUpperCase() && matchResult === voteSign) {
+      backgroundColor = "green"; // Correct vote
+    }
+    else if (matchResult !== selectedVote?.toUpperCase() && selectedVote?.toUpperCase() === voteSign) {
+      backgroundColor = "blue"; // Incorrect vote
+    }
+    else if (matchResult !== selectedVote?.toUpperCase() && matchResult === voteSign) {
+      backgroundColor = "red"; // Not selected and not correct
+    }
+    else {
+      backgroundColor = "gray"; // Not selected but correct
+    }
+    return (
+      <span
+        style={{
+          backgroundColor,
+          borderRadius: "50%",
+          display: "inline-block",
+          width: "15px",
+          height: "15px",
+          marginLeft: "0px"
+        }}
+      ></span>
+    );
+  };
+
   return (
     <>
-      <p>Show results</p>
+      <h2>Resultaten</h2>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <p style={{ marginRight: "10px" }}>
+          {renderCircle("1", "1", "1")}: juist gestemd
+        </p>
+        <p style={{ marginRight: "10px" }}>
+          {renderCircle("1", "2", "1")}: mis gestemd antwoord
+        </p>
+        <p>
+          {renderCircle("1", "2", "2")}: jouw misse stem
+        </p>
+      </div>
+
+      <table style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            <th>Match</th>
+            <th>Winst ploeg 1</th>
+            <th>Gelijkspel</th>
+            <th>Winst ploeg 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.speeldag.wedstrijden ? (
+            state.speeldag.wedstrijden.map((match) => (
+              <tr key={match._id}>
+                <td>
+                  <span>
+                    {match.thuis} - {match.uit}
+                  </span>
+                </td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote, "1")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote,"X")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote,"2")}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <SchiftingsvraagInfo
+        schiftingsvraag={state.speeldag.schiftingsvraag}
+        schiftingsAntwoord={state.schiftingsAntwoord}
+        jokerChecked={state.jokerChecked}
+      />
     </>
-  )
-}
+  );
+};

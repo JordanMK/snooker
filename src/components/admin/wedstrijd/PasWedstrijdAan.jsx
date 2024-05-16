@@ -24,7 +24,7 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
         console.log("Wedstrijd patched successfully:", data);
         //updateSpeeldagKlassement(speeldagId)
         setTimeout(() => {
-          //window.location.reload();
+          window.location.reload();
         }, 1000);
       })
       .catch((error) => {

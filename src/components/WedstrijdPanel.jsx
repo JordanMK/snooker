@@ -39,7 +39,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
 
       if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
         speeldagVotes.wedstrijdVotes.forEach(vote => {
-          handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+          handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
         });
       }
     } catch (error) {
@@ -85,17 +85,9 @@ export default function WedstrijdPanel({ speeldag_id }) {
           <>
             {state.speeldag && (
               <>
-                {!isBeforeToday(state.speeldag.startDatum) && (
-                  <JokerEnSchiftingsvraagPanel
-                    state={state}
-                    onJokerChange={handleJokerChange}
-                    onSchiftingsVraagChange={handleSchiftingsvraagChange}
-                  />
-                )}
-                {isBeforeToday(state.speeldag.startDatum) && !isBeforeToday(state.speeldag.eindDatum) && (
-                  <VotePanel state={state} handleOptionChange={handleOptionChange} />
-                )}
-                {isBeforeToday(state.speeldag.eindDatum) && (
+                {isBeforeToday(state.speeldag.eindDatum) ? (
+                  <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
+                ): (
                   <VoteResultPanel state={state} />
                 )} 
               </>
@@ -107,7 +99,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
   );
 }
 
-const VotePanel = ({ state, handleOptionChange }) => {
+const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraagChange}) => {
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
@@ -132,7 +124,14 @@ const VotePanel = ({ state, handleOptionChange }) => {
       const data = {
         wedstrijdVotes: state.selectedOptions,
       };
-      await patchSpeeldagVote(data, state.speeldagVoteID);
+      if(state.speeldagVoteID){
+        await patchSpeeldagVote(data, state.speeldagVoteID);
+      } else {
+        data.jokerGebruikt = state.jokerChecked;
+        data.SchiftingsvraagAntwoord = state.schiftingsAntwoord;
+        await putSpeeldagVote(data, state.speeldag._id);
+      }
+      
       setSubmitting(false);
       setSubmissionSuccess(true);
     } catch (error) {
@@ -201,10 +200,10 @@ const VotePanel = ({ state, handleOptionChange }) => {
           )}
         </tbody>
       </table>
-      <SchiftingsvraagInfo
-        schiftingsvraag={state.speeldag.schiftingsvraag}
-        schiftingsAntwoord={state.schiftingsAntwoord}
-        jokerChecked={state.jokerChecked}
+      <JokerEnSchiftingsvraagPanel
+        state={state}
+        onJokerChange={onJokerChange} // Pass handleJokerChange as a prop
+        onSchiftingsVraagChange={onSchiftingsVraagChange}
       />
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
@@ -226,26 +225,6 @@ const SchiftingsvraagInfo = ({schiftingsvraag, schiftingsAntwoord,jokerChecked})
 
 
 const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
-
-  const handleSubmit = async () => {
-    try {
-      const data = {
-        _id : state.speeldagVoteID,
-        user: localStorage.getItem("userID"),
-        jokerGebruikt: state.jokerChecked,
-        SchiftingsvraagAntwoord: state.schiftingsAntwoord,
-      };
-      await putSpeeldagVote(data, state.speeldag._id);
-      setSubmitSuccess(true);
-      setSubmitError(null);
-    } catch (error) {
-      console.error("Failed to post speeldag:", error.message);
-      setSubmitSuccess(false);
-      setSubmitError(error.message);
-    }
-  }
 
   return (
     <>
@@ -273,11 +252,7 @@ const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagCh
           onChange={onSchiftingsVraagChange}
           required
         />
-      <p>Beschikbare jokers: WIP</p>
       </div>
-      <button onClick={handleSubmit}>Submit</button>
-      {submitSuccess && <p>Submission successful!</p>}
-      {submitError && <p>Error: {submitError}</p>}
     </>
   )
 }

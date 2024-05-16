@@ -257,6 +257,7 @@ export function putSpeeldagVote(obj, speeldagId){
         'Content-Type': 'application/json'
       }
     };
+    obj.user = localStorage.getItem('userID');
     const data = JSON.stringify(obj);
 
     const req = request(options, (res) => {

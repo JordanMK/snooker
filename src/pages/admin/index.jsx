@@ -3,10 +3,8 @@ import LijstSeizoen from "../../components/admin/LijstSeizoen";
 import Users from "@/components/admin/users/users";
 
 export default function Home() {
-
   return (
     <BaseLayout>
-
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
@@ -14,7 +12,6 @@ export default function Home() {
         <LijstSeizoen></LijstSeizoen>
         <Users></Users>
       </div>
-
     </BaseLayout>
   );
 }

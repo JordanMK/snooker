@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react"
-import "@/styles/login.css"
+import "@/styles/Login.css"
 import Link from "next/link"
 
 

@@ -193,7 +193,7 @@ export function updateUserBetaald(userId, newBetaaldValue) {
         responseData += chunk;
       });
       res.on('end', () => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 201) {
           resolve(JSON.parse(responseData));
         } else {
           reject(new Error(`Failed to update user ${userId}. Status code: ${res.statusCode}`));
@@ -413,6 +413,49 @@ export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, startDatum, ei
   });
 }
 
+export function beeindigSeizoen(seizoenId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'localhost',
+      port: port,
+      path: `/api/seizoenen/${seizoenId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const seizoenData = {
+      seizoenBeeindigd: true
+    };
+    const data = JSON.stringify(seizoenData);
+
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(responseData));
+        } else {
+          reject(new Error(`Failed to patch seizoen: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
+
 export function postSpeeldag(schiftingsvraag, schiftingsantwoord, startDatum, einddatum, seizoenId ) {
   return new Promise((resolve, reject) => {
     const options = {
@@ -503,7 +546,6 @@ export function patchSpeeldagVote(obj, speeldagVoteId) {
         'Content-Type': 'application/json'
       }
     };
-
     const data = JSON.stringify(obj);
 
     const req = request(options, (res) => {

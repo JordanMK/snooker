@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./components.css";
-import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId } from "./api_calls/call.js";
+import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId,getUser } from "../components/api_calls/call"
 
 export default function WedstrijdPanel({ speeldag_id }) {
   const [state, setState] = useState({
@@ -12,48 +12,13 @@ export default function WedstrijdPanel({ speeldag_id }) {
     schiftingsAntwoord: '',
     speeldagVoteID: {}
   });
-  const latestState = useRef(state);
-
-  useEffect(() => {
-    latestState.current = state;
-  }, [state]);
-
-  const fetchUserVotes = async () => {
-  try {
-    const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
-    console.log(speeldagVotes);
-    setState(prevState => ({
-      ...prevState,
-      speeldagVoteID: speeldagVotes._id ,
-      jokerChecked: speeldagVotes.jokerGebruikt,
-      schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
-    }));
-  
-    if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
-      speeldagVotes.wedstrijdVotes.forEach(vote => {
-        handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    setState(prevState => ({
-      ...prevState,
-      loading: false,
-      error: "Error fetching data"
-    }));
-  }
-};
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const speeldag = await getSpeeldag(speeldag_id);
-        setState(prevState => ({ ...prevState, speeldag, loading: false, error: null, selectedOptions: [], jokerChecked: false, schiftingsAntwoord: '', canUpdateJokerAndSchiftingAntwoord: false, eindObject: {} }));
-        
+        setState(prevState => ({ ...prevState, speeldag, loading: false, error: null }));
         await fetchUserVotes();
-        
-        
       } catch (error) {
         console.error(error);
         setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
@@ -61,6 +26,27 @@ export default function WedstrijdPanel({ speeldag_id }) {
     };
     fetchData();
   }, [speeldag_id]);
+
+  const fetchUserVotes = async () => {
+    try {
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      setState(prevState => ({
+        ...prevState,
+        speeldagVoteID: speeldagVotes._id ,
+        jokerChecked: speeldagVotes.jokerGebruikt,
+        schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
+      }));
+
+      if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
+        speeldagVotes.wedstrijdVotes.forEach(vote => {
+          handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setState(prevState => ({ ...prevState, loading: false, error: "Error fetching data" }));
+    }
+  };
 
   const handleOptionChange = (matchId, option, wedstrijdId) => {
     setState(prevState => {
@@ -76,19 +62,16 @@ export default function WedstrijdPanel({ speeldag_id }) {
   };
 
   const handleJokerChange = (event) => {
-      setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
+    setState(prevState => ({ ...prevState, jokerChecked: event.target.checked }));
   };
 
   const handleSchiftingsvraagChange = (event) => {
-      setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
+    setState(prevState => ({ ...prevState, schiftingsAntwoord: event.target.value }));
   };
 
   function isBeforeToday(datum) {
-    let output = new Date(datum) < new Date()
-    return output ;
-}
-
-
+    return new Date(datum) < new Date();
+  }
 
   return (
     <>
@@ -115,8 +98,6 @@ export default function WedstrijdPanel({ speeldag_id }) {
                 {isBeforeToday(state.speeldag.eindDatum) && (
                   <VoteResultPanel state={state} />
                 )} 
-                
-                
               </>
             )}
           </>
@@ -130,6 +111,20 @@ const VotePanel = ({ state, handleOptionChange }) => {
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [hasUserPaid, setHasUserPaid] = useState(false);
+
+  useEffect(() => {
+    const checkUserPaymentStatus = async () => {
+      try {
+        const loggedInUser = localStorage.getItem("userID");
+        const user = await getUser(loggedInUser);
+        setHasUserPaid(Boolean(user.betaald));
+      } catch (error) {
+        console.error("Failed to get user:", error.message);
+      }
+    };
+    checkUserPaymentStatus();
+  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -137,7 +132,6 @@ const VotePanel = ({ state, handleOptionChange }) => {
       const data = {
         wedstrijdVotes: state.selectedOptions,
       };
-      // Assuming patchSpeeldagVote is an asynchronous function
       await patchSpeeldagVote(data, state.speeldagVoteID);
       setSubmitting(false);
       setSubmissionSuccess(true);
@@ -160,51 +154,51 @@ const VotePanel = ({ state, handleOptionChange }) => {
           </tr>
         </thead>
         <tbody>
-          {state.speeldag.wedstrijden.map((match) => (
-            <tr key={match._id}>
-              <td>
-                <span>
-                  {match.thuis} - {match.uit}
-                </span>
-              </td>
-              <td>
-                <input
-                  type="radio"
-                  value="1"
-                  checked={
-                    state.selectedOptions.find(
-                      (item) => item.wedstrijd === match._id
-                    )?.vote === "1" || false
-                  }
-                  onChange={() => handleOptionChange(match._id, "1")}
-                />
-              </td>
-              <td>
-                <input
-                  type="radio"
-                  value="x"
-                  checked={
-                    state.selectedOptions.find(
-                      (item) => item.wedstrijd === match._id
-                    )?.vote === "x" || false
-                  }
-                  onChange={() => handleOptionChange(match._id, "x")}
-                />
-              </td>
-              <td>
-                <input
-                  type="radio"
-                  value="2"
-                  checked={
-                    state.selectedOptions.find(
-                      (item) => item.wedstrijd === match._id
-                    )?.vote === "2" || false
-                  }
-                  onChange={() => handleOptionChange(match._id, "2")}
-                />
-              </td>
+          {hasUserPaid ? (
+            state.speeldag.wedstrijden.map((match) => (
+              <tr key={match._id}>
+                <td>
+                  <span>
+                    {match.thuis} - {match.uit}
+                  </span>
+                </td>
+                <td>
+                  <input
+                    type="radio"
+                    value="1"
+                    checked={
+                      state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote === "1" || false
+                    }
+                    onChange={() => handleOptionChange(match._id, "1")}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="radio"
+                    value="x"
+                    checked={
+                      state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote === "x" || false
+                    }
+                    onChange={() => handleOptionChange(match._id, "x")}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="radio"
+                    value="2"
+                    checked={
+                      state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote === "2" || false
+                    }
+                    onChange={() => handleOptionChange(match._id, "2")}
+                  />
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <p>Schiftingsvraag: {state.speeldag.schiftingsvraag}</p>
@@ -277,8 +271,8 @@ const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagCh
 
 const VoteResultPanel = ({ state }) => {
   return (
-  <>
-  <p>Show results</p>
-  </>
+    <>
+      <p>Show results</p>
+    </>
   )
 }

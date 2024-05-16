@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Button } from 'react-bootstrap';
-import { patchSpeeldag, updateKlassementen } from '../../api_calls/call';
+import { patchSpeeldag, updateKlassementen } from "../../api_calls/call";
 
 import { useRouter } from "next/router";
 

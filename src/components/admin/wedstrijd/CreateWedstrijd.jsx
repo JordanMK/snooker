@@ -1,5 +1,5 @@
 import { Form, Button } from "react-bootstrap";
-import { postWedstrijd } from "../../api_calls/call.js";
+import { postWedstrijd } from "../../api_calls/call";
 
 export default function WedstrijdForm(id) {
   function handleFormSubmit(event) {

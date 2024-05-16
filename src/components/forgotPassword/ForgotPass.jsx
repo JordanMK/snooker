@@ -26,7 +26,7 @@ export default function ForgotPassword() {
         onChange={(e) => setEmail(e.target.value)}
         className="inputBox"
       />
-      <label className="errorLabel">{passwordError}</label>
+      {passwordError && <label className="errorLabel">{passwordError}</label> }
       <br />
       <button className="button" type='submit'>Herstel wachwoord</button>
       <br />

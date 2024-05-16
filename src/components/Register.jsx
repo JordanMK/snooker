@@ -76,7 +76,7 @@ export default function SignupForm() {
                 className="inputBox"
                 type="email"
             />
-            <label className="errorLabel">{emailError}</label>
+            {emailError && <label className="errorLabel">{emailError}</label> }
             <label htmlFor="wachtwoord" >Wachtwoord</label>
             <input
                 style={{ borderColor: passwordError ? 'grey' : 'red' }}

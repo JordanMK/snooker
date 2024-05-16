@@ -39,6 +39,8 @@ export default function Index(props) {
                 console.log('Login gelukt met response:', data);
                 localStorage.setItem('userID', data.user._id);
                 localStorage.setItem('userMail', data.user.email);
+                localStorage.setItem('admin', data.user.admin);
+
                 window.location.href = "/";
             } else {
                 setLoginFailed("Geef de juiste email adress of wachtwoord")
@@ -64,7 +66,7 @@ export default function Index(props) {
                 className="inputBox"
                 type="email"
             />
-            <label className="errorLabel">{emailError}</label>
+            {emailError && <label className="errorLabel">{emailError}</label> }
             <br />
             <input
                 value={password}
@@ -73,7 +75,7 @@ export default function Index(props) {
                 className="inputBox"
                 type="password"
             />
-            <label className="errorLabel">{passwordError}</label>
+            {passwordError && <label className="errorLabel">{passwordError}</label> }
             <br />
             <button className="button" type="submit">Login</button>
             <br />

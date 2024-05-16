@@ -259,8 +259,10 @@ const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagCh
 
 const VoteResultPanel = ({ state }) => {
   // Function to generate circle span element
+  console.log(state.selectedOptions);
   const renderCircle = (matchResult, selectedVote, voteSign) => {
     let backgroundColor;
+    console.log(matchResult, selectedVote, voteSign);
     if (matchResult === selectedVote?.toUpperCase() && matchResult === voteSign) {
       backgroundColor = "green"; // Correct vote
     }
@@ -320,9 +322,9 @@ const VoteResultPanel = ({ state }) => {
                     {match.thuis} - {match.uit}
                   </span>
                 </td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote, "1")}</td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote,"X")}</td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd._id === match._id)?.vote,"2")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "1")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"X")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"2")}</td>
               </tr>
             ))
           ) : (

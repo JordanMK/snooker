@@ -58,7 +58,6 @@ export default function Speeldagen() {
         popupContent={SpeelDagForm()}
         triggerButtonName="nieuw Speeldag"
       />
-      <button onClick={seizoenBeendigen}>Seizoen Beëindigen</button>
       <div className="speeldag">
         <ul>
           {speeldagen.map((speeldag, index) => (

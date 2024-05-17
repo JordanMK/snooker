@@ -21,7 +21,6 @@ export default function SignupForm() {
             setRegistratieFailed(null);
             setPasswordError(true);
         }
-        console.log(username, email, password);
         try {
             const response = await fetch("http://localhost:3001/api/users/", {
                 method: "POST",
@@ -33,8 +32,6 @@ export default function SignupForm() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Registratie is gelukt met response:", data);
-                window.alert("Wachtwoorden zijn momenteel NIET gehashed");
                 window.location.href = "/login";
             } else {
                 setRegistratieFailed("Dit gebruikersnaam of e-mailadres is bezet");

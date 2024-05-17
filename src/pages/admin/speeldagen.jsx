@@ -20,6 +20,14 @@ export default function Speeldagen() {
   const { seizoenId } = router.query;
   console.log(seizoenId);
 
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('admin');
+    console.log(isAdmin)
+    if (isAdmin === 'false') {
+      router.push('/');
+    }
+  }, []);
+
   const [speeldagen, setSpeeldagen] = useState([]);
   useEffect(() => {
     getSpeeldagen()

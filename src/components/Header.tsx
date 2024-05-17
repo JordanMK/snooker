@@ -13,6 +13,7 @@ const Navbar = () => {
       // Remove userMail from localStorage
       localStorage.removeItem("userMail");
       localStorage.removeItem("userID");
+      localStorage.removeItem("admin");
       setUserMail("");
       window.location.href = '/login'
     }

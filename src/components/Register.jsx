@@ -38,7 +38,6 @@ export default function SignupForm() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Registratie is gelukt met response:', data);
-                window.alert("Wachtwoorden momenteel zijn NIET gehashed")
                 window.location.href = "/login";
             } else {
                 setRegistratieFailed("Dit username of email address is bezet");
@@ -53,14 +52,14 @@ export default function SignupForm() {
 
     return (
         <form onSubmit={register} className="mainContainer">
-            <label className="errorLabel">{registratieFailed}</label>
+            {registratieFailed && <label className="errorLabel">{registratieFailed}</label>}
             <div className="titleContainer">
                 <div>Register</div>
             </div>
             <br />
             <label htmlFor="username">Username</label>
             <input
-                id='username'
+                id="username"
                 value={username}
                 placeholder="username"
                 onChange={(e) => setUsername(e.target.value)}
@@ -71,36 +70,40 @@ export default function SignupForm() {
             <label htmlFor="email">Email</label>
             <input
                 value={email}
-                placeholder="Geef je email adress"
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Geef je e-mailadres"
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
                 className="inputBox"
                 type="email"
             />
-            <label className="errorLabel">{emailError}</label>
-            <label htmlFor="wachtwoord" >Wachtwoord</label>
+            {emailError && <label className="errorLabel">{emailError}</label>}
+            <label htmlFor="wachtwoord">Wachtwoord</label>
             <input
-                style={{ borderColor: passwordError ? 'grey' : 'red' }}
+                style={{ borderColor: passwordError ? "grey" : "red" }}
                 id="wachtwoord"
                 value={password}
-                placeholder="Typ je wacthwoord"
+                placeholder="Typ je wachtwoord"
                 onChange={(e) => setPassword(e.target.value)}
                 className="inputBox"
                 type="password"
             />
             <label htmlFor="wachtwoord2">Herhaal wachtwoord</label>
             <input
-                style={{ borderColor: passwordError ? 'grey' : 'red' }}
+                style={{ borderColor: passwordError ? "grey" : "red" }}
                 id="wachtwoord2"
                 value={confirmPassword}
-                placeholder="Typ je wacthwoord"
+                placeholder="Typ je wachtwoord"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="inputBox"
                 type="password"
             />
             <br />
-            <button className="button" type='submit'>Registreer</button>
+            <button className="button" type="submit">
+                Registreer
+            </button>
             <br />
-            <div>Terug naar de login pagina <Link href='/login'>Klik hier</Link></div>
+            <div>
+                Terug naar de login pagina <Link href="/login">Klik hier</Link>
+            </div>
         </form>
     )
 

@@ -39,6 +39,8 @@ export default function Index(props) {
                 console.log('Login gelukt met response:', data);
                 localStorage.setItem('userID', data.user._id);
                 localStorage.setItem('userMail', data.user.email);
+                localStorage.setItem("admin", data.user.admin);
+
                 window.location.href = "/";
             } else {
                 setLoginFailed("Geef de juiste email adress of wachtwoord")
@@ -52,33 +54,36 @@ export default function Index(props) {
 
     return (
         <form onSubmit={formSubmit} className="mainContainer">
-            <label className="errorLabel">{loginFailed}</label>
+            {loginFailed && <label className="errorLabel">{loginFailed}</label> }
             <div className="titleContainer">
                 <div>Login</div>
             </div>
             <br />
             <input
                 value={email}
-                placeholder="Typ je e-mail "
+                placeholder="Typ je e-mail"
                 onChange={(e) => setEmail(e.target.value)}
                 className="inputBox"
                 type="email"
             />
-            <label className="errorLabel">{emailError}</label>
+            {emailError && <label className="errorLabel">{emailError}</label>}
             <br />
             <input
                 value={password}
-                placeholder="Typ je wacthwoord"
+                placeholder="Typ je wachtwoord"
                 onChange={(e) => setPassword(e.target.value)}
                 className="inputBox"
                 type="password"
             />
-            <label className="errorLabel">{passwordError}</label>
+            {passwordError && <label className="errorLabel">{passwordError}</label>}
             <br />
-            <button className="button" type="submit">Login</button>
+            <button className="button" type="submit">
+                Login
+            </button>
             <br />
-            <div>Wachtwoord vergeten?<Link href="/forgotpassword"> Klik hier</Link></div>
-            <div>Heb je nog geen account<Link href="/Register"> Registreer hier</Link></div>
+            <div>
+                Heb je nog geen account? <Link href="/Register">Registreer hier</Link>
+            </div>
         </form>
     )
 }

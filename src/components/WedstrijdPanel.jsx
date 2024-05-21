@@ -85,7 +85,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
           <>
             {state.speeldag && (
               <>
-                {isBeforeToday(state.speeldag.eindDatum) ? (
+                {!isBeforeToday(state.speeldag.eindDatum) ? (
                   <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
                 ): (
                   <VoteResultPanel state={state} />
@@ -123,12 +123,12 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
       setSubmitting(true);
       const data = {
         wedstrijdVotes: state.selectedOptions,
+        jokerGebruikt: state.jokerChecked,
+        SchiftingsvraagAntwoord: state.schiftingsAntwoord,
       };
       if(state.speeldagVoteID){
         await patchSpeeldagVote(data, state.speeldagVoteID);
       } else {
-        data.jokerGebruikt = state.jokerChecked;
-        data.SchiftingsvraagAntwoord = state.schiftingsAntwoord;
         await putSpeeldagVote(data, state.speeldag._id);
       }
       
@@ -297,10 +297,10 @@ const VoteResultPanel = ({ state }) => {
           {renderCircle("1", "1", "1")}: juist gestemd
         </p>
         <p style={{ marginRight: "10px" }}>
-          {renderCircle("1", "2", "1")}: mis gestemd antwoord
+          {renderCircle("1", "2", "1")}: wedstrijdresultaat
         </p>
         <p>
-          {renderCircle("1", "2", "2")}: jouw misse stem
+          {renderCircle("1", "2", "2")}: jouw stem
         </p>
       </div>
 

@@ -81,9 +81,6 @@ export default function KlassementPannel(speeldag_id) {
               </tbody>
             </table>
           </div>
-          <KlassementSeizoenPannel/>
-          {/* <a className="a" href="">Show more</a>
-            <a className="a" href="">Show more</a> */}
         </div>
       </div>
     </>

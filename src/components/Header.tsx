@@ -41,7 +41,7 @@ const Navbar = () => {
           <div className="header-right">
             <Link href={{ pathname: "/" }}>Home</Link>
 
-            {isAdmin && <Link href={{ pathname: "admin" }}>Admin Page</Link>}
+            {isAdmin && <Link href={{ pathname: "/admin" }}>Admin Page</Link>}
             {/* Display userMail if available */}
             {userMail && <p>{userMail}</p>}
             <a onClick={uitloggen}>Log uit</a>

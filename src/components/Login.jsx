@@ -1,54 +1,49 @@
-'use client'
-import React, { useState } from "react"
-import "@/styles/Login.css"
-import Link from "next/link"
-
+import React, { useState } from "react";
+import "@/styles/Login.css";
+import Link from "next/link";
 
 export default function Index(props) {
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [emailError, setEmailError] = useState('')
-    const [passwordError, setPasswordError] = useState('')
-    const [loginFailed, setLoginFailed] = useState('')
-
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [loginFailed, setLoginFailed] = useState("");
 
     const formSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
 
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError("Email is required");
             return;
         }
         if (!password) {
-            setPasswordError('Password is required');
+            setPasswordError("Password is required");
             return;
         }
 
         try {
-            const response = await fetch('http://localhost:3001/api/auth/login', {
-                method: 'POST',
+            const response = await fetch("http://localhost:3001/api/auth/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email: email.toLowerCase(), password }), // Convert email to lowercase
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Login gelukt met response:', data);
-                localStorage.setItem('userID', data.user._id);
-                localStorage.setItem('userMail', data.user.email);
+                localStorage.setItem("userID", data.user._id);
+                localStorage.setItem("userMail", data.user.email);
                 localStorage.setItem("admin", data.user.admin);
 
                 window.location.href = "/";
             } else {
-                setLoginFailed("Geef de juiste email adress of wachtwoord")
-                console.log('Login NIET GELUKT')
+                setLoginFailed("Geef het juiste e-mailadres of wachtwoord");
+                console.log("Login NIET GELUKT");
             }
         } catch (error) {
-            setLoginFailed("Geen response van server")
-            console.error('Error:', error);
+            setLoginFailed("Geen reactie van de server");
+            console.error("Error:", error);
         }
     };
 
@@ -85,5 +80,5 @@ export default function Index(props) {
                 Heb je nog geen account? <Link href="/Register">Registreer hier</Link>
             </div>
         </form>
-    )
+    );
 }

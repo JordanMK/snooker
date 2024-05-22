@@ -11,6 +11,7 @@ body {
 
 .pageContainer {
     display: flex;
+    min-height: 550px;
 }
 
 .column {

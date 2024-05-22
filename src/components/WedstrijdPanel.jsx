@@ -39,7 +39,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
 
       if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
         speeldagVotes.wedstrijdVotes.forEach(vote => {
-          handleOptionChange(vote.wedstrijd, vote.vote, vote._id);
+          handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
         });
       }
     } catch (error) {
@@ -85,17 +85,9 @@ export default function WedstrijdPanel({ speeldag_id }) {
           <>
             {state.speeldag && (
               <>
-                {!isBeforeToday(state.speeldag.startDatum) && (
-                  <JokerEnSchiftingsvraagPanel
-                    state={state}
-                    onJokerChange={handleJokerChange}
-                    onSchiftingsVraagChange={handleSchiftingsvraagChange}
-                  />
-                )}
-                {isBeforeToday(state.speeldag.startDatum) && !isBeforeToday(state.speeldag.eindDatum) && (
-                  <VotePanel state={state} handleOptionChange={handleOptionChange} />
-                )}
-                {isBeforeToday(state.speeldag.eindDatum) && (
+                {!isBeforeToday(state.speeldag.eindDatum) ? (
+                  <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
+                ): (
                   <VoteResultPanel state={state} />
                 )} 
               </>
@@ -107,7 +99,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
   );
 }
 
-const VotePanel = ({ state, handleOptionChange }) => {
+const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraagChange}) => {
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
@@ -131,8 +123,15 @@ const VotePanel = ({ state, handleOptionChange }) => {
       setSubmitting(true);
       const data = {
         wedstrijdVotes: state.selectedOptions,
+        jokerGebruikt: state.jokerChecked,
+        SchiftingsvraagAntwoord: state.schiftingsAntwoord,
       };
-      await patchSpeeldagVote(data, state.speeldagVoteID);
+      if(state.speeldagVoteID){
+        await patchSpeeldagVote(data, state.speeldagVoteID);
+      } else {
+        await putSpeeldagVote(data, state.speeldag._id);
+      }
+      
       setSubmitting(false);
       setSubmissionSuccess(true);
     } catch (error) {
@@ -201,9 +200,11 @@ const VotePanel = ({ state, handleOptionChange }) => {
           )}
         </tbody>
       </table>
-      <p>Schiftingsvraag: {state.speeldag.schiftingsvraag}</p>
-      <p>jouw antwoord: {state.schiftingsAntwoord}</p>
-      <p>joker gebruikt: <input type="checkbox" checked={state.jokerChecked || false}/></p>
+      <JokerEnSchiftingsvraagPanel
+        state={state}
+        onJokerChange={onJokerChange} // Pass handleJokerChange as a prop
+        onSchiftingsVraagChange={onSchiftingsVraagChange}
+      />
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
       {submissionSuccess && <p>Submission successful!</p>}
@@ -212,27 +213,18 @@ const VotePanel = ({ state, handleOptionChange }) => {
   );
 };
 
-const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+const SchiftingsvraagInfo = ({schiftingsvraag, schiftingsAntwoord,jokerChecked}) => {
+  return (
+    <>
+      <p>Schiftingsvraag: {schiftingsvraag}</p>
+      <p>jouw antwoord: {schiftingsAntwoord}</p>
+      <p>joker gebruikt: <input type="checkbox" checked={jokerChecked || false}/></p>
+    </>
+  );
+};
 
-  const handleSubmit = async () => {
-    try {
-      const data = {
-        _id : state.speeldagVoteID,
-        user: localStorage.getItem("userID"),
-        jokerGebruikt: state.jokerChecked,
-        SchiftingsvraagAntwoord: state.schiftingsAntwoord,
-      };
-      await putSpeeldagVote(data, state.speeldag._id);
-      setSubmitSuccess(true);
-      setSubmitError(null);
-    } catch (error) {
-      console.error("Failed to post speeldag:", error.message);
-      setSubmitSuccess(false);
-      setSubmitError(error.message);
-    }
-  }
+
+const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
 
   return (
     <>
@@ -260,19 +252,93 @@ const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagCh
           onChange={onSchiftingsVraagChange}
           required
         />
-      <p>Beschikbare jokers: WIP</p>
       </div>
-      <button onClick={handleSubmit}>Submit</button>
-      {submitSuccess && <p>Submission successful!</p>}
-      {submitError && <p>Error: {submitError}</p>}
     </>
   )
 }
 
 const VoteResultPanel = ({ state }) => {
+  // Function to generate circle span element
+  console.log(state.selectedOptions);
+  const renderCircle = (matchResult, selectedVote, voteSign) => {
+    let backgroundColor;
+    console.log(matchResult, selectedVote, voteSign);
+    if (matchResult === selectedVote?.toUpperCase() && matchResult === voteSign) {
+      backgroundColor = "green"; // Correct vote
+    }
+    else if (matchResult !== selectedVote?.toUpperCase() && selectedVote?.toUpperCase() === voteSign) {
+      backgroundColor = "blue"; // Incorrect vote
+    }
+    else if (matchResult !== selectedVote?.toUpperCase() && matchResult === voteSign) {
+      backgroundColor = "red"; // Not selected and not correct
+    }
+    else {
+      backgroundColor = "gray"; // Not selected but correct
+    }
+    return (
+      <span
+        style={{
+          backgroundColor,
+          borderRadius: "50%",
+          display: "inline-block",
+          width: "15px",
+          height: "15px",
+          marginLeft: "0px"
+        }}
+      ></span>
+    );
+  };
+
   return (
     <>
-      <p>Show results</p>
+      <h2>Resultaten</h2>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <p style={{ marginRight: "10px" }}>
+          {renderCircle("1", "1", "1")}: juist gestemd
+        </p>
+        <p style={{ marginRight: "10px" }}>
+          {renderCircle("1", "2", "1")}: wedstrijdresultaat
+        </p>
+        <p>
+          {renderCircle("1", "2", "2")}: jouw stem
+        </p>
+      </div>
+
+      <table style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            <th>Match</th>
+            <th>Winst ploeg 1</th>
+            <th>Gelijkspel</th>
+            <th>Winst ploeg 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.speeldag.wedstrijden ? (
+            state.speeldag.wedstrijden.map((match) => (
+              <tr key={match._id}>
+                <td>
+                  <span>
+                    {match.thuis} - {match.uit}
+                  </span>
+                </td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "1")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"X")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"2")}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <SchiftingsvraagInfo
+        schiftingsvraag={state.speeldag.schiftingsvraag}
+        schiftingsAntwoord={state.schiftingsAntwoord}
+        jokerChecked={state.jokerChecked}
+      />
     </>
-  )
-}
+  );
+};

@@ -235,7 +235,7 @@ export function postSpeeldagJokerAndSchiftingsAntwoord(jokerGebruikt, schiftings
         if (res.statusCode === 201) {
           resolve(JSON.parse(responseData));
         } else {
-          reject(new Error(`Failed to post joker and schiftingsantwoord. Status code: ${res.statusCode}`));
+          reject(new Error(`Failed to post joker and schiftingsantwoord. Status code: ${res.statusCode} ${responseData}`));
         }
       });
     });
@@ -257,6 +257,7 @@ export function putSpeeldagVote(obj, speeldagId){
         'Content-Type': 'application/json'
       }
     };
+    obj.user = localStorage.getItem('userID');
     const data = JSON.stringify(obj);
 
     const req = request(options, (res) => {

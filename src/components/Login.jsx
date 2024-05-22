@@ -32,7 +32,6 @@ export default function Index(props) {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Login successful with response:", data);
                 localStorage.setItem("userID", data.user._id);
                 localStorage.setItem("userMail", data.user.email);
                 localStorage.setItem("admin", data.user.admin);
@@ -50,7 +49,7 @@ export default function Index(props) {
 
     return (
         <form onSubmit={formSubmit} className="mainContainer">
-            <label className="errorLabel">{loginFailed}</label>
+            {loginFailed && <label className="errorLabel">{loginFailed}</label> }
             <div className="titleContainer">
                 <div>Login</div>
             </div>

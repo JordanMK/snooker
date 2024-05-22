@@ -46,7 +46,7 @@ export default function SignupForm() {
 
     return (
         <form onSubmit={register} className="mainContainer">
-            <label className="errorLabel">{registratieFailed}</label>
+            {registratieFailed && <label className="errorLabel">{registratieFailed}</label>}
             <div className="titleContainer">
                 <div>Register</div>
             </div>

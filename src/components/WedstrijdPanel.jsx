@@ -193,22 +193,25 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
                 </td>
               </tr>
             ))
-          ) : (
+          ) 
+          : (
             <tr>
               <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
             </tr>
           )}
         </tbody>
       </table>
-      <JokerEnSchiftingsvraagPanel
-        state={state}
-        onJokerChange={onJokerChange} // Pass handleJokerChange as a prop
-        onSchiftingsVraagChange={onSchiftingsVraagChange}
-      />
+
+     {hasUserPaid && 
+     <>
+      <JokerEnSchiftingsvraagPanel state={state} onJokerChange={onJokerChange} onSchiftingsVraagChange={onSchiftingsVraagChange} />
+      <button onClick={handleSubmit}>Submit</button>
+     </>}
+       
+
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
       {submissionSuccess && <p>Submission successful!</p>}
-      <button onClick={handleSubmit}>Submit</button>
     </>
   );
 };
@@ -326,7 +329,9 @@ const VoteResultPanel = ({ state }) => {
                 <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"X")}</td>
                 <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"2")}</td>
               </tr>
+              
             ))
+            
           ) : (
             <tr>
               <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
@@ -334,11 +339,6 @@ const VoteResultPanel = ({ state }) => {
           )}
         </tbody>
       </table>
-      <SchiftingsvraagInfo
-        schiftingsvraag={state.speeldag.schiftingsvraag}
-        schiftingsAntwoord={state.schiftingsAntwoord}
-        jokerChecked={state.jokerChecked}
-      />
     </>
   );
 };

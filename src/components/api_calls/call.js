@@ -327,13 +327,6 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
 
 
 export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoenId) {
-  try {
-    await updateKlassementen(seizoenId);
-  } catch (error) {
-    console.error('Failed to update klassement:', error);
-    return Promise.reject(new Error('Failed to update klassement'));
-  }
-
   console.log("patching wedstrijd");
   return new Promise((resolve, reject) => {
     const options = {
@@ -361,10 +354,17 @@ export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, s
         responseData += chunk;
       });
 
-      res.on('end', () => {
+      res.on('end', async () => { // Made this function async
+
         if (res.statusCode === 201) {
           console.log("Wedstrijd patched:", JSON.parse(responseData));
-          resolve(JSON.parse(responseData));
+          try {
+            await updateKlassementen(seizoenId);
+            resolve(); // Resolve the promise after updating klassementen
+          } catch (error) {
+            console.error('Failed to update klassement:', error);
+            reject(new Error('Failed to update klassement'));
+          }
         } else {
           console.error("Failed to patch wedstrijd:", new Error(`Failed to patch wedstrijd. Status code: ${res.statusCode}`));
           reject(new Error(`Failed to patch wedstrijd. Status code: ${res.statusCode}`));
@@ -377,10 +377,11 @@ export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, s
       reject(error);
     });
 
-    req.write(data); // Fixed double JSON.stringify call
+    req.write(data);
     req.end();
   });
 }
+
 
 export function updateKlassementen(seizoenId) {
   return new Promise((resolve, reject) => {

@@ -9,7 +9,7 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
   const { seizoenId } = router.query;
 
 
-  function handlePatchSubmit(event) {
+  async function handlePatchSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const date = formData.get("date");
@@ -18,14 +18,10 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
     const resultaat = formData.get("resultaat");
 
     // Call patchWedstrijd function with form data and speeldagId (id)
-    patchWedstrijd(date, homeTeam, awayTeam, resultaat, id,seizoenId)
+    patchWedstrijd(date, homeTeam, awayTeam, resultaat, id, seizoenId)
       .then((data) => {
         // Handle success, if needed
-        console.log("Wedstrijd patched successfully:", data);
-        //updateSpeeldagKlassement(speeldagId)
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        router.reload();
       })
       .catch((error) => {
         // Handle error, if needed

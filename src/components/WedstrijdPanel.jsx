@@ -267,7 +267,7 @@ const VoteResultPanel = ({ state }) => {
     let backgroundColor;
     console.log(matchResult, selectedVote, voteSign);
     if (matchResult === selectedVote?.toUpperCase() && matchResult === voteSign) {
-      backgroundColor = "green"; // Correct vote
+      backgroundColor = "lime"; // Correct vote
     }
     else if (matchResult !== selectedVote?.toUpperCase() && selectedVote?.toUpperCase() === voteSign) {
       backgroundColor = "blue"; // Incorrect vote

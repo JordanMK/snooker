@@ -339,6 +339,7 @@ const VoteResultPanel = ({ state }) => {
           )}
         </tbody>
       </table>
+      <JokerEnSchiftingsvraagPanel state={state} onJokerChange={() => {}} onSchiftingsVraagChange={() => {}} />
     </>
   );
 };

@@ -325,7 +325,9 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
   });
 }
 
-export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoenId) {
+
+export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoenId) {
+  console.log("patching wedstrijd");
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
@@ -352,17 +354,26 @@ export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoen
         responseData += chunk;
       });
 
-      res.on('end', () => {
+      res.on('end', async () => { // Made this function async
+
         if (res.statusCode === 201) {
-          resolve(JSON.parse(responseData));
-          updateKlassementen(seizoenId);
+          console.log("Wedstrijd patched:", JSON.parse(responseData));
+          try {
+            await updateKlassementen(seizoenId);
+            resolve(); // Resolve the promise after updating klassementen
+          } catch (error) {
+            console.error('Failed to update klassement:', error);
+            reject(new Error('Failed to update klassement'));
+          }
         } else {
-          reject(new Error(`Failed to post wedstrijd. Status code: ${res.statusCode}`));
-          resolve([]);
+          console.error("Failed to patch wedstrijd:", new Error(`Failed to patch wedstrijd. Status code: ${res.statusCode}`));
+          reject(new Error(`Failed to patch wedstrijd. Status code: ${res.statusCode}`));
         }
       });
     });
+
     req.on('error', (error) => {
+      console.error("Failed to send request:", error);
       reject(error);
     });
 
@@ -370,6 +381,87 @@ export function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, seizoen
     req.end();
   });
 }
+
+
+export function updateKlassementen(seizoenId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      path: `${seizoenenUrl}/klassement`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', async () => { // Using async for better handling
+        if (res.statusCode === 200) {
+          try {
+            const seizoenen = await getSpeeldagen();
+            if (seizoenen[0]) {
+              await Promise.all(seizoenen.map(speeldag => updateSpeeldagKlassement(speeldag._id)));
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          } catch (error) {
+            console.error("Error processing speeldagen:", error);
+            reject(new Error('Error processing speeldagen'));
+          }
+        } else {
+          reject(new Error(`Failed to post klassement. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      console.error('Request error:', error);
+      reject(error);
+    });
+
+    req.end();
+  });
+}
+
+function updateSpeeldagKlassement(speeldagId) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      path: `${speeldagenUrl}${speeldagId}/klassement`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const req = request(options, (res) => {
+      let responseData = '';
+
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          resolve(true);
+        } else {
+          reject(new Error(`Failed to update speeldag klassement. Status code: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      console.error('Request error:', error);
+      reject(error);
+    });
+
+    req.end();
+  });
+}
+
 
 export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, startDatum, eindDatum, speeldagId) {
   return new Promise((resolve, reject) => {
@@ -593,68 +685,4 @@ export function getUserVotesBySpeeldagId(speeldagId){
     });
   });
       
-}
-
-export function updateKlassementen(seizoenId){
-  return new Promise((resolve, reject) => {
-    const options = {
-      path: `${seizoenenUrl}/klassement`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    const req = request(options, (res) => {
-      let responseData = '';
-
-      res.on('data', (chunk) => {
-        responseData += chunk;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          getSpeeldagen().then((seizoenen) => {
-            console.log(seizoenen)
-            seizoenen[0] &&  seizoenen.forEach(speeldag => {
-              console.log("Updating klassement for speeldag: " + speeldag._id);
-              updateSpeeldagKlassement(speeldag._id)
-            });
-          })
-        } else {
-          reject(new Error(`Failed to Post speeldag vote. Status code: ${res.statusCode}`));
-        }
-      });
-    });
-
-    req.end();
-  })
-}
-
-
-function updateSpeeldagKlassement(speeldagId){
-  return new Promise((resolve, reject) => {
-    const options = {
-      path: `${speeldagenUrl}${speeldagId}/klassement`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    const req = request(options, (res) => {
-      let responseData = '';
-
-      res.on('data', (chunk) => {
-        responseData += chunk;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-        } else {
-          reject(new Error(`Failed to Post speeldag vote. Status code: ${res.statusCode}`));
-        }
-      });
-    });
-
-    req.end();
-  })
 }

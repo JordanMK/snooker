@@ -63,6 +63,7 @@ export default function KlassementPannel(speeldag_id) {
         <div className="panelKlassement">
           <div className="klassementSpeeldag">
             <h1>Klassement Speeldag</h1>
+            <p>Resultaat Schiftingsvraag: <strong>{speeldag.schiftingsantwoord}</strong></p>
             <table className="styled-table">
               <thead>
                 <tr>

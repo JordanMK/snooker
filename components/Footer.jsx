@@ -1,6 +1,7 @@
+import React from "react"
 import "./components.css";
 import Image from 'next/image'
-import snooker from '../images/snooker.png'
+import snooker from "../public/snooker.png"
 
 export default function Footer() {
     return <>

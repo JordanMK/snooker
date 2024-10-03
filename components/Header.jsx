@@ -1,4 +1,3 @@
-import { route } from "express/lib/application";
 import "./components.css";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -36,7 +35,7 @@ const Navbar = () => {
   return (
     <>
       {userMail &&
-        <div className="header">
+        <nav className="header">
           <a href="#index" className="logo">Snooker Pocket</a>
           <div className="header-right">
             <Link href={{ pathname: "/" }}>Home</Link>
@@ -46,7 +45,7 @@ const Navbar = () => {
             {userMail && <p>{userMail}</p>}
             <a onClick={uitloggen}>Log uit</a>
           </div>
-        </div>
+        </nav>
       }
     </>
   );

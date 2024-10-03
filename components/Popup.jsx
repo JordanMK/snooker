@@ -33,7 +33,7 @@ const AdminPopup = ({ popupContent, triggerButtonName }) => (
             <Col xs={12} className="text-center">
               <div>
                 <button
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   onClick={close}
                   style={{ position: "absolute", top: "5px", right: "5px" }}
                 >

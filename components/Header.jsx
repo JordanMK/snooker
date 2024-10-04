@@ -1,54 +1,74 @@
-import "./components.css";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
+import "./components.css"
+import "bootstrap/dist/css/bootstrap.min.css"
+import Link from "next/link"
 
-const Navbar = () => {
-  const [userMail, setUserMail] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+export default function Header() {
+  // TODO: userMail isnt being used
+  const [userMail, setUserMail] = useState("")
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  const uitloggen = () => {
-    // Check if running on the client side
-    if (typeof window !== "undefined") {
-      // Remove userMail from localStorage
-      localStorage.removeItem("userMail");
-      localStorage.removeItem("userID");
-      localStorage.removeItem("admin");
-      setUserMail("");
+  const logout = () => {
+    if (isClientSideRender()) {
+      localStorage.removeItem("userMail")
+      localStorage.removeItem("userID")
+      localStorage.removeItem("admin")
+      setUserMail("")
       window.location.href = '/login'
     }
-  };
+  }
 
+  // run only once on component mount
   useEffect(() => {
-    // Check if running on the client side
-    if (typeof window !== "undefined") {
-      // Access localStorage
-      const mail = localStorage.getItem("userMail");
-      setUserMail(mail || "");
+    if (isClientSideRender()) {
+      const mail = localStorage.getItem("userMail")
+      setUserMail(mail || "")
 
-      const isAdminString = localStorage.getItem("admin");
-      const isAdminBoolean = isAdminString === "true";
-      setIsAdmin(isAdminBoolean)
+      // TODO: security concerns
+      setIsAdmin(localStorage.getItem("admin") === "true")
 
     }
-  }, []); // Run only once on component mount
+  }, [])
+  const shownLinks = [
+    { title: "Home", pathname: "/" },
+  ]
+  if (isAdmin) {
+    shownLinks.push({ title: "Admin Pagina", pathname: "/admin" })
+  }
 
   return (
-    <>
-      {userMail &&
-        <nav className="header">
-          <a href="#index" className="logo">Snooker Pocket</a>
-          <div className="header-right">
-            <Link href={{ pathname: "/" }}>Home</Link>
+    <nav className="header d-flex justify-content-between">
+      <Link href="/" className="logo d-flex align-items-center">Snooker Pocket</Link>
+      <section>
+        <div>
+          {shownLinks.map(({title, pathname}) => <Link href={pathname} key={pathname}>{title}</Link>)}
+          <a onClick={logout}>Log uit</a>
+        </div>
+        {/* same padding as nav items */}
+        {userMail && <p style={{paddingLeft: 12}}>{userMail}</p>}
+      </section>
+    </nav>
+  )
+}
 
-            {isAdmin && <Link href={{ pathname: "/admin" }}>Admin Page</Link>}
-            {/* Display userMail if available */}
-            {userMail && <p>{userMail}</p>}
-            <a onClick={uitloggen}>Log uit</a>
-          </div>
-        </nav>
-      }
-    </>
-  );
-};
+const isClientSideRender = () => typeof window !== "undefined"
 
-export default Navbar;
+/*
+return (
+  <>
+    {userMail &&
+      <nav className="header">
+        <a href="/" className="logo">Snooker Pocket</a>
+        <div className="header-right">
+          <Link href={{ pathname: "/" }}>Home</Link>
+
+          {isAdmin && <Link href={{ pathname: "/admin" }}>Admin Page</Link>}
+          {/* Display userMail if available *}
+          {userMail && <p>{userMail}</p>}
+          <a onClick={uitloggen}>Log uit</a>
+        </div>
+      </nav>
+    }
+  </>
+)
+*/

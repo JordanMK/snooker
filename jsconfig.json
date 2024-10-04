@@ -22,19 +22,12 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@Components/*": [
-        "./src/components"
-      ],
-      "@Layout/*": [
-        "./src/layout"
-      ],
-      "@styles/*": [
-        "./src/app/css"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["components/*"],
+      "@layout/*": ["./src/layout"],
+      "@styles/*": ["./src/app/css"]
     },
     "strictNullChecks": true
   },

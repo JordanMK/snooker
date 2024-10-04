@@ -1,26 +1,21 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Seizoen from "../admin/Seizoen";
-import { useRouter } from "next/navigation";
-import { getSeizoenen } from "../../components/api_calls/call";
+"use client"
+import React, { useState, useEffect } from "react"
+import Seizoen from "../admin/Seizoen"
+import { useRouter } from "next/navigation"
+import { getSeizoenen } from "../../components/api_calls/call"
 
 export default function LijstSeizoen() {
-	const router = useRouter();
+	const router = useRouter()
 	const maakSeizoenClick = () => {
-		console.log("maakSeizoenClick");
-		router.push("/admin/createSeizoen");
-	};
-	const [seizoenen, setSeizoenen] = useState([]);
+		router.push("/admin/createSeizoen")
+	}
+	const [seizoenen, setSeizoenen] = useState([])
 
 	useEffect(() => {
 		getSeizoenen()
-			.then((fetchedSeizoenen) => {
-				setSeizoenen(fetchedSeizoenen);
-			})
-			.catch((error) => {
-				console.error(error.message);
-			});
-	}, []);
+      .then(setSeizoenen)
+      .catch(error => console.error(error.message))
+	}, [])
 
 	return (
 		<>
@@ -36,5 +31,5 @@ export default function LijstSeizoen() {
 				))}
 			</div>
 		</>
-	);
+	)
 }

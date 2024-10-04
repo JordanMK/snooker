@@ -1,5 +1,4 @@
 "use client";
-import BaseLayout from "@/layout/BaseLayout";
 import AdminPopup from "@/components/Popup";
 import "@/styles/style.css";
 import { useRouter } from "next/router";
@@ -50,7 +49,7 @@ export default function Speeldagen() {
     }
   };
   return (
-    <BaseLayout>
+    <>
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
@@ -87,6 +86,6 @@ export default function Speeldagen() {
           ))}
         </ul>
       </div>
-    </BaseLayout>
+      </>
   );
 }

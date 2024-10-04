@@ -2,8 +2,8 @@
 import React from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 
-export default function SeizoenForm() {
-  function handleForm(formData) {
+export default function CreateSeason() {
+  const handleForm = (formData) => {
     // TODO: implement i guess?
     const naam = formData.get("naam")
     const bevriesKlassement = formData.get("bevriesKlassement")
@@ -12,10 +12,11 @@ export default function SeizoenForm() {
     const eindDatum = formData.get("eindDatum")
     const eindTijd = formData.get("eindTijd")
   }
-  const handleSubmit = (e) => {
-    e.preventDefault()
 
-    const form = e.target
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    const form = event.target
     const formData = new FormData(form)
 
     handleForm(formData)
@@ -26,7 +27,7 @@ export default function SeizoenForm() {
       <div className="container d-flex">
         <div className="form- w-50 justify-content-center">
           <form action="/submit" method="POST">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Naam:</label>
             <input type="text" name="name" className="form-control" required />
             <br />
             <label htmlFor="bevriesKlassement">Bevries Klassement:</label>
@@ -69,9 +70,7 @@ export default function SeizoenForm() {
               required
             />
             <br />
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+            <button type="submit" className="btn btn-primary">Opslaan</button>
           </form>
         </div>
       </div>

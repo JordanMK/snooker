@@ -1,3 +1,4 @@
+import React from "react"
 import "./components.css";
 import Image from 'next/image'
 import snooker from '../images/snooker.png'
@@ -24,12 +25,10 @@ export default function Footer() {
                 </div>
                 <div className="">
                     <h3>Volg ons</h3>
-                    <p>
-                        Via onze
-                        <a href="https://www.facebook.com/Snooker-Pocket-790776524369943" target="_blank"> facebookpagina </a>
-                        houden we je op de hoogte van alle updates en nieuwtjes
-                    </p>
-
+                    <span>
+                      Via onze <a href="https://www.facebook.com/Snooker-Pocket-790776524369943" target="_blank">facebookpagina</a> houden we je
+                      op de hoogte van alle updates en nieuwtjes
+                    </span>
                 </div>
             </div>
             <div className="subfooter">

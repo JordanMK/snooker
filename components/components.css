@@ -119,11 +119,12 @@ td, th {
     padding-bottom: 0;
   }
 
+  /*
   .footerFlex {
     justify-content: center;
     flex-wrap: wrap;
-    
   }
+  */
 
   #address {
     display: flex;
@@ -141,5 +142,6 @@ td, th {
 
   .imageFooter {
     padding-top: 15px;
+    padding-left: 15px;
   }
 }

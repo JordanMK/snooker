@@ -11,7 +11,7 @@ import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 import {
   getSpeeldagen,
   beeindigSeizoen,
-} from "../../components/api_calls/call";
+} from "../../../components/api_calls/call";
 import React, { useState, useEffect } from "react";
 import PasSpeeldagAan from "@/components/admin/speeldag/PasSpeeldagAan";
 
@@ -50,7 +50,7 @@ export default function Speeldagen() {
     }
   };
   return (
-    <BaseLayout>
+    <RootLayout>
       <div className="header">
         <h1>Dashboard Admin</h1>
       </div>
@@ -87,6 +87,6 @@ export default function Speeldagen() {
           ))}
         </ul>
       </div>
-    </BaseLayout>
+    </RootLayout>
   );
 }

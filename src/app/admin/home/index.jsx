@@ -1,5 +1,5 @@
 import BaseLayout from "@/layout/BaseLayout";
-import LijstSeizoen from "../../components/admin/LijstSeizoen";
+import LijstSeizoen from "../../../components/admin/LijstSeizoen";
 import Users from "@/components/admin/users/users";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';

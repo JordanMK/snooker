@@ -1,13 +1,13 @@
 import Link from "next/link"
 import { useState } from "react"
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   /*TODO: create backend*/
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("")
   const [passwordError, setPasswordError] = useState("")
 
   const formSubmit = () => {
-    // TODO
+    // TODO: 404
   }
 
   return (

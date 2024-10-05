@@ -39,6 +39,7 @@ export default function Speeldagen() {
       });
   }, []);
 
+  // TODO: unused
   const seizoenBeendigen = () => {
     const confirmed = window.confirm(
       "Weet je zeker dat je dit seizoen wil beendigen?"

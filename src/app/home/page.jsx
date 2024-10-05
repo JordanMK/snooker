@@ -1,14 +1,14 @@
 "use client"
-import React, { useEffect } from "react"
-import "../globals.css"
+import React, { useEffect, useState } from "react"
 
-import KlassementPanel from "@/components/KlassementPanel"
-import KlassementSeizoenPannel from "@/components/KlassementSeizoenPannel"
-import SeizoenPanel from "@/components/SeizoenPanel"
-import WedstrijdPanel from "@/components/WedstrijdPanel"
+// TODO: why do relative aliases not work?
+import KlassementPanel from "../../../components/KlassementPanel"
+import KlassementSeizoenPannel from "../../../components/KlassementSeizoenPannel"
+import SeizoenPanel from "../../../components/SeizoenPanel"
+import WedstrijdPanel from "../../../components/WedstrijdPanel"
 import "@/styles/Home.css"
-import { useState } from "react"
-import { getSpeeldagen } from "@/components/api_calls/call"
+import { getSpeeldagen } from "../../../components/api_calls/call"
+import "../globals.css"
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true)

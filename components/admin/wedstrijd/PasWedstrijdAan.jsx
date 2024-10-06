@@ -1,12 +1,12 @@
 import { Form, Button } from "react-bootstrap";
 import { patchWedstrijd } from "../../api_calls/call";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
-
   const router = useRouter();
-  const { seizoenId } = router.query;
+  const searchParams = useSearchParams()
+  const seizoenId = searchParams.get("seizoenId")
 
 
   async function handlePatchSubmit(event) {

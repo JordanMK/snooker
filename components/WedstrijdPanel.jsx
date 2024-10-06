@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./components.css";
 import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId,getUser } from "../components/api_calls/call"
 
@@ -39,6 +39,12 @@ export default function WedstrijdPanel({ speeldag_id }) {
 
       if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
         speeldagVotes.wedstrijdVotes.forEach(vote => {
+          // TODO(urgent): wedstrijden can be removed and this vote still refers to a non-existent
+          // wedstrijd, are we supposed to handle this?
+          if (vote.wedstrijd == null) {
+            console.warn(`vote ${vote._id} refers to non-existent wedstrijd`)
+            return
+          }
           handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
         });
       }

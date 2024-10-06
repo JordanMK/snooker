@@ -1,32 +1,22 @@
-import { Form, Button } from "react-bootstrap";
-import { patchWedstrijd } from "../../api_calls/call";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Form, Button } from "react-bootstrap"
+import { patchWedstrijd } from "../../api_calls/call"
+import { useRouter } from "next/navigation"
 
-
-export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
-  const router = useRouter();
-  const searchParams = useSearchParams()
-  const seizoenId = searchParams.get("seizoenId")
-
+export default function PasWedstrijdAan({ id, thuis, uit, datum, resultaat, seizoenId }) {
+  const router = useRouter()
 
   async function handlePatchSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const date = formData.get("date");
-    const homeTeam = formData.get("homeTeam");
-    const awayTeam = formData.get("awayTeam");
-    const resultaat = formData.get("resultaat");
+    event.preventDefault()
 
-    // Call patchWedstrijd function with form data and speeldagId (id)
+    // TODO: why is resultaat both defined in props and retrieved from the form?
+    const formData = new FormData(event.target)
+    const [date, homeTeam, awayTeam, resultaat] =
+      ["date", "homeTeam", "awayTeam", "resultaat"]
+      .map(formData.get)
+
     patchWedstrijd(date, homeTeam, awayTeam, resultaat, id, seizoenId)
-      .then((data) => {
-        // Handle success, if needed
-        router.reload();
-      })
-      .catch((error) => {
-        // Handle error, if needed
-        console.error("Failed to patch wedstrijd:", error.message);
-      });
+      .then(router.reload)
+      .catch(error => console.error("Failed to patch wedstrijd:", error.message))
   }
 
   return (
@@ -71,5 +61,5 @@ export default function PasWedstrijdAan(id, thuis, uit, datum,resultaat) {
         </Button>
       </Form>
     </>
-  );
+  )
 }

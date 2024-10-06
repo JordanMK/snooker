@@ -3,19 +3,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Popup from "reactjs-popup";
+import { Container, Row, Col } from "react-bootstrap";
 
-const styles = {
-  fontFamily: "sans-serif",
-  textAlign: "center",
-};
 const contentStyle = {
   width: "50%",
 };
 
-import { Container, Row, Col } from "react-bootstrap";
-
-const AdminPopup = ({ popupContent, triggerButtonName }) => (
-  <>
+export default function AdminPopup({ triggerButtonName, children }) {
+  return (
     <Popup
       modal
       contentStyle={contentStyle}
@@ -39,14 +34,12 @@ const AdminPopup = ({ popupContent, triggerButtonName }) => (
                 >
                   X
                 </button>
-                {popupContent}
+                {children}
               </div>
             </Col>
           </Row>
         </Container>
       )}
     </Popup>
-  </>
-);
-
-export default AdminPopup;
+  )
+}

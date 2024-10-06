@@ -15,12 +15,24 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
       }, 1000);
     }
   };
+
   return (
     <>
       <ul>
         {wedstrijden.map((wedstrijd) => (
           <li key={wedstrijd._id}>
             Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.uit}
+            <AdminPopup triggerButtonName="Pas aan">
+              <PasWedstrijdAan
+                id={wedstrijd._id}
+                thuis={wedstrijd.thuis}
+                uit={wedstrijd.uit}
+                datum={wedstrijd.datum}
+                resultaat={wedstrijd.resultaat}
+                seizoenId={seizoenID}
+              />
+            </AdminPopup>
+            {/*
             <AdminPopup
               popupContent={PasWedstrijdAan(
                 wedstrijd._id,
@@ -32,6 +44,7 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
               )}
               triggerButtonName="Pas aan"
             />
+              */}
             <button
               className="btn btn-light btn-sm m-1"
               id="delete"

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  getSpeeldagen,
   getUser,
-  getSeizoenen,
   getKlassementSeizoen,
 } from "../components/api_calls/call";
-import "@/styles/Klassement.css"
+import "../src/styles/Klassement.css"
 import 'react-bootstrap';
 
 export default function KlassementSeizoenPannel({seizoen_id}) {

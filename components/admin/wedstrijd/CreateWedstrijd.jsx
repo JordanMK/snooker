@@ -1,7 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import { postWedstrijd } from "../../api_calls/call";
 
-export default function WedstrijdForm(id) {
+export default function WedstrijdForm({ id }) {
   function handleFormSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);

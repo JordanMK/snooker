@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import { postSpeeldag } from "../../api_calls/call";
 import { useSearchParams } from "next/navigation";
 
-
 export default function SpeelDagForm() {
   const searchParams = useSearchParams()
 

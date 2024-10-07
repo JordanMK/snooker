@@ -5,10 +5,11 @@ import "../login/Login.css";
 import Link from "next/link";
 
 export default function Register() {
-	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	// TODO: setEmailError isnt used
 	const [emailError, setEmailError] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [passwordError, setPasswordError] = useState(true);
@@ -16,7 +17,13 @@ export default function Register() {
 
 	const register = async (event) => {
 		event.preventDefault();
-		if (password !== confirmPassword || !password || !email || !username) {
+		if (
+			password !== confirmPassword ||
+			!password ||
+			!email ||
+			!firstName ||
+			!lastName
+		) {
 			setPasswordError(false);
 			setRegistratieFailed("Gegeven velden moeten ingevuld zijn");
 			return;
@@ -26,6 +33,8 @@ export default function Register() {
 		setPasswordError(true);
 
 		try {
+			const username = `${firstName.trim()} ${lastName.trim()}`;
+
 			const body = {
 				username,
 				email: email.toLowerCase(),
@@ -44,7 +53,9 @@ export default function Register() {
 				const data = await response.json();
 				window.location.href = "/login";
 			} else {
-				setRegistratieFailed("Dit gebruikersnaam of e-mailadres is bezet");
+				setRegistratieFailed(
+					"Deze gebruikersnaam of e-mailadres is al in gebruik"
+				);
 				console.log("Registratie is NIET GELUKT");
 			}
 		} catch (error) {
@@ -63,12 +74,23 @@ export default function Register() {
 				<div>Registreer</div>
 			</div>
 			<br />
-			<label htmlFor="username">Username</label>
+
+			<label htmlFor="firstName">Voornaam</label>
 			<input
-				id="username"
-				value={username}
-				placeholder="username"
-				onChange={(e) => setUsername(e.target.value)}
+				id="firstName"
+				value={firstName}
+				placeholder="Voornaam"
+				onChange={(e) => setFirstName(e.target.value)}
+				className="inputBox"
+				type="text"
+			/>
+
+			<label htmlFor="lastName">Achternaam</label>
+			<input
+				id="lastName"
+				value={lastName}
+				placeholder="Achternaam"
+				onChange={(e) => setLastName(e.target.value)}
 				className="inputBox"
 				type="text"
 			/>

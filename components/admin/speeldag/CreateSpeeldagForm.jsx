@@ -2,9 +2,12 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { postSpeeldag } from "../../api_calls/call";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function SpeelDagForm() {
   const searchParams = useSearchParams()
+
+  const [errors, setErrors] = useState({})
 
   const seizoenId = searchParams.get("seizoenId")
   function handleFormSubmit(event) {
@@ -16,6 +19,37 @@ export default function SpeelDagForm() {
     const eindUur = formData.get("einduur");
     const schiftingsvraag = formData.get("schiftingsvraag");
     const schiftingantwoord = formData.get("schiftingantwoord");
+
+    const newErrors = [];
+
+    if (!startdatum){
+        newErrors.startDatum = "Invalid start datum"
+    }
+
+    if(!startUur){
+      newErrors.startUur = "Invalid start uur"
+    }
+
+    if(!eindDatum){
+      newErrors.eindDatum = "Invalid eind datum"
+    }
+
+    if(!eindUur){
+      newErrors.eindUur = "Invalid eind uur"
+    }
+
+    if(!schiftingsvraag){
+      newErrors.schiftingsvraag = "Invalid schiftingsvraag"
+    }
+
+    if(!schiftingantwoord){
+      newErrors.schiftingantwoord = "Invalid schiftingantwoord"
+    }
+
+    if(Object.keys(newErrors).length){
+      setErrors(newErrors);
+      return;
+    }
 
     const startDate = new Date(startdatum + " " + startUur).toISOString();
     const eindDate = new Date(eindDatum + " " + eindUur).toISOString();
@@ -43,7 +77,9 @@ export default function SpeelDagForm() {
             type="text"
             placeholder="Schiftingsvraag"
             name="schiftingsvraag"
+            isInvalid= {!!errors.schiftingsvraag}
           />
+          <Form.Control.Feedback type="invalid">{errors.schiftingsvraag}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="schiftingsAntwoord">
           <Form.Label>Schiftingsantwoord:</Form.Label>
@@ -51,15 +87,29 @@ export default function SpeelDagForm() {
             type="text"
             placeholder="Schiftingsantwoord"
             name="schiftingantwoord"
+            isInvalid= {!!errors.schiftingantwoord}
           />
+          <Form.Control.Feedback type="invalid">{errors.schiftingantwoord}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="startdatum">
           <Form.Label>startDatum::</Form.Label>
-          <Form.Control type="date" placeholder="startdatum" name="startdatum" />
+          <Form.Control 
+          type="date" 
+          placeholder="startdatum" 
+          name="startdatum"
+          isInvalid= {!!errors.startDatum}
+          />
+          <Form.Control.Feedback type="invalid">{errors.startDatum}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="startUur">
           <Form.Label>startUur:</Form.Label>
-          <Form.Control type="time" placeholder="startUur" name="startUur" />
+          <Form.Control 
+          type="time" 
+          placeholder="startUur" 
+          name="startUur" 
+          isInvalid={!!errors.startUur}
+          />
+          <Form.Control.Feedback type="invalid">{errors.startUur}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="eindatum">
           <Form.Label>eindatum invullen</Form.Label>
@@ -67,7 +117,9 @@ export default function SpeelDagForm() {
             type="date"
             placeholder="eindatum"
             name="eindatum"
+            isInvalid={!!errors.eindDatum}
           />
+          <Form.Control.Feedback type="invalid">{errors.eindDatum}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="einduur">
           <Form.Label>einduur invullen</Form.Label>
@@ -75,7 +127,9 @@ export default function SpeelDagForm() {
             type="time"
             placeholder="einduur"
             name="einduur"
+            isInvalid={!!errors.eindUur}
           />
+          <Form.Control.Feedback type="invalid">{errors.eindUur}</Form.Control.Feedback>
         </Form.Group>
         <Button variant="primary" type="submit">
           Submit

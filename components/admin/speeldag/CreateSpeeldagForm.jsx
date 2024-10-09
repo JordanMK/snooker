@@ -83,8 +83,9 @@ export default function SpeelDagForm() {
         </Form.Group>
         <Form.Group controlId="schiftingsAntwoord">
           <Form.Label>Schiftingsantwoord:</Form.Label>
+          {/* answer is always a number */}
           <Form.Control
-            type="text"
+            type="number"
             placeholder="Schiftingsantwoord"
             name="schiftingantwoord"
             isInvalid= {!!errors.schiftingantwoord}

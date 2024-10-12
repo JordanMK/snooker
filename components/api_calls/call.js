@@ -193,7 +193,7 @@ export function updateUserBetaald(userId, newBetaaldValue) {
         responseData += chunk;
       });
       res.on('end', () => {
-        if (res.statusCode === 201) {
+        if (res.statusCode === 200) {
           resolve(JSON.parse(responseData));
         } else {
           reject(new Error(`Failed to update user ${userId}. Status code: ${res.statusCode}`));

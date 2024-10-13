@@ -24,10 +24,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
       "@/components/*": ["components/*"],
-      "@layout/*": ["./src/layout"],
-      "@/src/*": ["./src/*"]
+      "@/styles/*": ["src/styles/*"]
     },
     "strictNullChecks": true
   },

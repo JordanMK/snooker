@@ -1,12 +1,25 @@
-import { get } from "http";
-import { request } from 'http';
-const base_url = "http://localhost";
-const port = 3001;
-const klassementUrl = `${base_url}:${port}/api/speeldagen/`;
-const usersUrl = `${base_url}:${port}/api/users/`;
-const seizoenenUrl = `${base_url}:${port}/api/seizoenen`;
-const speeldagVotesUrl = `${base_url}:${port}/api/speeldagVotes/`
-const speeldagenUrl = `${base_url}:${port}/api/speeldagen/`
+import { get, request } from "http";
+
+// when placing env variables in a .env.local, prefixed with a NEXT_PUBLIC_, nextjs
+// will inline those variables in the build, removing the possiblility to obtain them
+// at runtime, TODO: make these non inlined
+
+const BASE_URL = function() {
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL
+  const port = process.env.NEXT_PUBLIC_API_PORT
+  if (!url || !port) {
+    throw new Error("env variables NEXT_PUBLIC_API_BASE_URL and NEXT_PUBLIC_API_PORT must be set")
+  }
+
+  return `${url}:${port}/api`
+}()
+
+const klassementUrl = `${BASE_URL}/speeldagen/`;
+const usersUrl = `${BASE_URL}/users/`;
+const seizoenenUrl = `${BASE_URL}/seizoenen`;
+const speeldagVotesUrl = `${BASE_URL}/speeldagVotes/`
+const speeldagenUrl = `${BASE_URL}/speeldagen/`
+const loginUrl = `${BASE_URL}/auth/login`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {

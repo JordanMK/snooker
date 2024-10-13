@@ -42,9 +42,9 @@ export default function Register() {
 			};
 			const response = await fetch("http://localhost:3001/api/users/", {
 				method: "POST",
-				headers: {
+				headers: new Headers({
 					"Content-Type": "application/json",
-				},
+				}),
 				body: JSON.stringify(body),
 			});
 

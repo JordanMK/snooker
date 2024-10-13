@@ -46,7 +46,7 @@ export function getSpeeldagen() {
   });
 }
 
-export function getSpeeldag(id){
+export function getSpeeldag(id) {
   return new Promise((resolve, reject) => {
     const request = get(`${klassementUrl}${id}`);
     request.on('response', (response) => {
@@ -71,7 +71,7 @@ export function getSpeeldag(id){
 
 export function getSeizoenen() {
   return new Promise((resolve, reject) => {
-    const request = get(`${seizoenenUrl}/`);
+    const request = get(seizoenenUrl);
     request.on('response', (response) => {
       if (response.statusCode === 200) {
         let data = '';
@@ -90,6 +90,70 @@ export function getSeizoenen() {
       reject(error);
     });
   });
+}
+
+/**
+ * Season returned from the api.
+ * @typedef Season
+ * @prop {string} name
+ * @prop {boolean} bevriesKlassement
+ * @prop {string[]} klassement // ids
+ * @prop {string[]} speeldagen // ids
+ * @prop {Date} startDatum
+ * @prop {boolean} seizoenBeeindigd
+ * @prop {number} aantalJokers
+ */
+
+/**
+ * Season input obtained from a form.
+ * @typedef SeasonInput
+ * @prop {string} name
+ * @prop {Date} startDatum
+ * @prop {boolean} seizoenBeeindigd
+ * @prop {number} aantalJokers
+ */
+
+// TODO: create a post() and get() abstraction
+
+/**
+ * @param {SeasonInput} season
+ * @returns {Promise<Season>}
+ */
+export function createSeizoen(season) {
+  console.warn(JSON.stringify(season))
+  const apiUrl = `${BASE_URL}/seizoenen`
+  const opts = {
+    method: "POST",
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify(season),
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(apiUrl, opts)
+      if (response.ok) {
+        const season = await response.json()
+        return resolve(season)
+      }
+
+      let errorMessage = `Request to ${apiUrl} failed with ${response.status}`
+
+      // if the response is json, try to extract the "message" key
+      if (response.headers.get("Content-Type")?.includes("application/json")) {
+        // FIXME: is this _always_ safe to call?
+        const error = await response.json()
+        errorMessage += `: ${error.message ?? error}`
+      } else {
+        errorMessage += ` ${response.statusText}`
+      }
+
+      reject(new Error(errorMessage))
+    } catch (error) {
+      reject(new Error(`Creating season failed with error ${error.message}`))
+    }
+  })
 }
 
 export function getKlassementSpeeldag(id) {
@@ -141,7 +205,7 @@ export function getKlassementSeizoen(seizoenID) {
   });
 }
 
-export function getUser(id){
+export function getUser(id) {
   return new Promise((resolve, reject) => {
     const request = get(`${usersUrl}${id}`);
     request.on('response', (response) => {
@@ -187,12 +251,10 @@ export function getAllUsers() {
   });
 }
 
-
 export function updateUserBetaald(userId, newBetaaldValue) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/users/${userId}`,
       method: 'PATCH',
       headers: {
@@ -224,6 +286,7 @@ export function updateUserBetaald(userId, newBetaaldValue) {
     req.end();
   });
 }
+
 export function postSpeeldagJokerAndSchiftingsAntwoord(jokerGebruikt, schiftingsAntwoord, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
@@ -233,9 +296,9 @@ export function postSpeeldagJokerAndSchiftingsAntwoord(jokerGebruikt, schiftings
         'Content-Type': 'application/json'
       }
     };
-    const data = new { 
-      user: localStorage.getItem('userID'), 
-      jokerGebruikt: jokerGebruikt, 
+    const data = new {
+      user: localStorage.getItem('userID'),
+      jokerGebruikt: jokerGebruikt,
       SchiftingsvraagAntwoord: schiftingsAntwoord,
       wedstrijdVotes: []
     }
@@ -261,7 +324,7 @@ export function postSpeeldagJokerAndSchiftingsAntwoord(jokerGebruikt, schiftings
 
 }
 
-export function putSpeeldagVote(obj, speeldagId){
+export function putSpeeldagVote(obj, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
       path: `${speeldagVotesUrl}${speeldagId}`,
@@ -298,7 +361,6 @@ export function postWedstrijd(date, thuis, uit, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/speeldagen/${speeldagId}/wedstrijden`,
       method: 'POST',
       headers: {
@@ -344,7 +406,6 @@ export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, s
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/wedstrijden/${wedstrijdId}`,
       method: 'PATCH',
       headers: {
@@ -395,7 +456,7 @@ export async function patchWedstrijd(date, thuis, uit, resultaat, wedstrijdId, s
   });
 }
 
-
+// TODO: unused param seizoenId
 export function updateKlassementen(seizoenId) {
   return new Promise((resolve, reject) => {
     const options = {
@@ -476,7 +537,7 @@ function updateSpeeldagKlassement(speeldagId) {
 }
 
 
-export function patchSpeeldag(schiftingsvraag,schiftingsantwoord, startDatum, eindDatum, speeldagId) {
+export function patchSpeeldag(schiftingsvraag, schiftingsantwoord, startDatum, eindDatum, speeldagId) {
   return new Promise((resolve, reject) => {
     const options = {
       path: `${speeldagenUrl}${speeldagId}`,
@@ -523,7 +584,6 @@ export function beeindigSeizoen(seizoenId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/seizoenen/${seizoenId}`,
       method: 'PATCH',
       headers: {
@@ -562,11 +622,10 @@ export function beeindigSeizoen(seizoenId) {
 }
 
 
-export function postSpeeldag(schiftingsvraag, schiftingsantwoord, startDatum, einddatum, seizoenId ) {
+export function postSpeeldag(schiftingsvraag, schiftingsantwoord, startDatum, einddatum, seizoenId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/seizoenen/${seizoenId}/speeldagen`,
       method: 'POST',
       headers: {
@@ -614,7 +673,6 @@ export function deleteWedstrijd(wedstrijdId) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: port,
       path: `/api/wedstrijden/${wedstrijdId}`,
       method: 'DELETE',
     };
@@ -675,7 +733,7 @@ export function patchSpeeldagVote(obj, speeldagVoteId) {
   });
 }
 
-export function getUserVotesBySpeeldagId(speeldagId){
+export function getUserVotesBySpeeldagId(speeldagId) {
   const loggedInUser = localStorage.getItem('userID');
   return new Promise((resolve, reject) => {
     const request = get(`${speeldagVotesUrl}${speeldagId}/${loggedInUser}/votes`);
@@ -697,5 +755,44 @@ export function getUserVotesBySpeeldagId(speeldagId){
       reject(error);
     });
   });
-      
+
+}
+
+// TODO: use
+// TODO: eventually convert user._id to user.id
+
+/**
+ * @typedef User
+ * @prop {number} _id
+ * @prop {string} email
+ * @prop {boolean} admin
+ */
+
+/**
+ * @returns {Promise<User>}
+ * @param {string} email
+ * @param {string} password
+ */
+export async function login(email, password) {
+  const opts = {
+    method: "POST",
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify({ email: email.toLowerCase(), password }),
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(loginUrl, opts)
+      if (!response.ok) {
+        return reject(new Error(`Request to ${loginUrl} failed with ${response.status} ${response.statusText}`))
+      }
+
+      const user = await response.json()
+      resolve(user)
+    } catch (e) {
+      reject(new Error(`Login failed with error ${e.message}`))
+    }
+  })
 }

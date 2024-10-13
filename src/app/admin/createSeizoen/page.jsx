@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { createSeizoen } from "../../../../components/api_calls/call"
+import { createSeizoen } from "@/components/api_calls/call"
 import { useRouter } from "next/navigation"
 
 export default function CreateSeason() {
@@ -21,7 +21,6 @@ export default function CreateSeason() {
     // TODO: aantalJokers field
     // FIXME: einddatum is not being passed
     const season = { name, startdatum, /*eindDatum*/ }
-    console.warn(season)
     
     // TODO: handle duplicate seasons (needs support from api)
     createSeizoen(season)

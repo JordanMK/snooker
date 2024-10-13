@@ -120,7 +120,6 @@ export function getSeizoenen() {
  * @returns {Promise<Season>}
  */
 export function createSeizoen(season) {
-  console.warn(JSON.stringify(season))
   const apiUrl = `${BASE_URL}/seizoenen`
   const opts = {
     method: "POST",

@@ -4,10 +4,12 @@ import {
   getUser,
   getKlassementSpeeldag,
 } from "./api_calls/call"
-import "../src/styles/Klassement.css"
+import "@/styles/Klassement.css"
 import "react-bootstrap"
 
+// TODO: cleanup
 export default function KlassementPanel(speeldag_id) {
+  // TODO: unused
   const [speeldagen, setSpeeldagen] = useState([])
   const [speeldag, setSpeeldag] = useState([])
   const [klassement, setKlassement] = useState([])

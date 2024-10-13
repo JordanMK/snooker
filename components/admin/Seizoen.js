@@ -1,4 +1,4 @@
-import "../../src/styles/style.css"
+import "@/styles/style.css"
 import Link from "next/link";
 
 export default function Seizoen( { seizoen }) {

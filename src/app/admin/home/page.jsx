@@ -1,11 +1,9 @@
-import BaseLayout from "@/layout/BaseLayout";
-import LijstSeizoen from "../../../components/admin/LijstSeizoen";
+import LijstSeizoen from "@/components/admin/LijstSeizoen";
 import Users from "@/components/admin/users/users";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-
-
+// TODO: is this file still used?
 export default function Home() {
   const router = useRouter();
 

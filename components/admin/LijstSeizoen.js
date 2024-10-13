@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import Seizoen from "../admin/Seizoen"
 import { useRouter } from "next/navigation"
-import { getSeizoenen } from "../../components/api_calls/call"
+import { getSeizoenen } from "@/components/api_calls/call"
 
 export default function LijstSeizoen() {
 	const router = useRouter()

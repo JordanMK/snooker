@@ -2,21 +2,21 @@
 import React, { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
-import AdminPopup from "../../../../components/Popup"
-import SpeelDagForm from "../../../../components/admin/speeldag/CreateSpeeldagForm"
-import WedstrijdForm from "../../../../components/admin/wedstrijd/CreateWedstrijd"
-import WedstrijdAdmin from "../../../../components/admin/wedstrijd/wedstrijdAdmin"
+import AdminPopup from "@/components/Popup"
+import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm"
+import WedstrijdForm from "@/components/admin/wedstrijd/CreateWedstrijd"
+import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin"
 
 import {
   getSpeeldagen,
   beeindigSeizoen,
   patchSpeeldag,
   updateKlassementen,
-} from "../../../../components/api_calls/call"
+} from "@/components/api_calls/call"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css"
-import "../../../styles/style.css"
+import "@/styles/style.css"
 
 import { Form, Button } from 'react-bootstrap';
 

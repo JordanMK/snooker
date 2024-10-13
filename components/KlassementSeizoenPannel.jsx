@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import {
   getUser,
   getKlassementSeizoen,
-} from "../components/api_calls/call";
-import "../src/styles/Klassement.css"
+} from "@/components/api_calls/call";
+import "@/styles/Klassement.css"
 import 'react-bootstrap';
 
 export default function KlassementSeizoenPannel({seizoen_id}) {

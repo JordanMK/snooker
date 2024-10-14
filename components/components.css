@@ -1,10 +1,16 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 footer {
   overflow: hidden;
   background-color: black;
   padding: 20px 10px;
   color: white;
-  bottom: 0;
   width: auto;
+  margin-top: auto;
 }
 
 .speeldagTitel {

@@ -7,7 +7,6 @@ import SeizoenPanel from "@/components/SeizoenPanel"
 import WedstrijdPanel from "@/components/WedstrijdPanel"
 import "@/styles/Home.css"
 import { getSpeeldagen } from "@/src/api_calls"
-import "../globals.css"
 
 export default function Home() {
   const [leftPanelSelected, setLeftPanelSelected] = useState(true)

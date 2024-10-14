@@ -6,7 +6,7 @@ import KlassementSeizoenPannel from "@/components/KlassementSeizoenPannel"
 import SeizoenPanel from "@/components/SeizoenPanel"
 import WedstrijdPanel from "@/components/WedstrijdPanel"
 import "@/styles/Home.css"
-import { getSpeeldagen } from "@/components/api_calls/call"
+import { getSpeeldagen } from "@/src/api_calls"
 import "../globals.css"
 
 export default function Home() {

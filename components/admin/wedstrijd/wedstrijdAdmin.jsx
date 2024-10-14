@@ -1,5 +1,5 @@
 import React from "react";
-import { deleteWedstrijd } from "../../api_calls/call";
+import { deleteWedstrijd } from "@/src/api_calls";
 import AdminPopup from "@/components/Popup";
 import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
 

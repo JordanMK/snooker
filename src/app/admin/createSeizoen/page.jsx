@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { createSeizoen } from "@/components/api_calls/call"
+import { createSeizoen } from "@/src/api_calls"
 import { useRouter } from "next/navigation"
 
 export default function CreateSeason() {

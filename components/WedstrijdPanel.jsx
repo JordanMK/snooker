@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./components.css";
-import { getSpeeldag, patchSpeeldagVote,putSpeeldagVote ,getUserVotesBySpeeldagId,getUser } from "@/components/api_calls/call"
+import { getSpeeldag, patchSpeeldagVote, putSpeeldagVote, getUserVotesBySpeeldagId, getUser } from "@/src/api_calls"
 
 export default function WedstrijdPanel({ speeldag_id }) {
   const [state, setState] = useState({
@@ -32,7 +32,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
       const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
       setState(prevState => ({
         ...prevState,
-        speeldagVoteID: speeldagVotes._id ,
+        speeldagVoteID: speeldagVotes._id,
         jokerChecked: speeldagVotes.jokerGebruikt,
         schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
       }));
@@ -93,9 +93,9 @@ export default function WedstrijdPanel({ speeldag_id }) {
               <>
                 {!isBeforeToday(state.speeldag.eindDatum) ? (
                   <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
-                ): (
+                ) : (
                   <VoteResultPanel state={state} />
-                )} 
+                )}
               </>
             )}
           </>
@@ -105,7 +105,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
   );
 }
 
-const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraagChange}) => {
+const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraagChange }) => {
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
@@ -132,12 +132,12 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
         jokerGebruikt: state.jokerChecked,
         SchiftingsvraagAntwoord: state.schiftingsAntwoord,
       };
-      if(state.speeldagVoteID){
+      if (state.speeldagVoteID) {
         await patchSpeeldagVote(data, state.speeldagVoteID);
       } else {
         await putSpeeldagVote(data, state.speeldag._id);
       }
-      
+
       setSubmitting(false);
       setSubmissionSuccess(true);
     } catch (error) {
@@ -199,21 +199,21 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
                 </td>
               </tr>
             ))
-          ) 
-          : (
-            <tr>
-              <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
-            </tr>
-          )}
+          )
+            : (
+              <tr>
+                <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
+              </tr>
+            )}
         </tbody>
       </table>
 
-     {hasUserPaid && 
-     <>
-      <JokerEnSchiftingsvraagPanel state={state} onJokerChange={onJokerChange} onSchiftingsVraagChange={onSchiftingsVraagChange} />
-      <button onClick={handleSubmit}>Submit</button>
-     </>}
-       
+      {hasUserPaid &&
+        <>
+          <JokerEnSchiftingsvraagPanel state={state} onJokerChange={onJokerChange} onSchiftingsVraagChange={onSchiftingsVraagChange} />
+          <button onClick={handleSubmit}>Submit</button>
+        </>}
+
 
       {submitting && <p>Submitting...</p>}
       {submissionError && <p>Error: {submissionError}</p>}
@@ -222,19 +222,17 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
   );
 };
 
-const SchiftingsvraagInfo = ({schiftingsvraag, schiftingsAntwoord,jokerChecked}) => {
+const SchiftingsvraagInfo = ({ schiftingsvraag, schiftingsAntwoord, jokerChecked }) => {
   return (
     <>
       <p>Schiftingsvraag: {schiftingsvraag}</p>
       <p>jouw antwoord: {schiftingsAntwoord}</p>
-      <p>joker gebruikt: <input type="checkbox" checked={jokerChecked || false}/></p>
+      <p>joker gebruikt: <input type="checkbox" checked={jokerChecked || false} /></p>
     </>
   );
 };
 
-
 const JokerEnSchiftingsvraagPanel = ({ state, onJokerChange, onSchiftingsVraagChange }) => {
-
   return (
     <>
       <h2>vul schiftingsvraag in</h2>
@@ -332,12 +330,12 @@ const VoteResultPanel = ({ state }) => {
                   </span>
                 </td>
                 <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "1")}</td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"X")}</td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote,"2")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "X")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "2")}</td>
               </tr>
-              
+
             ))
-            
+
           ) : (
             <tr>
               <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
@@ -345,7 +343,7 @@ const VoteResultPanel = ({ state }) => {
           )}
         </tbody>
       </table>
-      <JokerEnSchiftingsvraagPanel state={state} onJokerChange={() => {}} onSchiftingsVraagChange={() => {}} />
+      <JokerEnSchiftingsvraagPanel state={state} onJokerChange={() => { }} onSchiftingsVraagChange={() => { }} />
     </>
   );
 };

@@ -12,7 +12,7 @@ import {
   beeindigSeizoen,
   patchSpeeldag,
   updateKlassementen,
-} from "@/components/api_calls/call"
+} from "@/src/api_calls"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css"

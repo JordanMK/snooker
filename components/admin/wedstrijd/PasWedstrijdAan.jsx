@@ -1,5 +1,5 @@
 import { Form, Button } from "react-bootstrap"
-import { patchWedstrijd } from "../../api_calls/call"
+import { patchWedstrijd } from "@/src/api_calls"
 import { useRouter } from "next/navigation"
 
 export default function PasWedstrijdAan({ id, thuis, uit, datum, resultaat, seizoenId }) {

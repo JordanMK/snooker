@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { postSpeeldag } from "../../api_calls/call";
+import { postSpeeldag } from "@/src/api_calls";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 

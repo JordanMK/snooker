@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import "./Login.css";
 
+// TODO: replace this api call to api calls file
+
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -22,12 +24,14 @@ export default function Login() {
 			return;
 		}
 
+    // TODO: replace with api call login()
+
 		try {
 			const response = await fetch("http://localhost:3001/api/auth/login", {
 				method: "POST",
-				headers: {
+				headers: new Headers({
 					"Content-Type": "application/json",
-				},
+				}),
 				body: JSON.stringify({ email: email.toLowerCase(), password }), // Convert email to lowercase
 			});
 
@@ -40,7 +44,7 @@ export default function Login() {
 				window.location.href = "/";
 			} else {
 				setLoginFailed("Geef het juiste e-mailadres of wachtwoord");
-				console.log("Login NIET GELUKT");
+				console.error("Login NIET GELUKT");
 			}
 		} catch (error) {
 			setLoginFailed("Geen reactie van de server");

@@ -1,6 +1,6 @@
 "use client"
-import LijstSeizoen from "../../../components/admin/LijstSeizoen"
-import Users from "../../../components/admin/users/users"
+import LijstSeizoen from "@/components/admin/LijstSeizoen"
+import Users from "@/components/admin/users/users"
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 

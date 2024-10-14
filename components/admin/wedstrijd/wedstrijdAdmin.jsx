@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { deleteWedstrijd } from "../../api_calls/call";
-import AdminPopup from "../../../components/Popup";
-import PasWedstrijdAan from "../../../components/admin/wedstrijd/PasWedstrijdAan";
+import React from "react";
+import { deleteWedstrijd } from "@/src/api_calls";
+import AdminPopup from "@/components/Popup";
+import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
 
 
 export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {

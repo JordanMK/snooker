@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import Seizoen from "../admin/Seizoen"
 import { useRouter } from "next/navigation"
-import { getSeizoenen } from "../../components/api_calls/call"
+import { getSeizoenen } from "@/src/api_calls"
 
 export default function LijstSeizoen() {
 	const router = useRouter()
@@ -20,7 +20,7 @@ export default function LijstSeizoen() {
 	return (
 		<>
 			<div className="seizoen-container">
-				<h1>Lijst Seizoen</h1>
+				<h1>Seizoenen</h1>
 				<button type="button" className="" onClick={maakSeizoenClick}>
 					nieuw Seizoen
 				</button>

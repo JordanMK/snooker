@@ -19,7 +19,6 @@ const usersUrl = `${BASE_URL}/users/`;
 const seizoenenUrl = `${BASE_URL}/seizoenen`;
 const speeldagVotesUrl = `${BASE_URL}/speeldagVotes/`
 const speeldagenUrl = `${BASE_URL}/speeldagen/`
-const loginUrl = `${BASE_URL}/auth/login`
 
 export function getSpeeldagen() {
   return new Promise((resolve, reject) => {
@@ -251,39 +250,28 @@ export function getAllUsers() {
 }
 
 export function updateUserBetaald(userId, newBetaaldValue) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'localhost',
-      path: `/api/users/${userId}`,
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
+  const apiUrl = `${BASE_URL}/users/${userId}`
+  const opts = {
+    method: "PATCH",
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify({ betaald: newBetaaldValue }),
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(apiUrl, opts)
+      if (!response.ok) {
+        return reject(new Error(`Request to ${apiUrl} failed with ${response.status} ${response.statusText}`))
       }
-    };
-    const data = JSON.stringify({ betaald: newBetaaldValue });
-    const req = request(options, (res) => {
-      let responseData = '';
-      res.on('data', (chunk) => {
-        responseData += chunk;
-      });
-      res.on('end', () => {
-        if (res.statusCode === 201) {
-          resolve(JSON.parse(responseData));
-        } else {
-          reject(new Error(`Failed to update user ${userId}. Status code: ${res.statusCode}`));
-        }
-      });
-    });
 
-    // Handle errors
-    req.on('error', (error) => {
-      reject(error);
-    });
-
-    // Send the request body
-    req.write(data);
-    req.end();
-  });
+      const user = await response.json()
+      resolve(user)
+    } catch (error) {
+      reject(new Error(`Request to ${apiUrl} failed with error ${error.message}`))
+    }
+  })
 }
 
 export function postSpeeldagJokerAndSchiftingsAntwoord(jokerGebruikt, schiftingsAntwoord, speeldagId) {
@@ -773,6 +761,7 @@ export function getUserVotesBySpeeldagId(speeldagId) {
  * @param {string} password
  */
 export async function login(email, password) {
+  const apiUrl = `${BASE_URL}/auth/login`
   const opts = {
     method: "POST",
     headers: new Headers({
@@ -783,9 +772,9 @@ export async function login(email, password) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(loginUrl, opts)
+      const response = await fetch(apiUrl, opts)
       if (!response.ok) {
-        return reject(new Error(`Request to ${loginUrl} failed with ${response.status} ${response.statusText}`))
+        return reject(new Error(`Request to ${apiUrl} failed with ${response.status} ${response.statusText}`))
       }
 
       const user = await response.json()

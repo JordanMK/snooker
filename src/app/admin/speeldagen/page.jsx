@@ -42,17 +42,6 @@ export default function Speeldagen() {
 			.catch((error) => console.error(error.message));
 	}, []);
 
-	// TODO: unused
-	const seizoenBeendigen = () => {
-		const confirmed = window.confirm(
-			"Weet je zeker dat je dit seizoen wil beendigen?"
-		);
-		if (confirmed) {
-			beeindigSeizoen(seizoenId);
-			window.alert("Vergeet niet alle spelers op niet betaald te zetten!");
-		}
-	};
-
 	return (
 		<>
 			<div className="header">

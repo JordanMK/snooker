@@ -12,16 +12,19 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
     <>
       <h1 id="seizoenTitle">Seizoen 24-25</h1>
       <ul id="speeldagenList">
-        {speeldagen.map((_, index) => (
-          <li key={index}>
-            <button
-              onClick={() => handleClick(index)}
-              style={selectedIndex === index ? { backgroundColor: "green" } : null}
-            >
-              Speeldag {index+1}
-            </button>
-          </li>
-        ))}
+        {speeldagen.slice().reverse().map((speeldag, reversedIndex) => {
+          const originalIndex = speeldagen.length - 1 - reversedIndex;
+          return (
+            <li key={originalIndex}>
+              <button
+                onClick={() => handleClick(originalIndex)}
+                style={selectedIndex === originalIndex ? { backgroundColor: "green" } : null}
+              >
+                Speeldag {originalIndex + 1}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

@@ -4,11 +4,12 @@ import AdminPopup from "@/components/Popup";
 import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
 
 
-export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
+export default function WedstrijdAdmin({ wedstrijden, seizoenID}) {
   const handleVerwijderClick = (wedstrijdId) => {
     if (
       window.confirm("Weet je zeker dat je deze wedstrijd wilt verwijderen?")
     ) {
+      
       deleteWedstrijd(wedstrijdId);
       setTimeout(() => {
         window.location.reload();

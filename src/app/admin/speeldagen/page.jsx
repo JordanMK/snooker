@@ -68,6 +68,7 @@ export default function Speeldagen() {
   );
 
   function Speeldag({ speeldag, number }) {
+    const [isOnline, setIsOnline] = useState(false);
     const {
       schiftingsvraag,
       schiftingsantwoord,
@@ -76,6 +77,13 @@ export default function Speeldagen() {
       _id,
       wedstrijden,
     } = speeldag;
+
+    const handleCheckboxChange = (event) => {
+      const isChecked = event.target.checked;
+
+      setIsOnline(isChecked);
+      localStorage.setItem(`speeldag_${speeldag._id}_online`, isChecked);
+    };
 
     return (
       <li>
@@ -95,6 +103,16 @@ export default function Speeldagen() {
           <AdminPopup triggerButtonName='Nieuwe wedstrijd'>
             <WedstrijdForm id={_id} />
           </AdminPopup>
+
+          <label htmlFor='online'>Zet speeldag online: </label>
+          <input
+            type='checkbox'
+            name='online'
+            checked={
+              localStorage.getItem(`speeldag_${speeldag._id}_online`) === 'true'
+            }
+            onChange={(e) => handleCheckboxChange(e, speeldag._id)}
+          />
         </div>
         <WedstrijdAdmin wedstrijden={wedstrijden} />
       </li>

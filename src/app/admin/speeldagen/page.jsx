@@ -42,17 +42,6 @@ export default function Speeldagen() {
       .catch((error) => console.error(error.message));
   }, []);
 
-  // TODO: unused
-  const seizoenBeendigen = () => {
-    const confirmed = window.confirm(
-      'Weet je zeker dat je dit seizoen wil beendigen?'
-    );
-    if (confirmed) {
-      beeindigSeizoen(seizoenId);
-      window.alert('Vergeet niet alle spelers op niet betaald te zetten!');
-    }
-  };
-
   return (
     <>
       <div className='header'>
@@ -79,17 +68,6 @@ export default function Speeldagen() {
   );
 
   function Speeldag({ speeldag, number }) {
-    const [isOnline, setIsOnline] = useState(false);
-
-    const handleCheckboxChange = async (event) => {
-      const isChecked = event.target.checked;
-
-      setIsOnline(isChecked);
-      localStorage.setItem(`speeldag_${speeldag._id}_online`, isChecked);
-
-      console.log('Test ' + isChecked);
-    };
-
     const {
       schiftingsvraag,
       schiftingsantwoord,
@@ -117,16 +95,6 @@ export default function Speeldagen() {
           <AdminPopup triggerButtonName='Nieuwe wedstrijd'>
             <WedstrijdForm id={_id} />
           </AdminPopup>
-          <label htmlFor='online'>Zet speeldag online</label>
-          <input
-            type='checkbox'
-            placeholder='Zet speeldag online'
-            name='online'
-            checked={
-              localStorage.getItem(`speeldag_${speeldag._id}_online`) === 'true'
-            }
-            onClick={handleCheckboxChange}
-          />
         </div>
         <WedstrijdAdmin wedstrijden={wedstrijden} />
       </li>

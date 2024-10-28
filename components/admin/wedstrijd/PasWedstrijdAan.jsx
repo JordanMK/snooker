@@ -62,16 +62,29 @@ export default function PasWedstrijdAan({
 				</Form.Group>
 				<Form.Group controlId="resultaat">
 					<Form.Label>Result:</Form.Label>
-					<Form.Label>
-						Resultaat: (1) thuisploeg gewonnen (2) uitploeg gewonnen (x)
-						gelijkspel
-					</Form.Label>
-					<Form.Control
-						type="text"
-						placeholder="Enter result"
-						name="resultaat"
-						defaultValue={resultaat}
-					/>
+					<div>
+						<Form.Check
+							type="radio"
+							label="Thuisploeg gewonnen"
+							name="resultaat"
+							value="1"
+							defaultChecked={resultaat === 1}
+						/>
+						<Form.Check
+							type="radio"
+							label="Gelijkspel"
+							name="resultaat"
+							value="3"
+							defaultChecked={resultaat === 3}
+						/>
+						<Form.Check
+							type="radio"
+							label="Uitploeg gewonnen"
+							name="resultaat"
+							value="2"
+							defaultChecked={resultaat === 2}
+						/>
+					</div>
 				</Form.Group>
 				<Button variant="primary" type="submit">
 					Submit

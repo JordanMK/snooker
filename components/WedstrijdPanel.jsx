@@ -180,11 +180,11 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
                 <td>
                   <input
                     type="radio"
-                    value="x"
+                    value="3"
                     checked={
-                      state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote === "x" || false
+                      state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote === "3" || false
                     }
-                    onChange={() => handleOptionChange(match._id, "x")}
+                    onChange={() => handleOptionChange(match._id, "3")}
                   />
                 </td>
                 <td>
@@ -202,7 +202,7 @@ const VotePanel = ({ state, handleOptionChange, onJokerChange, onSchiftingsVraag
           )
             : (
               <tr>
-                <td colSpan="4">Je kan niet stemmen wat je hebt nog niet betaald.</td>
+                <td colSpan="4">Je kan niet stemmen want je hebt nog niet betaald.</td>
               </tr>
             )}
         </tbody>
@@ -330,7 +330,7 @@ const VoteResultPanel = ({ state }) => {
                   </span>
                 </td>
                 <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "1")}</td>
-                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "X")}</td>
+                <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "3")}</td>
                 <td>{renderCircle(match.resultaat, state.selectedOptions.find((item) => item.wedstrijd === match._id)?.vote, "2")}</td>
               </tr>
 

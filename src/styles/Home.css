@@ -1,57 +1,92 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
 
-*{
+* {
     font-family: "Poppins", sans-serif;
-    
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .pageContainer {
     display: flex;
     margin-top: 22px;
     min-height: 550px;
+    padding: 10px;
+    gap: 20px;
+}
+
+.column, .smallColumn {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .column {
     flex: 50%;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 1em;
+    padding: 1.5em;
 }
 
 .smallColumn {
     flex: 5%;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 0;
+    padding: 1em;
     width: 20%;
 }
 
 .flexColumn {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .panelNav {
     display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .panelNav > button {
-    flex: 50%;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 1em;
+    flex: 1;
+    background-color: #dda15e;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
     text-align: center;
 }
 
+.panelNav > button:hover {
+    background-color: #bc6c25;
+}
+
+.panelNav > button.active {
+    background-color: #606c38;
+}
+
 @media screen and (max-width: 900px) {
-    .column {
-      width: 100%;
+    .pageContainer {
+        flex-direction: column;
     }
-  }
+
+    .column, .smallColumn {
+        width: 100%;
+    }
+
+    .panelNav {
+        flex-direction: column;
+    }
+
+    .panelNav > button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

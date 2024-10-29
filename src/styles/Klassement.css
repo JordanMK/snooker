@@ -1,102 +1,41 @@
-table {
-    width: auto;
-    text-align: center;
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header styling */
 h1 {
     text-align: center;
-    width: auto;
+    color: #606c38;
+    font-size: 1.8em;
+    margin-bottom: 0.5em;
 }
 
-thead {
-    background-color: rgb(27,30,10);
-    color: rgb(220,220,220);
-}
-
-th {
-    text-align: center;
-}
-
-.column {
-    flex: auto;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 1em;
-}
-
-/* Seizoen sideline */
-#seizoenTitle {
-    width: auto;
-    text-align: center;
-}
-
-#speeldagenList {
-    padding-left: 0;
-}
-
-#speeldagenList li {
-    height: 50px;
-    width: auto;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: center;
-}
-
-#speeldagenList li button {
-    width: 80%;
-    height: auto;
-}
-
-.panelNav {
-    display: flex;
-    width: auto;
-    text-align: center;
-}
-
-.panelKlassement {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap:5px;
-    width: auto;
-    text-align: center;
-}
-
-
-
-/* Tables klassement */
-.klassementSpeelDag {
-    flex: auto;
+/* Table styling */
+table {
     width: 100%;
-    justify-content: space-between;
+    text-align: center;
+    margin: 20px auto;
 }
-
-.klassementSpeeldag>h1, #klassementSeizoen>h1{
-    width: auto;
-    margin-bottom: 0px;
-}
-
-
-
 
 .styled-table {
     border-collapse: collapse;
-    margin: 0;
+    width: 100%;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: auto;
-    width: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.styled-table tr:hover {
-    color: #bc6c25;
+    background-color: #ffffff;
 }
 
 .styled-table thead tr {
     background-color: #606c38;
     color: #ffffff;
-    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .styled-table th, .styled-table td {
@@ -111,6 +50,11 @@ th {
     background-color: #f3f3f3;
 }
 
+.styled-table tbody tr:hover {
+    background-color: #e9f7ef;
+    color: #bc6c25;
+}
+
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #606c38;
 }
@@ -120,89 +64,120 @@ th {
     color: #606c38;
 }
 
-#speeldagenList {
-    list-style: none;
+/* Column container */
+.column {
+    flex: auto;
+    padding: 1.5em;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    margin: 10px;
 }
 
+/* Panel navigation */
+.panelNav {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
 
+.panelNav button {
+    background-color: #dda15e;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 5px;
+    border-radius: 5px;
+}
 
+.panelNav button:hover {
+    background-color: #bc6c25;
+}
+
+.panelNav button.active {
+    background-color: #606c38;
+}
+
+/* Seizoen sideline */
+#seizoenTitle {
+    width: auto;
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    color: #333;
+}
+
+#speeldagenList {
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#speeldagenList li {
+    height: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#speeldagenList li button {
+    width: 80%;
+    height: 100%;
+    background-color: #f4f4f9;
+    color: #333;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#speeldagenList li button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Responsive styling */
 @media screen and (max-width: 600px) {
     .column {
-      width: auto;
-    }
-  }
-
-  @media only screen and (max-device-width: 900px) {
-    /* the whole page */
-    .pageContainer {
         width: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Seizoen pannel after header */
-    .smallColumn{
-        width: auto;
-        padding: 5px;
-    }
-    #seizoenTitle{
-        width: auto;
-        height: 2%;
-        margin: 0;
-    }
-
-    #speeldagenList {
-        display: flex;
-        padding-left: 5px;
-        padding-right: 5px;
-        flex-wrap: wrap;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        justify-content: center;
-        padding: 0px;
-    }
-    #speeldagenList li button {
-        width: 100%;
-        margin: 0;
-    }
-
-    #speeldagenList li  {
-        margin: 3px;
-        width: 31%;
-    }
-
-    /* Klassement pannel */
-    .flexColumn{
-        width: auto;
-        padding: 0;
-        border-top: none;
     }
 
     .panelNav {
-        width: auto;
-        display: flex;
         flex-direction: column;
     }
 
-    .panelKlassement {
-        width: auto;
+    .panelNav button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-device-width: 900px) {
+    .pageContainer {
         display: flex;
         flex-direction: column;
+        padding: 10px;
+    }
+
+    .smallColumn {
+        padding: 5px;
+    }
+
+    #speeldagenList {
+        flex-wrap: wrap;
+        margin: 5px;
+        justify-content: center;
+    }
+
+    #speeldagenList li {
+        width: 45%;
+        margin: 5px;
     }
 
     .styled-table {
         width: 100%;
-        margin: auto;
     }
-
-    #styled-table thead tr th{
-        min-width: none;
-    }
-    #styled-table thead {
-        min-width: none;
-    }
-
-    #styled-table tbody tr td{
-        min-width: none;
-    }
-  }
+}

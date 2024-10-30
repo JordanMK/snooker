@@ -12,6 +12,7 @@ import {
   beeindigSeizoen,
   patchSpeeldag,
   updateKlassementen,
+  getSpeeldagenBySeizoenId,
   updateSpeeldagIsOnline,
 } from '@/src/api_calls';
 
@@ -36,12 +37,11 @@ export default function Speeldagen() {
       router.push('/');
       return;
     }
-
-    getSpeeldagen()
+    getSpeeldagenBySeizoenId(seizoenId)
       .then(setSpeeldagen)
       .then(console.log)
       .catch((error) => console.error(error.message));
-  }, []);
+  }, [seizoenId]);
 
   return (
     <>

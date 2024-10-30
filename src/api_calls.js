@@ -896,3 +896,19 @@ export async function updateSpeeldagIsOnline(speeldagId, isOnline) {
     throw error;
   }
 }
+
+export async function getSpeeldagenBySeizoenId(seizoenId) {
+  try {
+    const response = await fetch(`${seizoenenUrl}/${seizoenId}/speeldagen`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error getting speeldagen by seizoenId:', error);
+    throw error;
+  }
+}

@@ -12,6 +12,7 @@ import {
   beeindigSeizoen,
   patchSpeeldag,
   updateKlassementen,
+  updateSpeeldagIsOnline,
 } from '@/src/api_calls';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -68,7 +69,6 @@ export default function Speeldagen() {
   );
 
   function Speeldag({ speeldag, number }) {
-    const [isOnline, setIsOnline] = useState(false);
     const {
       schiftingsvraag,
       schiftingsantwoord,
@@ -78,11 +78,17 @@ export default function Speeldagen() {
       wedstrijden,
     } = speeldag;
 
-    const handleCheckboxChange = (event) => {
-      const isChecked = event.target.checked;
+    const handleCheckboxChange = async (event) => {
+      const updatedIsOnline = event.target.checked;
 
-      setIsOnline(isChecked);
-      localStorage.setItem(`speeldag_${speeldag._id}_online`, isChecked);
+      try {
+        await updateSpeeldagIsOnline(speeldag._id, updatedIsOnline); // Gebruik de functie hier
+        // Werk de lijst met speeldagen bij na het patchen
+        const updatedSpeeldagen = await getSpeeldagen();
+        setSpeeldagen(updatedSpeeldagen);
+      } catch (error) {
+        console.error('Error updating speeldag:', error);
+      }
     };
 
     return (
@@ -108,10 +114,8 @@ export default function Speeldagen() {
           <input
             type='checkbox'
             name='online'
-            checked={
-              localStorage.getItem(`speeldag_${speeldag._id}_online`) === 'true'
-            }
-            onChange={(e) => handleCheckboxChange(e, speeldag._id)}
+            checked={speeldag.isOnline}
+            onChange={handleCheckboxChange}
           />
         </div>
         <WedstrijdAdmin wedstrijden={wedstrijden} />

@@ -27,7 +27,7 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
         {speeldagen
           .slice()
           .reverse()
-          .filter((speeldag) => speeldagStatus[speeldag._id])
+          .filter((speeldag) => speeldag.isOnline === true)
           .map((speeldag, reversedIndex) => {
             const originalIndex = speeldagen.length - 1 - reversedIndex;
             return (

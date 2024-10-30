@@ -5,14 +5,7 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
   const [speeldagStatus, setSpeeldagStatus] = useState({});
 
   useEffect(() => {
-    const statusobj = {};
-
-    speeldagen.forEach((speeldag) => {
-      const status = localStorage.getItem(`speeldag_${speeldag._id}_online`);
-      statusobj[speeldag._id] = status === 'true';
-    });
-
-    setSpeeldagStatus(statusobj);
+    console.log('Speeldagen:', speeldagen);
   }, [speeldagen]);
 
   const handleClick = (index) => {
@@ -20,18 +13,24 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
     setSelectedIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  const filteredSpeeldagen = speeldagen.filter((speeldag) => speeldag.isOnline);
+
   return (
     <>
       <h1 id='seizoenTitle'>Seizoen 24-25</h1>
       <ul id='speeldagenList'>
-        {speeldagen
-          .slice()
-          .reverse()
-          .filter((speeldag) => speeldag.isOnline === true)
+        {filteredSpeeldagen
+          .slice() // Maak een kopie van de array
+          .reverse() // Omgekeerde volgorde
           .map((speeldag, reversedIndex) => {
-            const originalIndex = speeldagen.length - 1 - reversedIndex;
+            // Gebruik de originele index voor de nummering
+            const originalIndex = speeldagen.findIndex(
+              (s) => s._id === speeldag._id
+            );
             return (
-              <li key={originalIndex}>
+              <li key={speeldag._id}>
+                {' '}
+                {/* Gebruik de _id voor een unieke key */}
                 <button
                   onClick={() => handleClick(originalIndex)}
                   style={
@@ -40,7 +39,7 @@ export default function SeizoenPanel({ onClick, speeldagen }) {
                       : null
                   }
                 >
-                  Speeldag {originalIndex + 1}
+                  Speeldag {originalIndex + 1} {/* Originele nummering */}
                 </button>
               </li>
             );

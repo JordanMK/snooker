@@ -31,6 +31,10 @@ export default function Home() {
       .catch((error) => console.error(error.message));
   }, []);
 
+  useEffect(() => {
+    console.log('Speeldagen na update: ', speeldagen);
+  }, [speeldagen]);
+
   return (
     <div className='pageContainer'>
       <div className='smallColumn'>

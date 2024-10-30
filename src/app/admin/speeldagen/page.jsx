@@ -82,10 +82,9 @@ export default function Speeldagen() {
       const updatedIsOnline = event.target.checked;
 
       try {
-        await updateSpeeldagIsOnline(speeldag._id, updatedIsOnline); // Gebruik de functie hier
-        // Werk de lijst met speeldagen bij na het patchen
-        const updatedSpeeldagen = await getSpeeldagen();
-        setSpeeldagen(updatedSpeeldagen);
+        await updateSpeeldagIsOnline(speeldag._id, updatedIsOnline); // Update de speeldag
+        const updatedSpeeldagen = await getSpeeldagen(); // Haal opnieuw alle speeldagen op
+        setSpeeldagen(updatedSpeeldagen); // Update de status in de UI
       } catch (error) {
         console.error('Error updating speeldag:', error);
       }

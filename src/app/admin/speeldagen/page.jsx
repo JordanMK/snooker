@@ -43,6 +43,10 @@ export default function Speeldagen() {
       .catch((error) => console.error(error.message));
   }, [seizoenId]);
 
+  useEffect(() => {
+    console.log('speeldagen: ', speeldagen);
+  });
+
   return (
     <>
       <div className='header'>
@@ -77,6 +81,8 @@ export default function Speeldagen() {
       _id,
       wedstrijden,
     } = speeldag;
+
+    console.log('Wedstrijden', wedstrijden);
 
     const handleCheckboxChange = async (event) => {
       const updatedIsOnline = event.target.checked;

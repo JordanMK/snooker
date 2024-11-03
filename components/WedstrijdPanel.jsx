@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./components.css";
 import { getSpeeldag, patchSpeeldagVote, putSpeeldagVote, getUserVotesBySpeeldagId, getUser } from "@/src/api_calls"
 
-export default function WedstrijdPanel({ speeldag_id }) {
+export default function WedstrijdPanel({ speeldagId }) {
   const [state, setState] = useState({
     speeldag: null,
     loading: true,
@@ -16,7 +16,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const speeldag = await getSpeeldag(speeldag_id);
+        const speeldag = await getSpeeldag(speeldagId);
         setState(prevState => ({ ...prevState, speeldag, loading: false, error: null }));
         await fetchUserVotes();
       } catch (error) {
@@ -25,11 +25,11 @@ export default function WedstrijdPanel({ speeldag_id }) {
       }
     };
     fetchData();
-  }, [speeldag_id]);
+  }, [speeldagId]);
 
   const fetchUserVotes = async () => {
     try {
-      const speeldagVotes = await getUserVotesBySpeeldagId(speeldag_id);
+      const speeldagVotes = await getUserVotesBySpeeldagId(speeldagId);
       setState(prevState => ({
         ...prevState,
         speeldagVoteID: speeldagVotes._id,
@@ -39,7 +39,7 @@ export default function WedstrijdPanel({ speeldag_id }) {
 
       if (speeldagVotes.wedstrijdVotes && speeldagVotes.wedstrijdVotes.length > 0) {
         speeldagVotes.wedstrijdVotes.forEach(vote => {
-          // TODO(urgent): wedstrijden can be removed and this vote still refers to a non-existent
+          // TODO: wedstrijden can be removed and this vote still refers to a non-existent
           // wedstrijd, are we supposed to handle this?
           if (vote.wedstrijd == null) {
             console.warn(`vote ${vote._id} refers to non-existent wedstrijd`)
@@ -81,26 +81,24 @@ export default function WedstrijdPanel({ speeldag_id }) {
 
   return (
     <>
-      <div>
-        <p className="speeldagTitel">Speeldag</p>
-        {state.loading && !state.speeldag ? (
-          <div>Loading...</div>
-        ) : state.error ? (
-          <div>Error: {state.error}</div>
-        ) : (
-          <>
-            {state.speeldag && (
-              <>
-                {!isBeforeToday(state.speeldag.eindDatum) ? (
-                  <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
-                ) : (
-                  <VoteResultPanel state={state} />
-                )}
-              </>
-            )}
-          </>
-        )}
-      </div>
+      <p className="speeldagTitel">Speeldag</p>
+      {state.loading && !state.speeldag ? (
+        <div>Loading...</div>
+      ) : state.error ? (
+        <div>Error: {state.error}</div>
+      ) : (
+        <>
+          {state.speeldag && (
+            <>
+              {!isBeforeToday(state.speeldag.eindDatum) ? (
+                <VotePanel state={state} handleOptionChange={handleOptionChange} onJokerChange={handleJokerChange} onSchiftingsVraagChange={handleSchiftingsvraagChange} />
+              ) : (
+                <VoteResultPanel state={state} />
+              )}
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }

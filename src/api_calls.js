@@ -79,12 +79,16 @@ const request = (method, extraUrl, bodyObj) => {
 }
 
 export const getSpeeldagen = async () => {
-  // FIXME: why only one?
   const [season] = await get("/seizoenen")
   const speeldagen = season.speeldagen
   speeldagen.seizoenID = season._id
   return speeldagen
 }
+
+export const getSpeeldagenBySeizoenId = (seasonId) => get(`/seizoenen/${seasonId}/speeldagen`)
+
+export const updateSpeeldagIsOnline = (speeldagId, isOnline) => put(`/speeldagen/${speeldagId}/isOnline`, { isOnline })
+
 export const getSpeeldag = (id) => get(`/speeldagen/${id}`)
 
 export const getSeizoenen = () => get("/seizoenen")

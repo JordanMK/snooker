@@ -22,6 +22,7 @@ export default function PasWedstrijdAan({
 			"awayTeam",
 			"resultaat",
 		].map((field) => formData.get(field));
+    // TODO: why is resultaat both defined in props and retrieved from the form?
 
 		patchWedstrijd(date, homeTeam, awayTeam, result, id, seizoenId)
 			.then(router.reload)

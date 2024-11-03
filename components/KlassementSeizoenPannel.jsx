@@ -3,20 +3,20 @@ import { getUser, getKlassementSeizoen } from '@/src/api_calls';
 import '@/styles/Klassement.css';
 import 'react-bootstrap';
 
-export default function KlassementSeizoenPannel({ seizoen_id }) {
-  console.log('seizoen_id in klassementSeizoen', seizoen_id);
+export default function KlassementSeizoenPannel({ seasonId }) {
   const [klassement, setKlassement] = useState([]);
 
   useEffect(() => {
-    if (seizoen_id) {
-      getKlassementSeizoen(seizoen_id)
+    if (seasonId) {
+      getKlassementSeizoen(seasonId)
         .then((klassement) => {
           return Promise.all(
             klassement.map((item) =>
-              getUser(item.user).then((user) => {
-                item.user = user.username;
-                return item;
-              })
+              getUser(item.user)
+                .then((user) => {
+                  item.user = user.username;
+                  return item;
+                })
             )
           );
         })
@@ -27,18 +27,17 @@ export default function KlassementSeizoenPannel({ seizoen_id }) {
           console.error(error.message);
         });
     }
-  }, [seizoen_id]);
+  }, [seasonId]);
 
   return (
     <>
-      {console.log('klassement', klassement)}
       {klassement.length > 0 && (
         <>
-          <div className=''>
-            <div className='panelKlassement'>
-              <div className='klassementSpeeldag'>
+          <div className="">
+            <div className="panelKlassement">
+              <div className="klassementSpeeldag">
                 <h1>Klassement Seizoen</h1>
-                <table className='styled-table'>
+                <table className="styled-table">
                   <thead>
                     <tr>
                       <th>Plaats</th>

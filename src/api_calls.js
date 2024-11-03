@@ -205,20 +205,3 @@ export const getUserVotesBySpeeldagId = (speeldagId) => {
   const loggedInUser = localStorage.getItem("userID")
   return get(`/speeldagVotes/${speeldagId}/${loggedInUser}/votes`)
 }
-
-// TODO: use
-// TODO: eventually convert user._id to user.id
-
-/**
- * @typedef User
- * @prop {number} _id
- * @prop {string} email
- * @prop {boolean} admin
- */
-
-/**
- * @returns {Promise<User>}
- * @param {string} email
- * @param {string} password
- */
-export const login = (email, password) => post("/auth/login", { email: email.toLowerCase(), password })

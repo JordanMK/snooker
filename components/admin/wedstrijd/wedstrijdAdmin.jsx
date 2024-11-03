@@ -1,13 +1,12 @@
-import React from "react";
-import { deleteWedstrijd } from "@/src/api_calls";
-import AdminPopup from "@/components/Popup";
-import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
-
+import React from 'react';
+import { deleteWedstrijd } from '@/src/api_calls';
+import AdminPopup from '@/components/Popup';
+import PasWedstrijdAan from '@/components/admin/wedstrijd/PasWedstrijdAan';
 
 export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
   const handleVerwijderClick = (wedstrijdId) => {
     if (
-      window.confirm("Weet je zeker dat je deze wedstrijd wilt verwijderen?")
+      window.confirm('Weet je zeker dat je deze wedstrijd wilt verwijderen?')
     ) {
       deleteWedstrijd(wedstrijdId);
       setTimeout(() => {
@@ -22,7 +21,7 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
         {wedstrijden.map((wedstrijd) => (
           <li key={wedstrijd._id}>
             Thuis: {wedstrijd.thuis} - Uit: {wedstrijd.uit}
-            <AdminPopup triggerButtonName="Pas aan">
+            <AdminPopup triggerButtonName='Pas aan'>
               <PasWedstrijdAan
                 id={wedstrijd._id}
                 thuis={wedstrijd.thuis}
@@ -46,8 +45,8 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
             />
               */}
             <button
-              className="btn btn-light btn-sm m-1"
-              id="delete"
+              className='btn btn-light btn-sm m-1'
+              id='delete'
               onClick={() => handleVerwijderClick(wedstrijd._id)}
             >
               Verwijder

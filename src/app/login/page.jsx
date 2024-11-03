@@ -24,7 +24,7 @@ export default function Login() {
 			return;
 		}
 
-    // TODO: replace with api call login()
+		// TODO: replace with api call login()
 
 		try {
 			const response = await fetch("http://localhost:3001/api/auth/login", {
@@ -33,13 +33,14 @@ export default function Login() {
 					"Content-Type": "application/json",
 				}),
 				body: JSON.stringify({ email: email.toLowerCase(), password }), // Convert email to lowercase
+				credentials: "include",
 			});
 
 			if (response.ok) {
 				const data = await response.json();
 				localStorage.setItem("userID", data.user._id);
 				localStorage.setItem("userMail", data.user.email);
-				localStorage.setItem("admin", data.user.admin);
+				//localStorage.setItem("admin", data.user.admin);
 
 				window.location.href = "/";
 			} else {

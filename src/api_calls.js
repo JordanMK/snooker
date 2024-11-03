@@ -41,8 +41,9 @@ const assert = (cond) => {
  * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} method
  * @param {string} extraUrl
  * @param {object | undefined} bodyObj
+ * @param {object | undefined} extraFetchOpts
  */
-const request = (method, extraUrl, bodyObj) => {
+const request = (method, extraUrl, bodyObj, extraFetchOpts) => {
   if (extraUrl[0] === "/") extraUrl = extraUrl.slice(1)
   const url = new URL(extraUrl, BASE_URL).toString()
 
@@ -50,6 +51,7 @@ const request = (method, extraUrl, bodyObj) => {
     method,
     headers: new Headers({ "Content-Type": "application/json" }),
     body: bodyObj != undefined ? JSON.stringify(bodyObj) : null,
+    ...extraFetchOpts,
   }
 
   return new Promise(async (resolve, reject) => {
@@ -115,8 +117,6 @@ export const getSeizoenen = () => get("/seizoenen")
  * @prop {boolean} seizoenBeeindigd
  * @prop {number} aantalJokers
  */
-
-// TODO: create a post() and get() abstraction
 
 /**
  * @param {SeasonInput} season
@@ -208,4 +208,12 @@ export const patchSpeeldagVote = (obj, voteId) => patch(`/speeldagVotes/${voteId
 export const getUserVotesBySpeeldagId = (speeldagId) => {
   const loggedInUser = localStorage.getItem("userID")
   return get(`/speeldagVotes/${speeldagId}/${loggedInUser}/votes`)
+}
+
+/**
+ * @returns {boolean}
+ */
+export const getAdminStatus = async () => {
+  const data = await request("GET", "/auth/status", undefined, { credentials: "include" })
+  return data.isAdmin
 }

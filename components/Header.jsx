@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./components.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
-import { getAdminStatus } from "../src/adminStatus.js";
+import { getAdminStatus } from "@/src/api_calls";
 
 const isClientSideRender = () => typeof window !== 'undefined';
 

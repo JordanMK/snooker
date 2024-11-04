@@ -64,7 +64,7 @@ export default function Home() {
         </div>
         <div>
           {showklassementSeizoenPanel ? (
-            <KlassementSeizoenPannel speeldagId={speeldagen.seizoenID} />
+            <KlassementSeizoenPannel seasonId={speeldagen.seizoenID} />
           ) : (
             <>
               {leftPanelSelected ? (

@@ -9,7 +9,6 @@ import WedstrijdAdmin from '@/components/admin/wedstrijd/wedstrijdAdmin';
 
 import {
   getSpeeldagen,
-  beeindigSeizoen,
   patchSpeeldag,
   updateKlassementen,
   getSpeeldagenBySeizoenId,
@@ -39,13 +38,8 @@ export default function Speeldagen() {
     }
     getSpeeldagenBySeizoenId(seizoenId)
       .then(setSpeeldagen)
-      .then(console.log)
       .catch((error) => console.error(error.message));
   }, [seizoenId]);
-
-  useEffect(() => {
-    console.log('speeldagen: ', speeldagen);
-  });
 
   return (
     <>

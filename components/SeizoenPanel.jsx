@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 export default function SeizoenPanel({ onClick, speeldagen }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [speeldagStatus, setSpeeldagStatus] = useState({});
-
-  useEffect(() => {
-    console.log('Speeldagen:', speeldagen);
-  }, [speeldagen]);
 
   const handleClick = (index) => {
     onClick(index);

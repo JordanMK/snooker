@@ -118,6 +118,8 @@ export default function WedstrijdPanel({ speeldagId }) {
 		return new Date(datum) < new Date();
 	}
 
+  console.warn("TRACE:", state.speeldag)
+
 	return (
 		<>
 			<p className="speeldagTitel">Speeldag</p>

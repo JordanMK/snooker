@@ -31,19 +31,6 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
                 seizoenId={seizoenID}
               />
             </AdminPopup>
-            {/*
-            <AdminPopup
-              popupContent={PasWedstrijdAan(
-                wedstrijd._id,
-                wedstrijd.thuis,
-                wedstrijd.uit,
-                wedstrijd.datum,
-                wedstrijd.resultaat,
-                seizoenID
-              )}
-              triggerButtonName="Pas aan"
-            />
-              */}
             <button
               className='btn btn-light btn-sm m-1'
               id='delete'

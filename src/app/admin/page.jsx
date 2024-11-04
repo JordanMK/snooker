@@ -7,9 +7,9 @@ import { useEffect } from 'react'
 export default function Home() {
   const router = useRouter()
 
+  // TODO: use getAdminState from api calls
   useEffect(() => {
     const isAdmin = localStorage.getItem('admin')
-    console.log(isAdmin)
     if (isAdmin === 'false') {
       router.push('/')
     }
@@ -24,6 +24,6 @@ export default function Home() {
         <LijstSeizoen></LijstSeizoen>
         <Users></Users>
       </div>
-      </>
+    </>
   )
 }

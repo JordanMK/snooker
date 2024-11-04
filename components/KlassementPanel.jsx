@@ -8,42 +8,35 @@ import "@/styles/Klassement.css"
 import "react-bootstrap"
 
 // TODO: cleanup
-export default function KlassementPanel(speeldag_id) {
+export default function KlassementPanel({ speeldagId }) {
   // TODO: unused
   const [speeldagen, setSpeeldagen] = useState([])
   const [speeldag, setSpeeldag] = useState([])
   const [klassement, setKlassement] = useState([])
   const [isLoading, setIsLoading] = useState(true) // Track loading state
 
-  useEffect(() => {
-    getSpeeldagen()
-      .then((speeldagen) => {
-        setSpeeldagen(speeldagen)
-        setSpeeldag(speeldagen.find((speeldag) => speeldag._id == speeldag_id.speeldag_id))
-        return getKlassementSpeeldag(speeldag_id.speeldag_id)
-      })
-      .then((klassement) => {
-        return Promise.all(
-          klassement.map((item) =>
-            getUser(item.user).then((user) => {
-              item.user = user.username
-              return item
-            })
-          )
-        )
-      })
-      .then((modifiedKlassement) => {
-        setKlassement(modifiedKlassement)
-      })
-      .then(
-    )
-      .catch((error) => {
-        console.error(error.message)
-      })
-      .finally(() => {
-        setIsLoading(false) // Update loading state when done
-      })
-  }, [speeldag_id.speeldag_id])
+  const onMount = async () => {
+    try {
+      const speeldagen = await getSpeeldagen()
+      setSpeeldagen(speeldagen)
+      setSpeeldag(speeldagen.find(s => s._id === speeldagId))
+
+      const speeldag = await getKlassementSpeeldag(speeldagId)
+      await Promise.all(speeldag.klassement.map(item => {
+        const user = getUser(item.user)
+        item.user = user.username
+        return item
+      }))
+
+      setKlassement(klassement)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => { onMount() }, [speeldagId])
 
   // Render only when klassement is no longer undefined
   if (isLoading) {
@@ -53,42 +46,38 @@ export default function KlassementPanel(speeldag_id) {
   return (
     <>
       {klassement && klassement.length > 0 && (
-        <>
-          <div className="">
-            <div className="panelKlassement">
-              <div className="klassementSpeeldag">
-                <h1>Klassement Speeldag</h1>
-                <p>Resultaat Schiftingsvraag: <strong>{speeldag.schiftingsantwoord}</strong></p>
-                <table className="styled-table">
-                  <thead>
-                    <tr>
-                      <th>Plaats</th>
-                      <th>Naam</th>
-                      <th>Score</th>
-                      <th>Heeft joker gebruikt</th>
-                      {isBeforeToday(speeldag.eindDatum) && (<th>Antwoord SchiftingsVraag</th>)}
+        <div className="">
+          <div className="panelKlassement">
+            <div className="klassementSpeeldag">
+              <h1>Klassement Speeldag</h1>
+              <p>Resultaat Schiftingsvraag: <strong>{speeldag.schiftingsantwoord}</strong></p>
+              <table className="styled-table">
+                <thead>
+                  <tr>
+                    <th>Plaats</th>
+                    <th>Naam</th>
+                    <th>Score</th>
+                    <th>Heeft joker gebruikt</th>
+                    {isBeforeToday(speeldag.eindDatum) && (<th>Antwoord SchiftingsVraag</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {klassement.map((item) => (
+                    <tr key={item._id}>
+                      <td>{item.plaats}</td>
+                      <td>{item.user}</td>
+                      <td>{item.score}</td>
+                      <td>{item.jokerGebruikt ? "Ja" : "Nee"}</td>
+                      {isBeforeToday(speeldag.eindDatum) && (<td>{item.SchiftingsvraagAntwoord}</td>)}
+
                     </tr>
-                  </thead>
-                  <tbody>
-                    {klassement.map((item) => (
-                      <>
-                        <tr key={item._id}>
-                          <td>{item.plaats}</td>
-                          <td>{item.user}</td>
-                          <td>{item.score}</td>
-                          <td>{item.jokerGebruikt ? "Ja" : "Nee"}</td>
-                          {isBeforeToday(speeldag.eindDatum) && (<td>{item.SchiftingsvraagAntwoord}</td>)}
 
-                        </tr>
-                      </>
-
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </>
+        </div>
       )}
       {klassement && klassement.length === 0 && (
         <p>Geen speeldagKlassement beschikbaar</p>

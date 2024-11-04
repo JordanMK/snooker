@@ -24,22 +24,30 @@ import { Form, Button } from 'react-bootstrap';
 export default function Speeldagen() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [speeldagen, setSpeeldagen] = useState([]);
-
   const seizoenId = searchParams.get('seizoenId');
-  console.log(seizoenId);
+
+  const [speeldagen, setSpeeldagen] = useState([]);
 
   useEffect(() => {
     const isAdmin = localStorage.getItem('admin');
-    console.log(isAdmin);
     if (isAdmin === 'false') {
       router.push('/');
       return;
     }
     getSpeeldagenBySeizoenId(seizoenId)
       .then(setSpeeldagen)
-      .catch((error) => console.error(error.message));
+      .catch(console.error);
   }, [seizoenId]);
+
+  const updateIsOnline = async (speeldagId, online) => {
+    try {
+      await updateSpeeldagIsOnline(speeldagId, online); // Update de speeldag
+      const updatedSpeeldagen = await getSpeeldagen(); // Haal opnieuw alle speeldagen op
+      setSpeeldagen(updatedSpeeldagen); // Update de status in de UI
+    } catch (error) {
+      console.error('Error updating speeldag:', error);
+    }
+  }
 
   return (
     <>
@@ -58,6 +66,7 @@ export default function Speeldagen() {
               <Speeldag
                 speeldag={speeldag}
                 number={speeldagen.length - idx}
+                updateIsOnline={updateIsOnline}
                 key={speeldag._id}
               />
             ))}
@@ -65,62 +74,53 @@ export default function Speeldagen() {
       </div>
     </>
   );
+}
 
-  function Speeldag({ speeldag, number }) {
-    const {
-      schiftingsvraag,
-      schiftingsantwoord,
-      startDatum,
-      eindDatum,
-      _id,
-      wedstrijden,
-    } = speeldag;
+function Speeldag({ speeldag, number, updateIsOnline }) {
+  const {
+    schiftingsvraag,
+    schiftingsantwoord,
+    startDatum,
+    eindDatum,
+    _id,
+    wedstrijden,
+    isOnline,
+  } = speeldag;
 
-    console.log('Wedstrijden', wedstrijden);
-
-    const handleCheckboxChange = async (event) => {
-      const updatedIsOnline = event.target.checked;
-
-      try {
-        await updateSpeeldagIsOnline(speeldag._id, updatedIsOnline); // Update de speeldag
-        const updatedSpeeldagen = await getSpeeldagen(); // Haal opnieuw alle speeldagen op
-        setSpeeldagen(updatedSpeeldagen); // Update de status in de UI
-      } catch (error) {
-        console.error('Error updating speeldag:', error);
-      }
-    };
-
-    return (
-      <li>
-        <div className='speeldagHead'>
-          <h2>Speeldag {number}</h2>
-
-          <AdminPopup triggerButtonName='Pas aan'>
-            <PasSpeeldagAan
-              schiftingsvraag={schiftingsvraag}
-              schiftingsantwoord={schiftingsantwoord}
-              startDatum={startDatum}
-              eindDatum={eindDatum}
-              speeldagId={_id}
-            />
-          </AdminPopup>
-
-          <AdminPopup triggerButtonName='Nieuwe wedstrijd'>
-            <WedstrijdForm id={_id} />
-          </AdminPopup>
-
-          <label htmlFor='online'>Zet speeldag online: </label>
-          <input
-            type='checkbox'
-            name='online'
-            checked={speeldag.isOnline}
-            onChange={handleCheckboxChange}
-          />
-        </div>
-        <WedstrijdAdmin wedstrijden={wedstrijden} />
-      </li>
-    );
+  const onCheckboxChange = (event) => {
+    updateIsOnline(_id, event.target.checked)
   }
+
+  return (
+    <li>
+      <div className='speeldagHead'>
+        <h2>Speeldag {number}</h2>
+
+        <AdminPopup triggerButtonName='Pas aan'>
+          <PasSpeeldagAan
+            schiftingsvraag={schiftingsvraag}
+            schiftingsantwoord={schiftingsantwoord}
+            startDatum={startDatum}
+            eindDatum={eindDatum}
+            speeldagId={_id}
+          />
+        </AdminPopup>
+
+        <AdminPopup triggerButtonName='Nieuwe wedstrijd'>
+          <WedstrijdForm id={_id} />
+        </AdminPopup>
+
+        <label htmlFor='online'>Zet speeldag online: </label>
+        <input
+          type='checkbox'
+          name='online'
+          checked={isOnline}
+          onChange={onCheckboxChange}
+        />
+      </div>
+      <WedstrijdAdmin wedstrijden={wedstrijden} />
+    </li>
+  );
 }
 
 function PasSpeeldagAan({
@@ -133,14 +133,12 @@ function PasSpeeldagAan({
   const searchParams = useSearchParams();
   const seizoenId = searchParams.get('seizoenId');
 
-  // TODO: how is this supposed to work?
   const formattedStartDatum = formattedDate(new Date(startDatum));
   const formattedStartUur = formattedTime(new Date(startDatum));
 
   const formattedEindDatum = formattedDate(new Date(eindDatum));
   const formattedEindUur = formattedTime(new Date(eindDatum));
 
-  console.log('datum', formattedDate);
   function handlePatchSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -161,9 +159,7 @@ function PasSpeeldagAan({
       eindDate,
       speeldagId
     )
-      .then((data) => {
-        // Handle success, if needed
-        console.log('Wedstrijd patched successfully:', data);
+      .then(() => {
         updateKlassementen(seizoenId);
         setTimeout(() => {
           window.location.reload();

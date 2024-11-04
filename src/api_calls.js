@@ -198,7 +198,7 @@ export const updateKlassementen = async (seasonId) => {
 };
 
 export const updateSpeeldagKlassement = (speeldagId) =>
-	post(`/speeldagen/${speeldagId}/klassement`);
+	post(`/speeldagen/${speeldagId}/klassement`, {});
 
 export const patchSpeeldag = async (
 	schiftingsvraag,

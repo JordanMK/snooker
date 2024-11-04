@@ -17,24 +17,29 @@ export default function KlassementPanel({ speeldagId }) {
 
   const onMount = async () => {
     try {
-      const speeldagen = await getSpeeldagen()
-      setSpeeldagen(speeldagen)
-      setSpeeldag(speeldagen.find(s => s._id === speeldagId))
+      const speeldagen = await getSpeeldagen();
+      setSpeeldagen(speeldagen);
+      setSpeeldag(speeldagen.find((s) => s._id === speeldagId));
 
-      const speeldag = await getKlassementSpeeldag(speeldagId)
-      await Promise.all(speeldag.klassement.map(item => {
-        const user = getUser(item.user)
-        item.user = user.username
-        return item
-      }))
+      const speeldagKlassement = await getKlassementSpeeldag(speeldagId);
+      console.log('Speeldag Klassement:', speeldagKlassement);
 
-      setKlassement(klassement)
+      const updatedKlassement = await Promise.all(
+        speeldagKlassement.klassement.map(async (item) => {
+          const user = await getUser(item.user);
+          item.user = user.username;
+          return item;
+        })
+      );
+
+      console.log('Updated Klassement:', updatedKlassement);
+      setKlassement(updatedKlassement);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => { onMount() }, [speeldagId])
 

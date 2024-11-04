@@ -5,11 +5,12 @@ import 'react-bootstrap';
 
 export default function KlassementSeizoenPannel({ seasonId }) {
   const [klassement, setKlassement] = useState([]);
-
+  
   useEffect(() => {
     if (seasonId) {
       getKlassementSeizoen(seasonId)
         .then((klassement) => {
+          console.log('Seizoen Klassement:', klassement);
           return Promise.all(
             klassement.map((item) =>
               getUser(item.user)
@@ -21,10 +22,11 @@ export default function KlassementSeizoenPannel({ seasonId }) {
           );
         })
         .then((modifiedKlassement) => {
+          console.log('Updated Klassement:', modifiedKlassement);
           setKlassement(modifiedKlassement);
         })
         .catch((error) => {
-          console.error(error.message);
+          console.error('Error fetching klassement:', error.message);
         });
     }
   }, [seasonId]);

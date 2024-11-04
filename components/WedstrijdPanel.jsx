@@ -118,8 +118,6 @@ export default function WedstrijdPanel({ speeldagId }) {
 		return new Date(datum) < new Date();
 	}
 
-  console.warn("TRACE:", state.speeldag)
-
 	return (
 		<>
 			<p className="speeldagTitel">Speeldag</p>
@@ -303,10 +301,11 @@ const JokerEnSchiftingsvraagPanel = ({
 	state,
 	onJokerChange,
 	onSchiftingsVraagChange,
+  inputsDisabled=false,
 }) => {
 	return (
 		<>
-			<h2>vul schiftingsvraag in</h2>
+			<h2>Vul schiftingsvraag in</h2>
 			<div className="jokerContainer checkbox-wrapper-13">
 				<label htmlFor="c1-13">Gebruik joker?</label>
 				<input
@@ -314,8 +313,11 @@ const JokerEnSchiftingsvraagPanel = ({
 					id="c1-13"
 					checked={state.jokerChecked} // Use checked instead of defaultChecked
 					onChange={onJokerChange}
+          disabled={inputsDisabled}
 				/>
 			</div>
+      {/* TODO(arthur): make this a select */}
+      {/* TODO: client side validation on this form, currently dumps js error in the users face */}
 			<div className="schiftingsContainer">
 				<h4>Schiftingsvraag:</h4>
 				<label htmlFor="schiftingsvraag">
@@ -329,6 +331,7 @@ const JokerEnSchiftingsvraagPanel = ({
 					defaultValue={state.schiftingsAntwoord}
 					onChange={onSchiftingsVraagChange}
 					required
+          disabled={inputsDisabled}
 				/>
 			</div>
 		</>
@@ -444,6 +447,7 @@ const VoteResultPanel = ({ state }) => {
 				state={state}
 				onJokerChange={() => {}}
 				onSchiftingsVraagChange={() => {}}
+        inputsDisabled={true}
 			/>
 		</>
 	);

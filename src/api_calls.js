@@ -26,7 +26,7 @@ const patch = (extraUrl, bodyObj) => {
 
 const put = (extraUrl, bodyObj) => {
   assert(bodyObj != null)
-  return request("PUT", extraUrl)
+  return request("PUT", extraUrl, bodyObj)
 }
 
 const delete_ = (extraUrl) => request("DELETE", extraUrl)
@@ -75,7 +75,7 @@ const request = (method, extraUrl, bodyObj, extraFetchOpts) => {
 
       reject(new Error(errorMessage))
     } catch (error) {
-      reject(new Error(`Failed to reach api: ${error.message}`, { cause: error }))
+      reject(new Error(`Failed to reach api(${url}): ${error.message}`, { cause: error }))
     }
   })
 }

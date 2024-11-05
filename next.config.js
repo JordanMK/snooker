@@ -11,6 +11,9 @@ const nextConfig = {
       "@/styles": path.resolve(__dirname, "src", "styles")
     }
     return config
+  },
+  env: {
+    API_URL: process.env.API_URL,
   }
 };
 

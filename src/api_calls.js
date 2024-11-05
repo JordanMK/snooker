@@ -1,11 +1,7 @@
-// when placing env variables in a .env.local, prefixed with a NEXT_PUBLIC_, nextjs
-// will inline those variables in the build, removing the possiblility to obtain them
-// at runtime, TODO: make these non inlined
-
 const BASE_URL = (function () {
-	const url = process.env.NEXT_PUBLIC_API_URL;
+	const url = process.env.API_URL;
 	if (!url) {
-		throw new Error("env variable NEXT_PUBLIC_API_URL must be set");
+		throw new Error("env variable API_URL must be set");
 	}
 	// URL constructor in request() requires base to have a trailing slash
 	// otherwise it ignores segments

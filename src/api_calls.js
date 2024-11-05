@@ -97,6 +97,9 @@ export const getSpeeldag = (id) => get(`/speeldagen/${id}`);
 
 export const getSeizoenen = () => get("/seizoenen");
 
+export const updateSeizoenIsOnline = (seizoenId, isOnline) =>
+	put(`/seizoenen/${seizoenId}/isOnline`, { isOnline });
+
 /**
  * Season returned from the api.
  * @typedef Season

@@ -40,6 +40,9 @@ export default function SeizoenPanel({ onClick, onSelect }) {
 	const ShowSeasons = () => {
 		if (seasons == null) return;
 		if (seasons.length === 0) return <p>Er zijn geen seizoenen beschikbaar</p>;
+		const filterSeasons = seasons.filter((season) => season.isOnline);
+		if (filterSeasons.length === 1)
+			return <p id="seizoenTitle">{filterSeasons[0].name}</p>;
 		return (
 			<select
 				id="seizoenTitle"
@@ -51,13 +54,15 @@ export default function SeizoenPanel({ onClick, onSelect }) {
 					console.log(event.target);
 				}}
 			>
-				{seasons.map((season, key) => {
-					return (
-						<option key={key} value={season._id}>
-							{season.name}
-						</option>
-					);
-				})}
+				{seasons
+					.filter((season) => season.isOnline)
+					.map((season, key) => {
+						return (
+							<option key={key} value={season._id}>
+								{season.name}
+							</option>
+						);
+					})}
 			</select>
 		);
 	};

@@ -280,23 +280,6 @@ const VotePanel = ({
 	);
 };
 
-const SchiftingsvraagInfo = ({
-	schiftingsvraag,
-	schiftingsAntwoord,
-	jokerChecked,
-}) => {
-	return (
-		<>
-			<p>Schiftingsvraag: {schiftingsvraag}</p>
-			<p>jouw antwoord: {schiftingsAntwoord}</p>
-			<p>
-				joker gebruikt:{" "}
-				<input type="checkbox" checked={jokerChecked || false} />
-			</p>
-		</>
-	);
-};
-
 const JokerEnSchiftingsvraagPanel = ({
 	state,
 	onJokerChange,

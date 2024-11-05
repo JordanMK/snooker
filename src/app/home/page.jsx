@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <div className="pageContainer">
       <div className="smallColumn">
-        <SeizoenPanel onClick={onSelectSpeeldag} speeldagen={speeldagen} />
+        <SeizoenPanel onClick={onSelectSpeeldag} />
       </div>
       <div className="column flexColumn">
         <div className="panelNav">

@@ -13,6 +13,7 @@ import {
   updateKlassementen,
   getSpeeldagenBySeizoenId,
   updateSpeeldagIsOnline,
+  getAdminStatus,
 } from '@/src/api_calls';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,17 +28,24 @@ export default function Speeldagen() {
   const seizoenId = searchParams.get('seizoenId');
 
   const [speeldagen, setSpeeldagen] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  useEffect(() => {
-    const isAdmin = localStorage.getItem('admin');
-    if (isAdmin === 'false') {
-      router.push('/');
-      return;
+  const checkAuthState = async () => {
+    const isAdmin = await getAdminStatus()
+    if (isAdmin) {
+      setIsAdmin(isAdmin)
+
+      getSpeeldagenBySeizoenId(seizoenId)
+        .then(setSpeeldagen)
+        .catch(console.error);
+    } else {
+      router.push("/")
     }
-    getSpeeldagenBySeizoenId(seizoenId)
-      .then(setSpeeldagen)
-      .catch(console.error);
-  }, [seizoenId]);
+  }
+
+  useEffect(() => { checkAuthState() }, [])
+
+  if (!isAdmin) return null
 
   const updateIsOnline = async (speeldagId, online) => {
     try {

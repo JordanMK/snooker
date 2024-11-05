@@ -1,19 +1,27 @@
 "use client"
 import LijstSeizoen from "@/components/admin/LijstSeizoen"
 import Users from "@/components/admin/users/users"
+import { getAdminStatus } from "@/src/api_calls"
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
   const router = useRouter()
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  // TODO: use getAdminState from api calls
-  useEffect(() => {
-    const isAdmin = localStorage.getItem('admin')
-    if (isAdmin === 'false') {
-      router.push('/')
+  const checkAuthState = async () => {
+    const isAdmin = await getAdminStatus()
+    console.info("TRACE: isAdmin", isAdmin)
+    if (isAdmin) {
+      setIsAdmin(isAdmin)
+    } else {
+      router.push("/")
     }
-  }, [])
+  }
+
+  useEffect(() => { checkAuthState() }, [])
+
+  if (!isAdmin) return null
 
   return (
     <>

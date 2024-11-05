@@ -248,7 +248,7 @@ export const getUserVotesBySpeeldagId = (speeldagId) => {
 };
 
 /**
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
 export const getAdminStatus = async () => {
 	const data = await request("GET", "/auth/status", undefined, {

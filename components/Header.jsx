@@ -26,10 +26,7 @@ export default function Header() {
       setUserMail(mail || '');
 
       if (mail) {
-        getAdminStatus().then(adminStatus => {
-          console.log('admin?' + adminStatus);
-          setIsAdmin(adminStatus);
-        });
+        getAdminStatus().then(setIsAdmin);
       }
     }
   }, []);

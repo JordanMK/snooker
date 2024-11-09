@@ -294,7 +294,7 @@ const JokerEnSchiftingsvraagPanel = ({
 				<input
 					type="checkbox"
 					id="c1-13"
-					checked={state.jokerChecked} // Use checked instead of defaultChecked
+					checked={state.jokerChecked ?? false} // Use checked instead of defaultChecked
 					onChange={onJokerChange}
           disabled={inputsDisabled}
 				/>

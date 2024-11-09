@@ -126,7 +126,7 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
           onChange={onCheckboxChange}
         />
       </div>
-      <WedstrijdAdmin wedstrijden={wedstrijden} />
+      {wedstrijden.length > 0 && <WedstrijdAdmin wedstrijden={wedstrijden} />}
     </li>
   );
 }

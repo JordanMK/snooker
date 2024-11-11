@@ -7,116 +7,103 @@ import {
 	getUserVotesBySpeeldagId,
 	getUser,
 } from "@/src/api_calls";
+import { useImmer } from "use-immer";
+import "../src/typedefs"
 
-export default function WedstrijdPanel({ speeldagId }) {
-	const [state, setState] = useState({
+/**
+ * @typedef PanelState
+ * @property {Speeldag} speeldag
+ * @property {boolean} loading
+ * @property {string|null} error
+ * @property {any[]} selectedOptions
+ * @property {boolean} jokerChecked
+ * @property {string} schiftingsAntwoord
+ * @property {string} speeldagVoteID
+ */
+
+/** @type {PanelState} */
+const initialState = {
 		speeldag: null,
 		loading: true,
 		error: null,
 		selectedOptions: [],
 		jokerChecked: false,
 		schiftingsAntwoord: "",
-		speeldagVoteID: {},
-	});
+		speeldagVoteID: "",
+}
+
+export default function WedstrijdPanel({ speeldagId }) {
+  /** @type {[PanelState, import("use-immer").Updater<PanelState>]} */
+  const [state, updateState] = useImmer(initialState)
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const speeldag = await getSpeeldag(speeldagId);
-				setState((prevState) => ({
-					...prevState,
-					speeldag,
-					loading: false,
-					error: null,
-				}));
 				await fetchUserVotes();
+
+        updateState(draft => {
+          draft.speeldag = speeldag
+          draft.loading = false
+          draft.error = null
+        })
 			} catch (error) {
 				console.error(error);
-				setState((prevState) => ({
-					...prevState,
-					loading: false,
-					error: "Error fetching data",
-				}));
+
+        updateState(draft => {
+          draft.loading = false
+          draft.error = "Error fetching data"
+        })
 			}
 		};
+
 		fetchData();
 	}, [speeldagId]);
 
 	const fetchUserVotes = async () => {
 		try {
 			const speeldagVotes = await getUserVotesBySpeeldagId(speeldagId);
-			setState((prevState) => ({
-				...prevState,
-				speeldagVoteID: speeldagVotes._id,
-				jokerChecked: speeldagVotes.jokerGebruikt,
-				schiftingsAntwoord: speeldagVotes.SchiftingsvraagAntwoord,
-			}));
+      updateState(draft => {
+        draft.speeldagVoteID = speeldagVotes._id
+        draft.jokerChecked = speeldagVotes.jokerGebruikt
+        draft.schiftingsAntwoord = speeldagVotes.SchiftingsvraagAntwoord
+      })
 
-			if (
-				speeldagVotes.wedstrijdVotes &&
-				speeldagVotes.wedstrijdVotes.length > 0
-			) {
-				speeldagVotes.wedstrijdVotes.forEach((vote) => {
-					// TODO: wedstrijden can be removed and this vote still refers to a non-existent
-					// wedstrijd, are we supposed to handle this?
-					if (vote.wedstrijd == null) {
-						console.warn(`vote ${vote._id} refers to non-existent wedstrijd`);
-						return;
-					}
-					handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
-				});
-			}
+      speeldagVotes.wedstrijdVotes?.forEach(vote => {
+        // TODO: wedstrijden can be removed and this vote still refers to a non-existent
+        // wedstrijd, are we supposed to handle this?
+        if (vote.wedstrijd == null) {
+          console.warn(`vote ${vote._id} refers to non-existent wedstrijd`);
+          return;
+        }
+        handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
+      })
 		} catch (error) {
 			console.error(error);
-			setState((prevState) => ({
-				...prevState,
-				loading: false,
-				error: "Error fetching data",
-			}));
+      updateState(draft => {
+        draft.loading = false
+        draft.error = "Error fetching data"
+      })
 		}
-	};
+  }
 
-	const handleOptionChange = (matchId, option, wedstrijdId) => {
-		setState((prevState) => {
-			const existingOptionIndex = prevState.selectedOptions.findIndex(
-				(item) => item.wedstrijd === matchId
-			);
-			if (existingOptionIndex !== -1) {
-				const updatedOptions = [...prevState.selectedOptions];
-				updatedOptions[existingOptionIndex] = {
-					...updatedOptions[existingOptionIndex],
-					vote: option,
-				};
-				return { ...prevState, selectedOptions: updatedOptions };
-			} else {
-				return {
-					...prevState,
-					selectedOptions: [
-						...prevState.selectedOptions,
-						{ _id: wedstrijdId, vote: option, wedstrijd: matchId },
-					],
-				};
-			}
-		});
-	};
+	const handleOptionChange = (matchId, option, wedstrijdId) => updateState(draft => {
+    const existingOptionIdx = draft.selectedOptions.findIndex(item => item.wedstrijd === matchId)
+    if (existingOptionIdx !== -1) {
+      draft.selectedOptions[existingOptionIdx].vote = option
+    } else {
+      draft.selectedOptions.push({ _id: wedstrijdId, vote: option, wedstrijd: matchId })
+    }
+  })
 
-	const handleJokerChange = (event) => {
-		setState((prevState) => ({
-			...prevState,
-			jokerChecked: event.target.checked,
-		}));
-	};
+  /** @param {Event} event */
+  const handleJokerChange = (event) => updateState(draft => draft.jokerChecked = event.target.checked)
 
-	const handleSchiftingsvraagChange = (event) => {
-		setState((prevState) => ({
-			...prevState,
-			schiftingsAntwoord: event.target.value,
-		}));
-	};
+  /** @param {Event} event */
+  const handleSchiftingsvraagChange = (event) => updateState(draft => draft.schiftingsAntwoord = event.target.value)
 
-	function isBeforeToday(datum) {
-		return new Date(datum) < new Date();
-	}
+  /** @param {string} dateStr */
+  const isBeforeToday = (dateStr) => new Date(dateStr) < new Date()
 
 	return (
 		<>
@@ -147,6 +134,10 @@ export default function WedstrijdPanel({ speeldagId }) {
 	);
 }
 
+/**
+ * @param {object} props
+ * @param {PanelState} props.state
+ */
 const VotePanel = ({
 	state,
 	handleOptionChange,
@@ -165,7 +156,7 @@ const VotePanel = ({
 				const user = await getUser(loggedInUser);
 				setHasUserPaid(Boolean(user.betaald));
 			} catch (error) {
-				console.error("Failed to get user:", error.message);
+				console.error("Failed to get user:", error);
 			}
 		};
 		checkUserPaymentStatus();
@@ -188,7 +179,7 @@ const VotePanel = ({
 			setSubmitting(false);
 			setSubmissionSuccess(true);
 		} catch (error) {
-			console.error("Failed to post speeldag:", error.message);
+			console.error("Failed to post speeldag:", error);
 			setSubmitting(false);
 			setSubmissionError(error.message);
 		}
@@ -280,13 +271,17 @@ const VotePanel = ({
 	);
 };
 
+/**
+ * @param {object} props
+ * @param {PanelState} props.state
+ */
 const JokerEnSchiftingsvraagPanel = ({
 	state,
 	onJokerChange,
 	onSchiftingsVraagChange,
   inputsDisabled=false,
 }) => {
-	return (
+  return (
 		<>
 			<h2>Vul schiftingsvraag in</h2>
 			<div className="jokerContainer checkbox-wrapper-13">
@@ -321,6 +316,10 @@ const JokerEnSchiftingsvraagPanel = ({
 	);
 };
 
+/**
+ * @param {object} props
+ * @param {PanelState} props.state 
+ */
 const VoteResultPanel = ({ state }) => {
 	// Function to generate circle span element
 	const renderCircle = (matchResult, selectedVote, voteSign) => {

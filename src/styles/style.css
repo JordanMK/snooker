@@ -16,6 +16,7 @@
     width: 40%;
     padding: 10px;
     border-radius: 10px;
+    height: 35rem;
 }
 .seizoen {
     background-color: rgba(0, 0, 0, 0.284);
@@ -82,15 +83,18 @@
 }
 
 .users {
-    margin: 20px;
+    margin: 25px;
     width: 600px;
     background-color: rgb(206, 232, 241);
     width: 40%;
     padding: 10px;
     border-radius: 10px;
     overflow-y: scroll;
-    height: 20rem;
-    
+    height: 35rem;
+}
+
+.users input {
+    margin-bottom: 18px;
 }
 
 .container {

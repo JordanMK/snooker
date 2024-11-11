@@ -11,7 +11,6 @@ export default function Home() {
 
   const checkAuthState = async () => {
     const isAdmin = await getAdminStatus()
-    console.info("TRACE: isAdmin", isAdmin)
     if (isAdmin) {
       setIsAdmin(isAdmin)
     } else {
@@ -26,7 +25,7 @@ export default function Home() {
   return (
     <>
       <div className="header">
-        <h1>Dashboard Admin</h1>
+        <h1>Admin Dashboard</h1>
       </div>
       <div className="container">
         <LijstSeizoen></LijstSeizoen>

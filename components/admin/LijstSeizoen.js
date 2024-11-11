@@ -30,9 +30,9 @@ export default function LijstSeizoen() {
 	return (
 		<>
 			<div className="seizoen-container">
-				<h1>Seizoenen</h1>
+				<h2>Seizoenen</h2>
 				<button type="button" className="" onClick={maakSeizoenClick}>
-					nieuw Seizoen
+					Nieuw Seizoen
 				</button>
 				{seizoenen.map((seizoen) => (
 					<div key={seizoen._id}>

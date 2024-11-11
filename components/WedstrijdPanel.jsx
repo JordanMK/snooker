@@ -191,9 +191,9 @@ const VotePanel = ({
 				<thead>
 					<tr>
 						<th>Match</th>
-						<th>Winst ploeg 1</th>
+						<th>Ploeg 1 wint</th>
 						<th>Gelijkspel</th>
-						<th>Winst ploeg 2</th>
+						<th>Ploeg 2 wint</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -260,13 +260,13 @@ const VotePanel = ({
 						onJokerChange={onJokerChange}
 						onSchiftingsVraagChange={onSchiftingsVraagChange}
 					/>
-					<button onClick={handleSubmit}>Submit</button>
+					<button onClick={handleSubmit}>Verzenden</button>
 				</>
 			)}
 
 			{submitting && <p>Submitting...</p>}
 			{submissionError && <p>Error: {submissionError}</p>}
-			{submissionSuccess && <p>Submission successful!</p>}
+			{submissionSuccess && <p>Successvol verzonden!</p>}
 		</>
 	);
 };
@@ -283,7 +283,7 @@ const JokerEnSchiftingsvraagPanel = ({
 }) => {
   return (
 		<>
-			<h2>Vul schiftingsvraag in</h2>
+      {/*<h2>Vul schiftingsvraag in</h2>*/}
 			<div className="jokerContainer checkbox-wrapper-13">
 				<label htmlFor="c1-13">Gebruik joker?</label>
 				<input
@@ -301,8 +301,13 @@ const JokerEnSchiftingsvraagPanel = ({
 				<label htmlFor="schiftingsvraag">
 					{state.speeldag.schiftingsvraag}
 				</label>
+        {/*
+        <select disabled={inputsDisabled}>
+        </select>
+        */}
 				<input
 					type="number"
+          inputMode="numeric"
 					min="0"
 					max="10000"
 					id="schiftingsAntwoord"

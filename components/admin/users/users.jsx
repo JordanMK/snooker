@@ -56,10 +56,10 @@ export default function Users() {
 
   return (
     <div className="users">
-      <h2>Users</h2>
+      <h2>Gebruikers</h2>
       <input
         type="text"
-        placeholder="Search users..."
+        placeholder="Zoek gebruikers..."
         value={searchTerm}
         onChange={handleSearchChange}
       />

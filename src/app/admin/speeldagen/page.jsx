@@ -60,26 +60,28 @@ export default function Speeldagen() {
   return (
     <>
       <div className='header'>
-        <h1>Dashboard Admin</h1>
+        <h1>Admin Dashboard</h1>
       </div>
       <AdminPopup triggerButtonName='Nieuwe speeldag'>
         <SpeelDagForm />
       </AdminPopup>
-      <div className='speeldag'>
-        <ul>
-          {speeldagen
-            .slice()
-            .reverse()
-            .map((speeldag, idx) => (
-              <Speeldag
-                speeldag={speeldag}
-                number={speeldagen.length - idx}
-                updateIsOnline={updateIsOnline}
-                key={speeldag._id}
-              />
-            ))}
-        </ul>
-      </div>
+      {speeldagen.length > 0 && (
+        <div className='speeldag'>
+          <ul>
+            {speeldagen
+              .slice()
+              .reverse()
+              .map((speeldag, idx) => (
+                <Speeldag
+                  speeldag={speeldag}
+                  number={speeldagen.length - idx}
+                  updateIsOnline={updateIsOnline}
+                  key={speeldag._id}
+                />
+              ))}
+          </ul>
+        </div>
+      )}
     </>
   );
 }
@@ -118,7 +120,7 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
           <WedstrijdForm id={_id} />
         </AdminPopup>
 
-        <label htmlFor='online'>Zet speeldag online: </label>
+        <label htmlFor='online'>Plaats speeldag online:</label>
         <input
           type='checkbox'
           name='online'
@@ -201,7 +203,7 @@ function PasSpeeldagAan({
           />
         </Form.Group>
         <Form.Group controlId='startdatum'>
-          <Form.Label>startDatum::</Form.Label>
+          <Form.Label>Start datum:</Form.Label>
           <Form.Control
             type='date'
             placeholder='startdatum'
@@ -210,7 +212,7 @@ function PasSpeeldagAan({
           />
         </Form.Group>
         <Form.Group controlId='startUur'>
-          <Form.Label>startUur:</Form.Label>
+          <Form.Label>Start uur:</Form.Label>
           <Form.Control
             type='time'
             placeholder='startUur'
@@ -220,7 +222,7 @@ function PasSpeeldagAan({
           />
         </Form.Group>
         <Form.Group controlId='eindDatum'>
-          <Form.Label>eindDatum invullen</Form.Label>
+          <Form.Label>Eind datum:</Form.Label>
           <Form.Control
             type='date'
             placeholder='eindDatum'
@@ -229,7 +231,7 @@ function PasSpeeldagAan({
           />
         </Form.Group>
         <Form.Group controlId='einduur'>
-          <Form.Label>einduur invullen</Form.Label>
+          <Form.Label>Eind uur:</Form.Label>
           <Form.Control
             type='time'
             placeholder='einduur'

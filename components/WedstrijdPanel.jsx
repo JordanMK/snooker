@@ -97,10 +97,14 @@ export default function WedstrijdPanel({ speeldagId }) {
   })
 
   /** @param {Event} event */
-  const handleJokerChange = (event) => updateState(draft => draft.jokerChecked = event.target.checked)
+  const handleJokerChange = (event) => updateState(draft => {
+    draft.jokerChecked = event.target.checked
+  })
 
   /** @param {Event} event */
-  const handleSchiftingsvraagChange = (event) => updateState(draft => draft.schiftingsAntwoord = event.target.value)
+  const handleSchiftingsvraagChange = (event) => updateState(draft => {
+    draft.schiftingsAntwoord = event.target.value
+  })
 
   /** @param {string} dateStr */
   const isBeforeToday = (dateStr) => new Date(dateStr) < new Date()
@@ -246,7 +250,7 @@ const VotePanel = ({
 					) : (
 						<tr>
 							<td colSpan="4">
-								Je kan niet stemmen want je hebt nog niet betaald.
+								Je kan niet stemmen want je hebt nog niet betaald
 							</td>
 						</tr>
 					)}

@@ -23,18 +23,18 @@ import "../src/typedefs"
 
 /** @type {PanelState} */
 const initialState = {
-		speeldag: null,
-		loading: true,
-		error: null,
-		selectedOptions: [],
-		jokerChecked: false,
-		schiftingsAntwoord: "",
-		speeldagVoteID: "",
+	speeldag: null,
+	loading: true,
+	error: null,
+	selectedOptions: [],
+	jokerChecked: false,
+	schiftingsAntwoord: "",
+	speeldagVoteID: "",
 }
 
 export default function WedstrijdPanel({ speeldagId }) {
-  /** @type {[PanelState, import("use-immer").Updater<PanelState>]} */
-  const [state, updateState] = useImmer(initialState)
+	/** @type {[PanelState, import("use-immer").Updater<PanelState>]} */
+	const [state, updateState] = useImmer(initialState)
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -42,18 +42,18 @@ export default function WedstrijdPanel({ speeldagId }) {
 				const speeldag = await getSpeeldag(speeldagId);
 				await fetchUserVotes();
 
-        updateState(draft => {
-          draft.speeldag = speeldag
-          draft.loading = false
-          draft.error = null
-        })
+				updateState(draft => {
+					draft.speeldag = speeldag
+					draft.loading = false
+					draft.error = null
+				})
 			} catch (error) {
 				console.error(error);
 
-        updateState(draft => {
-          draft.loading = false
-          draft.error = "Error fetching data"
-        })
+				updateState(draft => {
+					draft.loading = false
+					draft.error = "Error fetching data"
+				})
 			}
 		};
 
@@ -63,51 +63,51 @@ export default function WedstrijdPanel({ speeldagId }) {
 	const fetchUserVotes = async () => {
 		try {
 			const speeldagVotes = await getUserVotesBySpeeldagId(speeldagId);
-      updateState(draft => {
-        draft.speeldagVoteID = speeldagVotes._id
-        draft.jokerChecked = speeldagVotes.jokerGebruikt
-        draft.schiftingsAntwoord = speeldagVotes.SchiftingsvraagAntwoord
-      })
+			updateState(draft => {
+				draft.speeldagVoteID = speeldagVotes._id
+				draft.jokerChecked = speeldagVotes.jokerGebruikt
+				draft.schiftingsAntwoord = speeldagVotes.SchiftingsvraagAntwoord
+			})
 
-      speeldagVotes.wedstrijdVotes?.forEach(vote => {
-        // TODO: wedstrijden can be removed and this vote still refers to a non-existent
-        // wedstrijd, are we supposed to handle this?
-        if (vote.wedstrijd == null) {
-          console.warn(`vote ${vote._id} refers to non-existent wedstrijd`);
-          return;
-        }
-        handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
-      })
+			speeldagVotes.wedstrijdVotes?.forEach(vote => {
+				// TODO: wedstrijden can be removed and this vote still refers to a non-existent
+				// wedstrijd, are we supposed to handle this?
+				if (vote.wedstrijd == null) {
+					console.warn(`vote ${vote._id} refers to non-existent wedstrijd`);
+					return;
+				}
+				handleOptionChange(vote.wedstrijd._id, vote.vote, vote._id);
+			})
 		} catch (error) {
 			console.error(error);
-      updateState(draft => {
-        draft.loading = false
-        draft.error = "Error fetching data"
-      })
+			updateState(draft => {
+				draft.loading = false
+				draft.error = "Error fetching data"
+			})
 		}
-  }
+	}
 
 	const handleOptionChange = (matchId, option, wedstrijdId) => updateState(draft => {
-    const existingOptionIdx = draft.selectedOptions.findIndex(item => item.wedstrijd === matchId)
-    if (existingOptionIdx !== -1) {
-      draft.selectedOptions[existingOptionIdx].vote = option
-    } else {
-      draft.selectedOptions.push({ _id: wedstrijdId, vote: option, wedstrijd: matchId })
-    }
-  })
+		const existingOptionIdx = draft.selectedOptions.findIndex(item => item.wedstrijd === matchId)
+		if (existingOptionIdx !== -1) {
+			draft.selectedOptions[existingOptionIdx].vote = option
+		} else {
+			draft.selectedOptions.push({ _id: wedstrijdId, vote: option, wedstrijd: matchId })
+		}
+	})
 
-  /** @param {Event} event */
-  const handleJokerChange = (event) => updateState(draft => {
-    draft.jokerChecked = event.target.checked
-  })
+	/** @param {Event} event */
+	const handleJokerChange = (event) => updateState(draft => {
+		draft.jokerChecked = event.target.checked
+	})
 
-  /** @param {Event} event */
-  const handleSchiftingsvraagChange = (event) => updateState(draft => {
-    draft.schiftingsAntwoord = event.target.value
-  })
+	/** @param {Event} event */
+	const handleSchiftingsvraagChange = (event) => updateState(draft => {
+		draft.schiftingsAntwoord = event.target.value
+	})
 
-  /** @param {string} dateStr */
-  const isBeforeToday = (dateStr) => new Date(dateStr) < new Date()
+	/** @param {string} dateStr */
+	const isBeforeToday = (dateStr) => new Date(dateStr) < new Date()
 
 	return (
 		<>
@@ -207,10 +207,10 @@ const VotePanel = ({
 				</thead>
 				<tbody>
 					{hasUserPaid &&
-					isBetweenStartAndEndDate(
-						state.speeldag.startDatum,
-						state.speeldag.eindDatum
-					) ? (
+						isBetweenStartAndEndDate(
+							state.speeldag.startDatum,
+							state.speeldag.eindDatum
+						) ? (
 						state.speeldag.wedstrijden.map((match) => (
 							<tr key={match._id}>
 								<td>
@@ -292,9 +292,9 @@ const JokerEnSchiftingsvraagPanel = ({
 	onSchiftingsVraagChange,
 	inputsDisabled = false,
 }) => {
-  return (
+	return (
 		<>
-      {/*<h2>Vul schiftingsvraag in</h2>*/}
+			{/*<h2>Vul schiftingsvraag in</h2>*/}
 			<div className="jokerContainer checkbox-wrapper-13">
 				<label htmlFor="c1-13">Gebruik joker?</label>
 				<input
@@ -312,13 +312,13 @@ const JokerEnSchiftingsvraagPanel = ({
 				<label htmlFor="schiftingsvraag">
 					{state.speeldag.schiftingsvraag}
 				</label>
-        {/*
+				{/*
         <select disabled={inputsDisabled}>
         </select>
         */}
 				<input
 					type="number"
-          inputMode="numeric"
+					inputMode="numeric"
 					min="0"
 					max="10000"
 					id="schiftingsAntwoord"
@@ -443,8 +443,8 @@ const VoteResultPanel = ({ state }) => {
 			</table>
 			<JokerEnSchiftingsvraagPanel
 				state={state}
-				onJokerChange={() => {}}
-				onSchiftingsVraagChange={() => {}}
+				onJokerChange={() => { }}
+				onSchiftingsVraagChange={() => { }}
 				inputsDisabled={true}
 			/>
 		</>

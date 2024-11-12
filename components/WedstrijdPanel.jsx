@@ -189,6 +189,11 @@ const VotePanel = ({
 		}
 	};
 
+	function isBetweenStartAndEndDate(startDate, endDate) {
+		const vandaag = new Date();
+		return new Date(startDate) <= vandaag && vandaag <= new Date(endDate);
+	}
+
 	return (
 		<>
 			<table style={{ width: "100%" }}>
@@ -201,7 +206,11 @@ const VotePanel = ({
 					</tr>
 				</thead>
 				<tbody>
-					{hasUserPaid ? (
+					{hasUserPaid &&
+					isBetweenStartAndEndDate(
+						state.speeldag.startDatum,
+						state.speeldag.eindDatum
+					) ? (
 						state.speeldag.wedstrijden.map((match) => (
 							<tr key={match._id}>
 								<td>
@@ -249,9 +258,7 @@ const VotePanel = ({
 						))
 					) : (
 						<tr>
-							<td colSpan="4">
-								Je kan niet stemmen want je hebt nog niet betaald
-							</td>
+							<td colSpan="4">De speeldag is nog niet gestart</td>
 						</tr>
 					)}
 				</tbody>
@@ -283,7 +290,7 @@ const JokerEnSchiftingsvraagPanel = ({
 	state,
 	onJokerChange,
 	onSchiftingsVraagChange,
-  inputsDisabled=false,
+	inputsDisabled = false,
 }) => {
   return (
 		<>
@@ -295,11 +302,11 @@ const JokerEnSchiftingsvraagPanel = ({
 					id="c1-13"
 					checked={state.jokerChecked ?? false} // Use checked instead of defaultChecked
 					onChange={onJokerChange}
-          disabled={inputsDisabled}
+					disabled={inputsDisabled}
 				/>
 			</div>
-      {/* TODO(arthur): make this a select */}
-      {/* TODO: client side validation on this form, currently dumps js error in the users face */}
+			{/* TODO(arthur): make this a select */}
+			{/* TODO: client side validation on this form, currently dumps js error in the users face */}
 			<div className="schiftingsContainer">
 				<h4>Schiftingsvraag:</h4>
 				<label htmlFor="schiftingsvraag">
@@ -318,7 +325,7 @@ const JokerEnSchiftingsvraagPanel = ({
 					defaultValue={state.schiftingsAntwoord}
 					onChange={onSchiftingsVraagChange}
 					required
-          disabled={inputsDisabled}
+					disabled={inputsDisabled}
 				/>
 			</div>
 		</>
@@ -438,7 +445,7 @@ const VoteResultPanel = ({ state }) => {
 				state={state}
 				onJokerChange={() => {}}
 				onSchiftingsVraagChange={() => {}}
-        inputsDisabled={true}
+				inputsDisabled={true}
 			/>
 		</>
 	);

@@ -21,7 +21,7 @@ export default function Seizoen({ seizoen, updateIsOnline }) {
 					Toon speeldagen
 				</Link>
 			</p>
-			<label htmlFor="online">Zet Seizoen online: </label>
+			<label htmlFor="online">Plaats seizoen online:</label>
 			<input
 				type="checkbox"
 				name="online"

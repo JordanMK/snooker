@@ -85,7 +85,7 @@ export default function KlassementPanel({ speeldagId }) {
         </div>
       )}
       {klassement && klassement.length === 0 && (
-        <p>Geen speeldagKlassement beschikbaar</p>
+        <p>Geen speeldag klassement beschikbaar</p>
       )}
 
     </>

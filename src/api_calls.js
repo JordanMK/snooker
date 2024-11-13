@@ -90,6 +90,9 @@ export const getSpeeldagen = async () => {
 export const getSpeeldagenBySeizoenId = (seasonId) =>
 	get(`/seizoenen/${seasonId}/speeldagen`);
 
+export const getSpeeldagBySeizoenId = (seasonId, speeldagId) =>
+	get(`/seizoenen/${seasonId}/speeldag/${speeldagId}`);
+
 export const updateSpeeldagIsOnline = (speeldagId, isOnline) =>
 	put(`/speeldagen/${speeldagId}/isOnline`, { isOnline });
 
@@ -129,7 +132,7 @@ export const updateSeizoenIsOnline = (seizoenId, isOnline) =>
  */
 export const createSeizoen = (season) => post("/seizoenen", season);
 
-export const getKlassementSpeeldag = (id) =>
+export const getKlassementSpeeldag = (id, seasonId) =>
 	get(`/speeldagen/${id}/klassement`);
 
 export const getKlassementSeizoen = (seasonId) =>

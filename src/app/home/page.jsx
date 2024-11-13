@@ -71,7 +71,10 @@ export default function Home() {
 					) : (
 						<>
 							{leftPanelSelected ? (
-								<KlassementPanel speeldagId={selectedSpeeldag} />
+								<KlassementPanel
+									speeldagId={selectedSpeeldag}
+									seasonId={seizoen.id}
+								/>
 							) : (
 								selectedSpeeldag !== null && (
 									<WedstrijdPanel speeldagId={selectedSpeeldag} />

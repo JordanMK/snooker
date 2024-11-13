@@ -135,6 +135,9 @@ export const getKlassementSpeeldag = (id) =>
 export const getKlassementSeizoen = (seasonId) =>
 	get(`/seizoenen/${seasonId}/klassement`);
 
+export const createKlassementSeizoen = (seasonId) =>
+	post(`/seizoenen/klassement/${seasonId}`, {});
+
 export const getUser = (id) => get(`/users/${id}`);
 
 export const getAllUsers = () => get("/users");

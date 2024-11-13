@@ -1,9 +1,15 @@
 import "@/styles/style.css";
 import Link from "next/link";
+import { createKlassementSeizoen } from "../../src/api_calls";
 
 export default function Seizoen({ seizoen, updateIsOnline }) {
 	const onCheckBoxChange = (event) => {
 		updateIsOnline(seizoen._id, event.target.checked);
+	};
+
+	const createSeizoenKlassement = () => {
+		// Fetch the necessary data from the API and create the seizoensklassement.
+		createKlassementSeizoen(seizoen._id);
 	};
 
 	return (
@@ -20,6 +26,9 @@ export default function Seizoen({ seizoen, updateIsOnline }) {
 				>
 					Toon speeldagen
 				</Link>
+				<button onClick={createSeizoenKlassement}>
+					Maak seizoensklassement
+				</button>
 			</p>
 			<label htmlFor="online">Plaats seizoen online:</label>
 			<input

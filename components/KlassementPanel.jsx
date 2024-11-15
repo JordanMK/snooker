@@ -7,8 +7,9 @@ import "react-bootstrap";
 export default function KlassementPanel({ speeldagId }) {
 	// TODO: unused
 	const [speeldagen, setSpeeldagen] = useState([]);
-	const [speeldag, setSpeeldag] = useState([]);
+	const [speeldag, setSpeeldag] = useState();
 	const [klassement, setKlassement] = useState([]);
+	const [speeldagKlassement, setSpeeldagKlassement] = useState([]);
 	const [isLoading, setIsLoading] = useState(true); // Track loading state
 
 	const onMount = async () => {
@@ -17,14 +18,15 @@ export default function KlassementPanel({ speeldagId }) {
 			setSpeeldagen(speeldagen);
 			setSpeeldag(speeldagen.find((s) => s._id === speeldagId));
 			console.log("SPEELDAGID: ", speeldagId);
-			const speeldagKlassement = await getKlassementSpeeldag(speeldagId);
+			const klassementSpeeldag = await getKlassementSpeeldag(speeldagId);
+			setSpeeldagKlassement(klassementSpeeldag.klassement);
 			console.log(
 				"Speeldag Klassement + id:",
 				speeldagId,
-				speeldagKlassement.klassement
+				klassementSpeeldag.klassement
 			);
 
-			const updatedKlassement = await Promise.all(
+			/*const updatedKlassement = await Promise.all(
 				speeldagKlassement.klassement.map(async (item) => {
 					const user = await getUser(item.user);
 					item.user = user.username;
@@ -33,7 +35,7 @@ export default function KlassementPanel({ speeldagId }) {
 			);
 
 			console.log("Updated Klassement:", updatedKlassement);
-			setKlassement(updatedKlassement);
+			setKlassement(updatedKlassement);*/
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -53,14 +55,14 @@ export default function KlassementPanel({ speeldagId }) {
 
 	return (
 		<>
-			{klassement && klassement.length > 0 && (
+			{speeldagKlassement && speeldagKlassement.length > 0 && (
 				<div className="">
 					<div className="panelKlassement">
 						<div className="klassementSpeeldag">
 							<h1>Klassement Speeldag</h1>
 							<p>
 								Resultaat Schiftingsvraag:{" "}
-								<strong>{speeldag.schiftingsantwoord}</strong>
+								<strong>{/*speeldag.schiftingsantwoord*/}</strong>
 							</p>
 							<table className="styled-table">
 								<thead>
@@ -69,21 +71,21 @@ export default function KlassementPanel({ speeldagId }) {
 										<th>Naam</th>
 										<th>Score</th>
 										<th>Heeft joker gebruikt</th>
-										{isBeforeToday(speeldag.eindDatum) && (
+										{/*isBeforeToday(speeldag.eindDatum) && (
 											<th>Antwoord SchiftingsVraag</th>
-										)}
+										)*/}
 									</tr>
 								</thead>
 								<tbody>
-									{klassement.map((item) => (
+									{speeldagKlassement.map((item) => (
 										<tr key={item._id}>
 											<td>{item.plaats}</td>
 											<td>{item.user}</td>
 											<td>{item.score}</td>
 											<td>{item.jokerGebruikt ? "Ja" : "Nee"}</td>
-											{isBeforeToday(speeldag.eindDatum) && (
+											{/*isBeforeToday(speeldag.eindDatum) && (
 												<td>{item.SchiftingsvraagAntwoord}</td>
-											)}
+											)*/}
 										</tr>
 									))}
 								</tbody>
@@ -92,7 +94,7 @@ export default function KlassementPanel({ speeldagId }) {
 					</div>
 				</div>
 			)}
-			{klassement && klassement.length === 0 && (
+			{speeldagKlassement && speeldagKlassement.length === 0 && (
 				<p>Geen speeldag klassement beschikbaar</p>
 			)}
 		</>

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getSpeeldagen, getUser, getKlassementSpeeldag } from "@/src/api_calls";
+import {
+	getSpeeldagen,
+	getUser,
+	getKlassementSpeeldag,
+	getSpeeldag,
+} from "@/src/api_calls";
 import "@/styles/Klassement.css";
 import "react-bootstrap";
 
@@ -7,7 +12,7 @@ import "react-bootstrap";
 export default function KlassementPanel({ speeldagId }) {
 	// TODO: unused
 	const [speeldagen, setSpeeldagen] = useState([]);
-	const [speeldag, setSpeeldag] = useState();
+	const [speeldag, setSpeeldag] = useState([]);
 	const [klassement, setKlassement] = useState([]);
 	const [speeldagKlassement, setSpeeldagKlassement] = useState([]);
 	const [isLoading, setIsLoading] = useState(true); // Track loading state
@@ -16,7 +21,9 @@ export default function KlassementPanel({ speeldagId }) {
 		try {
 			const speeldagen = await getSpeeldagen();
 			setSpeeldagen(speeldagen);
-			setSpeeldag(speeldagen.find((s) => s._id === speeldagId));
+
+			const playday = await getSpeeldag(speeldagId);
+			setSpeeldag(playday);
 			console.log("SPEELDAGID: ", speeldagId);
 			const klassementSpeeldag = await getKlassementSpeeldag(speeldagId);
 			setSpeeldagKlassement(klassementSpeeldag.klassement);
@@ -62,7 +69,7 @@ export default function KlassementPanel({ speeldagId }) {
 							<h1>Klassement Speeldag</h1>
 							<p>
 								Resultaat Schiftingsvraag:{" "}
-								<strong>{/*speeldag.schiftingsantwoord*/}</strong>
+								<strong>{speeldag.schiftingsantwoord}</strong>
 							</p>
 							<table className="styled-table">
 								<thead>
@@ -71,9 +78,9 @@ export default function KlassementPanel({ speeldagId }) {
 										<th>Naam</th>
 										<th>Score</th>
 										<th>Heeft joker gebruikt</th>
-										{/*isBeforeToday(speeldag.eindDatum) && (
+										{isBeforeToday(speeldag.eindDatum) && (
 											<th>Antwoord SchiftingsVraag</th>
-										)*/}
+										)}
 									</tr>
 								</thead>
 								<tbody>
@@ -83,9 +90,9 @@ export default function KlassementPanel({ speeldagId }) {
 											<td>{item.user}</td>
 											<td>{item.score}</td>
 											<td>{item.jokerGebruikt ? "Ja" : "Nee"}</td>
-											{/*isBeforeToday(speeldag.eindDatum) && (
+											{isBeforeToday(speeldag.eindDatum) && (
 												<td>{item.SchiftingsvraagAntwoord}</td>
-											)*/}
+											)}
 										</tr>
 									))}
 								</tbody>

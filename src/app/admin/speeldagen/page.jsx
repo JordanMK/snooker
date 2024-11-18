@@ -21,12 +21,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
 import "@/styles/style.css";
 
-import {
-	Form,
-	Button,
-	ListGroup,
-	Card,
-  } from "react-bootstrap";
+import { Form, Button, ListGroup, Card, Row, Col } from "react-bootstrap";
 
 export default function Speeldagen() {
 	const router = useRouter();
@@ -121,45 +116,56 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
 	return (
 		<ListGroup.Item className="mb-3">
 			<Card>
-				<Card.Header className="d-flex justify-content-between align-items-center">
+				<Card.Header>
 					<h2>Speeldag {number}</h2>
-					<div className="d-flex gap-2">
-						<AdminPopup triggerButtonName="Pas aan">
-							<PasSpeeldagAan
-								schiftingsvraag={schiftingsvraag}
-								schiftingsantwoord={schiftingsantwoord}
-								startDatum={startDatum}
-								eindDatum={eindDatum}
-								speeldagId={_id}
-							/>
-						</AdminPopup>
-
-						<AdminPopup triggerButtonName="Nieuwe wedstrijd">
-							<WedstrijdForm id={_id} />
-						</AdminPopup>
-
-						<div className="form-check form-switch">
-							<input
-								className="form-check-input"
-								type="checkbox"
-								id={`online-${_id}`}
-								checked={isOnline}
-								onChange={onCheckboxChange}
-							/>
-							<label className="form-check-label" htmlFor={`online-${_id}`}>
-								Plaats speeldag online
-							</label>
-						</div>
-
-						<Button variant="primary" onClick={onCreateKlassementButtonPressed}>
-							Creëer Klassement
-						</Button>
+					<div className="form-check form-switch">
+						<input
+							className="form-check-input"
+							type="checkbox"
+							id={`online-${_id}`}
+							checked={isOnline}
+							onChange={onCheckboxChange}
+						/>
+						<label className="form-check-label" htmlFor={`online-${_id}`}>
+							Plaats speeldag online
+						</label>
 					</div>
 				</Card.Header>
+
 				<Card.Body>
-					{wedstrijden.length > 0 && (
-						<WedstrijdAdmin wedstrijden={wedstrijden} />
-					)}
+					<Row className="mb-3 justify-content-between">
+						<Col xs="auto">
+							<AdminPopup triggerButtonName="Pas aan">
+								<PasSpeeldagAan
+									schiftingsvraag={schiftingsvraag}
+									schiftingsantwoord={schiftingsantwoord}
+									startDatum={startDatum}
+									eindDatum={eindDatum}
+									speeldagId={_id}
+								/>
+							</AdminPopup>
+						</Col>
+						<Col xs="auto">
+							<AdminPopup triggerButtonName="Nieuwe wedstrijd">
+								<WedstrijdForm id={_id} />
+							</AdminPopup>
+						</Col>
+						<Col xs="auto">
+							<Button
+								variant="primary"
+								onClick={onCreateKlassementButtonPressed}
+							>
+								Creëer Klassement
+							</Button>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							{wedstrijden.length > 0 && (
+								<WedstrijdAdmin wedstrijden={wedstrijden} />
+							)}
+						</Col>
+					</Row>
 				</Card.Body>
 			</Card>
 		</ListGroup.Item>

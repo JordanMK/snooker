@@ -236,6 +236,8 @@ function PasSpeeldagAan({
         <Form.Label>Schiftingsantwoord:</Form.Label>
         <Form.Control
           type="number"
+          min="0"
+          max="10000"
           placeholder="Schiftingsantwoord"
           name="schiftingantwoord"
           defaultValue={schiftingsantwoord}

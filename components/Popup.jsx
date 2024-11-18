@@ -8,16 +8,18 @@ const contentStyle = {
 	width: "50%",
 };
 
-export default function AdminPopup({ triggerButtonName, children }) {
+export default function AdminPopup({
+	triggerButtonName,
+	children,
+	icon: Icon,
+}) {
 	return (
 		<Popup
 			modal
 			contentStyle={contentStyle}
 			trigger={
-				<Button
-					variant="primary"
-					className="m-1"
-				>
+				<Button>
+					{Icon && <Icon className="me-2" />}
 					{triggerButtonName}
 				</Button>
 			}
@@ -32,7 +34,6 @@ export default function AdminPopup({ triggerButtonName, children }) {
 						<Col xs={12} className="text-center">
 							<div>
 								<Button
-									variant="danger"
 									className="position-absolute"
 									onClick={close}
 									style={{ top: "10px", right: "10px" }}

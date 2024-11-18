@@ -2,9 +2,8 @@ import React from "react";
 import { deleteWedstrijd } from "@/src/api_calls";
 import AdminPopup from "@/components/Popup";
 import PasWedstrijdAan from "@/components/admin/wedstrijd/PasWedstrijdAan";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { ListGroup, Container, Row, Col } from "react-bootstrap";
+import { ListGroup, Container, Row, Col, Button } from "react-bootstrap";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
 	const handleVerwijderClick = (wedstrijdId) => {
@@ -29,7 +28,7 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
 								<strong>Uit:</strong> {wedstrijd.uit}
 							</Col>
 							<Col md={4} className="text-end">
-								<AdminPopup triggerButtonName="Pas aan">
+								<AdminPopup triggerButtonName="Pas aan" icon={FaEdit}>
 									<PasWedstrijdAan
 										id={wedstrijd._id}
 										thuis={wedstrijd.thuis}
@@ -40,13 +39,11 @@ export default function WedstrijdAdmin({ wedstrijden, seizoenID }) {
 									/>
 								</AdminPopup>
 								<Button
-									variant="outlined"
-									startIcon={<DeleteIcon />}
-									color="error"
+									variant="outline-danger"
 									className="m-1"
 									onClick={() => handleVerwijderClick(wedstrijd._id)}
-									sx={{ textTransform: "none" }}
 								>
+									<FaTrash className="me-2" />
 									Verwijder
 								</Button>
 							</Col>

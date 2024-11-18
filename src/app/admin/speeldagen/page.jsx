@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Form, Button, ListGroup, Card, Row, Col } from "react-bootstrap";
+
+import { FaEdit, FaPlus } from "react-icons/fa";
 
 import AdminPopup from "@/components/Popup";
 import SpeelDagForm from "@/components/admin/speeldag/CreateSpeeldagForm";
@@ -8,7 +11,6 @@ import WedstrijdForm from "@/components/admin/wedstrijd/CreateWedstrijd";
 import WedstrijdAdmin from "@/components/admin/wedstrijd/wedstrijdAdmin";
 
 import {
-	getSpeeldagen,
 	patchSpeeldag,
 	updateKlassementen,
 	getSpeeldagenBySeizoenId,
@@ -20,8 +22,6 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
 import "@/styles/style.css";
-
-import { Form, Button, ListGroup, Card, Row, Col } from "react-bootstrap";
 
 export default function Speeldagen() {
 	const router = useRouter();
@@ -59,7 +59,7 @@ export default function Speeldagen() {
 						? { ...speeldag, isOnline: online }
 						: speeldag
 				)
-			); 
+			);
 		} catch (error) {
 			console.error("Error updating speeldag:", error);
 		}
@@ -135,12 +135,9 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
 							Plaats speeldag online
 						</label>
 					</div>
-				</Card.Header>
-
-				<Card.Body>
-					<Row className="mb-3 justify-content-between">
+					<Row className="m-3 justify-content-between">
 						<Col xs="auto">
-							<AdminPopup triggerButtonName="Pas aan">
+							<AdminPopup triggerButtonName="Pas aan" icon={FaEdit}>
 								<PasSpeeldagAan
 									schiftingsvraag={schiftingsvraag}
 									schiftingsantwoord={schiftingsantwoord}
@@ -151,7 +148,7 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
 							</AdminPopup>
 						</Col>
 						<Col xs="auto">
-							<AdminPopup triggerButtonName="Nieuwe wedstrijd">
+							<AdminPopup triggerButtonName="Nieuwe wedstrijd" icon={FaPlus}>
 								<WedstrijdForm id={_id} />
 							</AdminPopup>
 						</Col>
@@ -160,10 +157,14 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
 								variant="primary"
 								onClick={onCreateKlassementButtonPressed}
 							>
+								<FaPlus className="me-2" />
 								Creëer Klassement
 							</Button>
 						</Col>
 					</Row>
+				</Card.Header>
+
+				<Card.Body>
 					<Row>
 						<Col>
 							{wedstrijden.length > 0 && (

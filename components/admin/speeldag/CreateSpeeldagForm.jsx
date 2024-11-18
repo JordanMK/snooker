@@ -95,10 +95,10 @@ export default function SpeelDagForm() {
           />
         </Form.Group>
 
-        <Button variant='primary' type='submit'>
-          Submit
-        </Button>
-      </Form>
-    </>
-  );
+				<Button variant="primary" type="submit">
+					Submit
+				</Button>
+			</Form>
+		</>
+	);
 }

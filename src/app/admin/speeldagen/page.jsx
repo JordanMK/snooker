@@ -52,9 +52,14 @@ export default function Speeldagen() {
 
 	const updateIsOnline = async (speeldagId, online) => {
 		try {
-			await updateSpeeldagIsOnline(speeldagId, online); // Update de speeldag
-			const updatedSpeeldagen = await getSpeeldagen(); // Haal opnieuw alle speeldagen op
-			setSpeeldagen(updatedSpeeldagen); // Update de status in de UI
+			await updateSpeeldagIsOnline(speeldagId, online);
+			setSpeeldagen((prevSpeeldagen) =>
+				prevSpeeldagen.map((speeldag) =>
+					speeldag._id === speeldagId
+						? { ...speeldag, isOnline: online }
+						: speeldag
+				)
+			); 
 		} catch (error) {
 			console.error("Error updating speeldag:", error);
 		}

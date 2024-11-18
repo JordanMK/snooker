@@ -24,28 +24,38 @@ export default function KlassementPanel({ speeldagId }) {
             setSpeeldag(playday);
             console.log("SPEELDAGID: ", speeldagId);
             const klassementSpeeldag = await getKlassementSpeeldag(speeldagId);
-            setSpeeldagKlassement(klassementSpeeldag.klassement);
+
+            const updatedKlass = await Promise.all(
+                klassementSpeeldag.klassement.map(async (item) => {
+                    const user = await getUser(item.user);
+                    item.user = user.username;
+                    return item;
+                })
+            );
+
+            setSpeeldagKlassement(updatedKlass);
             console.log(
                 "Speeldag Klassement + id:",
                 speeldagId,
                 klassementSpeeldag.klassement
             );
+
+            /*const updatedKlassement = await Promise.all(
+                speeldagKlassement.map(async (item) => {
+                    const user = await getUser(item.user);
+                    item.user = user.username;
+                    return item;
+                })
+            );
+
+            console.warn("KLASSEMENT met namen:", updatedKlassement);
+            setKlassement(updatedKlassement);*/
         } catch (error) {
             console.error(error);
         } finally {
             setIsLoading(false);
         }
     };
-
-    useEffect(() => {
-        console.log("Geselecteerde speeldag ID: ", speeldagId);
-        onMount();
-    }, [speeldagId]);
-
-    // Render only when klassement is no longer undefined
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
 
     return (
         <>

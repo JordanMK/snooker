@@ -29,16 +29,14 @@ export default function LijstSeizoen() {
     };
 
     return (
-        <>
-            <div className="seizoen-container">
-                <h2>Seizoenen</h2>
-                <Button onClick={maakSeizoenClick} variant="secondary" size="sm">Nieuw Seizoen</Button>
-                {seizoenen.map((seizoen) => (
-                    <div key={seizoen._id}>
-                        <Seizoen seizoen={seizoen} updateIsOnline={updateIsOnline} />
-                    </div>
-                ))}
-            </div>
-        </>
+        <div className="seizoen-container">
+            <h2>Seizoenen</h2>
+            <Button onClick={maakSeizoenClick} variant="secondary" size="sm">Nieuw Seizoen</Button>
+            {seizoenen.map((seizoen) => (
+                <div key={seizoen._id}>
+                    <Seizoen seizoen={seizoen} updateIsOnline={updateIsOnline} />
+                </div>
+            ))}
+        </div>
     );
 }

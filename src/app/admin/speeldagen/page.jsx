@@ -21,7 +21,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
 import "@/styles/style.css";
 
-import { Form, Button } from "react-bootstrap";
+import {
+	Form,
+	Button,
+	ListGroup,
+	Card,
+  } from "react-bootstrap";
 
 export default function Speeldagen() {
 	const router = useRouter();
@@ -62,7 +67,7 @@ export default function Speeldagen() {
 
 	return (
 		<>
-			<div className="header">
+			<div className="header text-center my-4">
 				<h1>Admin Dashboard</h1>
 			</div>
 			<AdminPopup triggerButtonName="Nieuwe speeldag">
@@ -70,7 +75,7 @@ export default function Speeldagen() {
 			</AdminPopup>
 			{speeldagen.length > 0 && (
 				<div className="speeldag">
-					<ul>
+					<ListGroup>
 						{speeldagen
 							.slice()
 							.reverse()
@@ -82,7 +87,7 @@ export default function Speeldagen() {
 									key={speeldag._id}
 								/>
 							))}
-					</ul>
+					</ListGroup>
 				</div>
 			)}
 		</>
@@ -114,41 +119,50 @@ function Speeldag({ speeldag, number, updateIsOnline }) {
 	};
 
 	return (
-		<li>
-			<div className="speeldagHead">
-				<h2>Speeldag {number}</h2>
+		<ListGroup.Item className="mb-3">
+			<Card>
+				<Card.Header className="d-flex justify-content-between align-items-center">
+					<h2>Speeldag {number}</h2>
+					<div className="d-flex gap-2">
+						<AdminPopup triggerButtonName="Pas aan">
+							<PasSpeeldagAan
+								schiftingsvraag={schiftingsvraag}
+								schiftingsantwoord={schiftingsantwoord}
+								startDatum={startDatum}
+								eindDatum={eindDatum}
+								speeldagId={_id}
+							/>
+						</AdminPopup>
 
-				<AdminPopup triggerButtonName="Pas aan">
-					<PasSpeeldagAan
-						schiftingsvraag={schiftingsvraag}
-						schiftingsantwoord={schiftingsantwoord}
-						startDatum={startDatum}
-						eindDatum={eindDatum}
-						speeldagId={_id}
-					/>
-				</AdminPopup>
+						<AdminPopup triggerButtonName="Nieuwe wedstrijd">
+							<WedstrijdForm id={_id} />
+						</AdminPopup>
 
-				<AdminPopup triggerButtonName="Nieuwe wedstrijd">
-					<WedstrijdForm id={_id} />
-				</AdminPopup>
+						<div className="form-check form-switch">
+							<input
+								className="form-check-input"
+								type="checkbox"
+								id={`online-${_id}`}
+								checked={isOnline}
+								onChange={onCheckboxChange}
+							/>
+							<label className="form-check-label" htmlFor={`online-${_id}`}>
+								Plaats speeldag online
+							</label>
+						</div>
 
-				<label htmlFor="online">Plaats speeldag online:</label>
-				<input
-					type="checkbox"
-					name="online"
-					checked={isOnline}
-					onChange={onCheckboxChange}
-				/>
-
-				<input
-					type="button"
-					name="Klassement"
-					value="Creer Klassement"
-					onClick={onCreateKlassementButtonPressed}
-				/>
-			</div>
-			{wedstrijden.length > 0 && <WedstrijdAdmin wedstrijden={wedstrijden} />}
-		</li>
+						<Button variant="primary" onClick={onCreateKlassementButtonPressed}>
+							Creëer Klassement
+						</Button>
+					</div>
+				</Card.Header>
+				<Card.Body>
+					{wedstrijden.length > 0 && (
+						<WedstrijdAdmin wedstrijden={wedstrijden} />
+					)}
+				</Card.Body>
+			</Card>
+		</ListGroup.Item>
 	);
 }
 

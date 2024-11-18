@@ -6,12 +6,12 @@ import { useState } from 'react';
 
 export default function SpeelDagForm() {
   const searchParams = useSearchParams();
-
   const [errors, setErrors] = useState({});
-
   const seizoenId = searchParams.get('seizoenId');
+
   function handleFormSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData(event.target);
     const startdatum = formData.get('startdatum');
     const startUur = formData.get('startUur');
@@ -46,7 +46,7 @@ export default function SpeelDagForm() {
       newErrors.schiftingantwoord = 'Invalid schiftingantwoord';
     }
 
-    if (Object.keys(newErrors).length) {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
@@ -76,7 +76,7 @@ export default function SpeelDagForm() {
 
   return (
     <>
-      <Form onSubmit={handleFormSubmit}>
+      <Form action={handleFormSubmit}>
         <Form.Group controlId='schiftingsVraag'>
           <Form.Label>Schiftingsvraag:</Form.Label>
           <Form.Control
@@ -89,6 +89,7 @@ export default function SpeelDagForm() {
             {errors.schiftingsvraag}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId='schiftingsAntwoord'>
           <Form.Label>Schiftingsantwoord:</Form.Label>
           {/* answer is always a number */}
@@ -102,8 +103,9 @@ export default function SpeelDagForm() {
             {errors.schiftingantwoord}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId='startdatum'>
-          <Form.Label>startDatum::</Form.Label>
+          <Form.Label>startDatum:</Form.Label>
           <Form.Control
             type='date'
             placeholder='startdatum'
@@ -114,6 +116,7 @@ export default function SpeelDagForm() {
             {errors.startDatum}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId='startUur'>
           <Form.Label>startUur:</Form.Label>
           <Form.Control
@@ -126,6 +129,7 @@ export default function SpeelDagForm() {
             {errors.startUur}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId='eindatum'>
           <Form.Label>eindatum invullen</Form.Label>
           <Form.Control
@@ -138,6 +142,7 @@ export default function SpeelDagForm() {
             {errors.eindDatum}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId='einduur'>
           <Form.Label>einduur invullen</Form.Label>
           <Form.Control
@@ -150,6 +155,7 @@ export default function SpeelDagForm() {
             {errors.eindUur}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Button variant='primary' type='submit'>
           Submit
         </Button>

@@ -1,4 +1,4 @@
-const BASE_URL = (function () {
+const BASE_URL = (function() {
 	const url = process.env.API_URL;
 	if (!url) {
 		throw new Error("env variable API_URL must be set");

@@ -196,6 +196,13 @@ const VotePanel = ({
     return new Date(startDate) <= vandaag && vandaag <= new Date(endDate);
   }
 
+  const startDatum = new Date(state.speeldag.startDatum);
+  const formattedDate = `${startDatum.getDate()}/${startDatum.getMonth() + 1}/${startDatum.getFullYear()}` 
+
+  if(hasUserPaid && !isBetweenStartAndEndDate(state.speeldag.startDatum, state.speeldag.eindDatum)) {
+    return <p style={{textAlign: "center"}}>Deze speeldag is nog niet gestart: <b>{formattedDate}</b></p>
+  }
+
   return (
     <>
       <table style={{ width: "100%" }}>
@@ -208,11 +215,7 @@ const VotePanel = ({
           </tr>
         </thead>
         <tbody>
-          {hasUserPaid &&
-            isBetweenStartAndEndDate(
-              state.speeldag.startDatum,
-              state.speeldag.eindDatum
-            ) ? (
+          {
             state.speeldag.wedstrijden.map((match) => (
               <tr key={match._id}>
                 <td>
@@ -258,11 +261,7 @@ const VotePanel = ({
                 </td>
               </tr>
             ))
-          ) : (
-            <tr>
-              <td colSpan="4">De speeldag is nog niet gestart</td>
-            </tr>
-          )}
+          }
         </tbody>
       </table>
 

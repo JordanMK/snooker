@@ -8,9 +8,7 @@ import {
 import "@/styles/Klassement.css";
 import "react-bootstrap";
 
-// TODO: cleanup
 export default function KlassementPanel({ speeldagId }) {
-	// TODO: unused
 	const [speeldagen, setSpeeldagen] = useState([]);
 	const [speeldag, setSpeeldag] = useState([]);
 	const [speeldagKlassement, setSpeeldagKlassement] = useState([]);
@@ -23,7 +21,6 @@ export default function KlassementPanel({ speeldagId }) {
 
 			const playday = await getSpeeldag(speeldagId);
 			setSpeeldag(playday);
-			console.log("SPEELDAGID: ", speeldagId);
 			const klassementSpeeldag = await getKlassementSpeeldag(speeldagId);
 
 			const updatedKlass = await Promise.all(
@@ -35,22 +32,7 @@ export default function KlassementPanel({ speeldagId }) {
 			);
 
 			setSpeeldagKlassement(updatedKlass);
-			console.log(
-				"Speeldag Klassement + id:",
-				speeldagId,
-				klassementSpeeldag.klassement
-			);
 
-			/*const updatedKlassement = await Promise.all(
-                speeldagKlassement.map(async (item) => {
-                    const user = await getUser(item.user);
-                    item.user = user.username;
-                    return item;
-                })
-            );
-
-            console.warn("KLASSEMENT met namen:", updatedKlassement);
-            setKlassement(updatedKlassement);*/
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -59,7 +41,6 @@ export default function KlassementPanel({ speeldagId }) {
 	};
 
 	useEffect(() => {
-		console.log("Geselecteerde speeldag ID: ", speeldagId);
 		onMount();
 	}, [speeldagId]);
 	// Render only when klassement is no longer undefined

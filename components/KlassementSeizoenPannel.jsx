@@ -10,7 +10,6 @@ export default function KlassementSeizoenPannel({ seasonId }) {
     if (seasonId) {
       getKlassementSeizoen(seasonId)
         .then((klassement) => {
-          console.log('Seizoen Klassement:', klassement);
           return Promise.all(
             klassement.map((item) =>
               getUser(item.user)
@@ -22,7 +21,6 @@ export default function KlassementSeizoenPannel({ seasonId }) {
           );
         })
         .then((modifiedKlassement) => {
-          console.log('Updated Klassement:', modifiedKlassement);
           setKlassement(modifiedKlassement);
         })
         .catch((error) => {

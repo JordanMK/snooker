@@ -38,8 +38,6 @@ export default function Home() {
 			.catch((error) => console.error(error.message));
 	}, []);
 
-	console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", seizoen)
-
 	return (
 		<div className="pageContainer">
 			<div className="smallColumn">

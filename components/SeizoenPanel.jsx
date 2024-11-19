@@ -115,28 +115,36 @@ export default function SeizoenPanel({ onClick, onSelect }) {
     if (error) return <p>{error}</p>;
     if (!matchDays) return <p>Er zijn geen speeldagen voor dit seizoen</p>;
 
-    const onlineMatchDays = matchDays.filter((m) => m.isOnline).reverse();
+	const reversedMatchDays = [...matchDays].reverse();
 
-    return (
-      <ul id="speeldagenList">
-        {onlineMatchDays.map((speeldag, index) => (
-          <li key={speeldag._id}>
-            <button
-              data-id={speeldag._id}
-              onClick={() => handleMatchDayClick(index, speeldag._id)}
-              style={
-                selectedIndex === index
-                  ? { backgroundColor: "green" }
-                  : null
-              }
-            >
-              Speeldag {matchDays.length - index}
-            </button>
-          </li>
-        ))}
-      </ul>
-    );
-  };
+	return (
+		<ul id="speeldagenList">
+			{reversedMatchDays.map((speeldag, index) => {
+				if (!speeldag.isOnline) return null;
+				return (
+					<li key={speeldag._id}>
+						<button
+							data-id={speeldag._id}
+							onClick={() =>
+								handleMatchDayClick(
+									matchDays.length - 1 - index,
+									speeldag._id
+								)
+							}
+							style={
+								selectedIndex === matchDays.length - 1 - index
+									? { backgroundColor: "green" }
+									: null
+							}
+						>
+							Speeldag {matchDays.length - index}
+						</button>
+					</li>
+				);
+			})}
+		</ul>
+	);
+};
 
   return (
     <div>

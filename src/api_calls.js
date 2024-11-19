@@ -256,6 +256,13 @@ export const getUserVotesBySpeeldagId = (speeldagId) => {
 	return get(`/speeldagVotes/${speeldagId}/${loggedInUser}/votes`);
 };
 
+export const getJokers = async (seasonId) => {
+    const data = await request("GET", `/jokers/${seasonId}`, undefined, {
+        credentials: "include",
+    })
+    return data
+}
+
 /**
  * @returns {Promise<boolean>}
  */

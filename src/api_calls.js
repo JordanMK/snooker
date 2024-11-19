@@ -249,7 +249,7 @@ export const deleteWedstrijd = (wedstrijdId) =>
 	delete_(`/wedstrijden/${wedstrijdId}`);
 
 export const patchSpeeldagVote = (obj, voteId) =>
-	patch(`/speeldagVotes/update/${voteId}`, { obj });
+	patch(`/speeldagVotes/update/${voteId}`, obj);
 
 export const getUserVotesBySpeeldagId = (speeldagId) => {
 	const loggedInUser = localStorage.getItem("userID");

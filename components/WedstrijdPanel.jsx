@@ -196,23 +196,34 @@ const VotePanel = ({
     return new Date(startDate) <= vandaag && vandaag <= new Date(endDate);
   }
 
+  const checkSelectedOption = (matchId, value) => {
+    const vote = state.selectedOptions.find((item) => item.wedstrijd === matchId)?.vote;
+    if (vote == null) {
+      return false
+    }
+    return vote === value
+  }
+
+  const startDatum = new Date(state.speeldag.startDatum);
+  const formattedDate = `${startDatum.getDate()}/${startDatum.getMonth() + 1}/${startDatum.getFullYear()}` 
+
+  if(hasUserPaid && !isBetweenStartAndEndDate(state.speeldag.startDatum, state.speeldag.eindDatum)) {
+    return <p style={{textAlign: "center" }}>Deze speeldag is nog niet gestart: <b>{formattedDate}</b></p>
+  }
+
   return (
     <>
       <table style={{ width: "100%" }}>
         <thead>
           <tr>
             <th>Match</th>
-            <th>Ploeg 1 wint</th>
+            <th>Thuisploeg wint</th>
             <th>Gelijkspel</th>
-            <th>Ploeg 2 wint</th>
+            <th>Uitploeg wint</th>
           </tr>
         </thead>
         <tbody>
-          {hasUserPaid &&
-            isBetweenStartAndEndDate(
-              state.speeldag.startDatum,
-              state.speeldag.eindDatum
-            ) ? (
+          {
             state.speeldag.wedstrijden.map((match) => (
               <tr key={match._id}>
                 <td>
@@ -223,46 +234,36 @@ const VotePanel = ({
                 <td>
                   <input
                     type="radio"
-                    value="1"
+                    value={1}
                     checked={
-                      state.selectedOptions.find(
-                        (item) => item.wedstrijd === match._id
-                      )?.vote === "1" || false
+                      checkSelectedOption(match._id, 1) 
                     }
-                    onChange={() => handleOptionChange(match._id, "1")}
+                    onChange={() => handleOptionChange(match._id, 1)}
                   />
                 </td>
                 <td>
                   <input
                     type="radio"
-                    value="3"
+                    value={3}
                     checked={
-                      state.selectedOptions.find(
-                        (item) => item.wedstrijd === match._id
-                      )?.vote === "3" || false
+                      checkSelectedOption(match._id, 3)
                     }
-                    onChange={() => handleOptionChange(match._id, "3")}
+                    onChange={() => handleOptionChange(match._id, 3)}
                   />
                 </td>
                 <td>
                   <input
                     type="radio"
-                    value="2"
+                    value={2}
                     checked={
-                      state.selectedOptions.find(
-                        (item) => item.wedstrijd === match._id
-                      )?.vote === "2" || false
+                      checkSelectedOption(match._id, 2)
                     }
-                    onChange={() => handleOptionChange(match._id, "2")}
+                    onChange={() => handleOptionChange(match._id, 2)}
                   />
                 </td>
               </tr>
             ))
-          ) : (
-            <tr>
-              <td colSpan="4">De speeldag is nog niet gestart</td>
-            </tr>
-          )}
+          }
         </tbody>
       </table>
 
@@ -308,15 +309,15 @@ const JokerEnSchiftingsvraagPanel = ({
         <Form.Group className="mb-3" controlId="question">
           <Form.Label>Schiftingsvraag: {state.speeldag.schiftingsvraag}</Form.Label>
           <Form.Control type="number" min="0" max="10000" required
-            onChange={onSchiftingsVraagChange} placeholder="Antwoord" disabled={inputsDisabled} />
+            value={state.schiftingsAntwoord}
+            onChange={onSchiftingsVraagChange} placeholder={inputsDisabled ? state.schiftingsAntwoord : "Antwoord"} disabled={inputsDisabled} />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="joker">
           <Form.Check type="checkbox" checked={state.jokerChecked ?? false} onChange={onJokerChange}
-            label="Joker inzetten?" disabled={inputsDisabled} />
+            label={inputsDisabled ? "Joker ingezet?" : "Joker inzetten?"} disabled={inputsDisabled} />
         </Form.Group>
-
-        <Button type="submit" variant="secondary">Verzenden</Button>
+        {inputsDisabled ? null : <Button type="submit" variant="secondary">Verzenden</Button>}
       </Form>
       {/*
       <form action={submit}>
@@ -391,9 +392,9 @@ const VoteResultPanel = ({ state }) => {
         <thead>
           <tr>
             <th>Match</th>
-            <th>Winst ploeg 1</th>
+            <th>Winst thuisploeg</th>
             <th>Gelijkspel</th>
-            <th>Winst ploeg 2</th>
+            <th>Winst uitploeg</th>
           </tr>
         </thead>
         <tbody>

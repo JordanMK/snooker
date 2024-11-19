@@ -1,119 +1,148 @@
-import { getSeizoenen, getSpeeldagenBySeizoenId } from "@/src/api_calls";
+import { getSeizoenen, getSpeeldagenBySeizoenId, getJokers } from "@/src/api_calls";
 import React, { useEffect, useState } from "react";
 
 export default function SeizoenPanel({ onClick, onSelect }) {
-	const [selectedIndex, setSelectedIndex] = useState(null);
-	const [selectedSeason, setSelectedSeason] = useState(null);
-	const [seasons, setSeasons] = useState(null);
-	const [matchDays, setMatchDays] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [seasons, setSeasons] = useState(null);
+  const [matchDays, setMatchDays] = useState(null);
+  const [jokersData, setJokersData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-	const onMount = async () => {
-		try {
-			const seasons = await getSeizoenen();
-			const reversedSeasons = seasons.reverse();
-			setSeasons(reversedSeasons);
+  const onMount = async () => {
+    try {
+      const seasons = await getSeizoenen();
+      const reversedSeasons = seasons.reverse();
+      setSeasons(reversedSeasons);
 
-			const onlineSeasons = reversedSeasons.filter((s) => s.isOnline);
-			if (onlineSeasons.length === 0) return;
+      const onlineSeasons = reversedSeasons.filter((s) => s.isOnline);
+      if (onlineSeasons.length === 0) return;
 
-			const defaultSeasonId = onlineSeasons[0]._id;
-			setSelectedSeason(defaultSeasonId);
-			onSelect(defaultSeasonId);
+      const defaultSeasonId = onlineSeasons[0]._id;
+      setSelectedSeason(defaultSeasonId);
+      onSelect(defaultSeasonId);
 
-			const matchDays = await getSpeeldagenBySeizoenId(defaultSeasonId);
-			setMatchDays(matchDays);
-		} catch (error) {
-			console.error(error);
-		}
-	};
+      const [matchDays, jokersData] = await Promise.all([
+        getSpeeldagenBySeizoenId(defaultSeasonId),
+        getJokers(defaultSeasonId),
+      ]);
 
-	useEffect(() => {
-		onMount();
-	}, []);
+      setMatchDays(matchDays);
+      setJokersData(jokersData);
+    } catch (error) {
+      console.error(error);
+      setError("Failed to load data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	useEffect(() => {
-		if (selectedSeason != null && seasons != null) {
-			getSpeeldagenBySeizoenId(selectedSeason)
-				.then(setMatchDays)
-				.catch((error) => console.error("Error fetching match days:", error));
-		}
-	}, [selectedSeason]);
+  useEffect(() => {
+    onMount();
+  }, []);
 
-	const handleSeasonChange = (event) => {
-		const newSeasonId = event.target.value;
-		setSelectedSeason(newSeasonId);
-		onSelect(newSeasonId);
-		setSelectedIndex(null);
-	};
+  useEffect(() => {
+    if (selectedSeason != null && seasons != null) {
+      getSpeeldagenBySeizoenId(selectedSeason)
+        .then(setMatchDays)
+        .catch((error) => {
+          console.error("Error fetching match days:", error);
+          setError("Failed to load match days");
+        });
+    }
+  }, [selectedSeason]);
 
-	const handleMatchDayClick = (index, id) => {
-		onClick(id);
-		setSelectedIndex((prevIndex) => (prevIndex === index ? null : index));
-	};
+  const handleSeasonChange = (event) => {
+    const newSeasonId = event.target.value;
+    setSelectedSeason(newSeasonId);
+    onSelect(newSeasonId);
+    setSelectedIndex(null);
 
-	const ShowSeasons = () => {
-		if (!seasons) return <p>Laden...</p>;
-		if (seasons.length === 0) return <p>Er zijn geen seizoenen beschikbaar</p>;
+    getJokers(newSeasonId).then(setJokersData).catch((error) => {
+      console.error("Error fetching jokers:", error);
+      setError("Failed to load jokers");
+    });
+  };
 
-		const filterSeasons = seasons.filter((season) => season.isOnline);
-		if (filterSeasons.length === 1) {
-			return <p id="seizoenTitle">{filterSeasons[0].name}</p>;
-		}
-		return (
-			<select
-				id="seizoenTitle"
-				value={selectedSeason || ""}
-				onChange={handleSeasonChange}
-			>
-				{filterSeasons.map((season) => (
-					<option key={season._id} value={season._id}>
-						{season.name}
-					</option>
-				))}
-			</select>
-		);
-	};
+  const handleMatchDayClick = (index, id) => {
+    onClick(id);
+    setSelectedIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
 
-	const ShowMatchDays = () => {
-		if (!matchDays) return <p>Laden...</p>;
-		if (matchDays.length === 0)
-			return <p>Er zijn geen speeldagen voor dit seizoen</p>;
+  const ShowJokers = () => {
+    if (loading) return <p>Laden...</p>;
+    if (error) return <p>{error}</p>;
+    if (!jokersData) return <p>Er zijn geen jokers beschikbaar</p>;
 
-		const reversedMatchDays = [...matchDays].reverse();
+    return (
+      <div id="jokersList">
+        <div>
+          <span>Jokers dit seizoen: {jokersData.seizoenJokers}</span>
+		  <br />
+          <span>Jokers Resterend: {jokersData.jokersLeft}</span>
+        </div>
+      </div>
+    );
+  };
 
-		return (
-			<ul id="speeldagenList">
-				{reversedMatchDays.map((speeldag, index) => {
-					if (!speeldag.isOnline) return null;
-					return (
-						<li key={speeldag._id}>
-							<button
-								data-id={speeldag._id}
-								onClick={() =>
-									handleMatchDayClick(
-										matchDays.length - 1 - index,
-										speeldag._id
-									)
-								}
-								style={
-									selectedIndex === matchDays.length - 1 - index
-										? { backgroundColor: "green" }
-										: null
-								}
-							>
-								Speeldag {matchDays.length - index}
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-		);
-	};
+  const ShowSeasons = () => {
+    if (loading) return <p>Laden...</p>;
+    if (error) return <p>{error}</p>;
+    if (!seasons) return <p>Er zijn geen seizoenen beschikbaar</p>;
 
-	return (
-		<div>
-			<ShowSeasons />
-			<ShowMatchDays />
-		</div>
-	);
+    const filterSeasons = seasons.filter((season) => season.isOnline);
+    if (filterSeasons.length === 1) {
+      return <p id="seizoenTitle">{filterSeasons[0].name}</p>;
+    }
+    return (
+      <select
+        id="seizoenTitle"
+        value={selectedSeason || ""}
+        onChange={handleSeasonChange}
+      >
+        {filterSeasons.map((season) => (
+          <option key={season._id} value={season._id}>
+            {season.name}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
+  const ShowMatchDays = () => {
+    if (loading) return <p>Laden...</p>;
+    if (error) return <p>{error}</p>;
+    if (!matchDays) return <p>Er zijn geen speeldagen voor dit seizoen</p>;
+
+    const onlineMatchDays = matchDays.filter((m) => m.isOnline).reverse();
+
+    return (
+      <ul id="speeldagenList">
+        {onlineMatchDays.map((speeldag, index) => (
+          <li key={speeldag._id}>
+            <button
+              data-id={speeldag._id}
+              onClick={() => handleMatchDayClick(index, speeldag._id)}
+              style={
+                selectedIndex === index
+                  ? { backgroundColor: "green" }
+                  : null
+              }
+            >
+              Speeldag {matchDays.length - index}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  return (
+    <div>
+      <ShowJokers />
+      <ShowSeasons />
+      <ShowMatchDays />
+    </div>
+  );
 }

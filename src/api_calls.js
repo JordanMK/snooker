@@ -257,7 +257,7 @@ export const getUserVotesBySpeeldagId = (speeldagId) => {
 };
 
 export const getJokers = async (seasonId) => {
-    const data = await request("GET", `/jokers/${seasonId}`, undefined, {
+    const data = await request("GET", `users/jokers/${seasonId}`, undefined, {
         credentials: "include",
     })
     return data

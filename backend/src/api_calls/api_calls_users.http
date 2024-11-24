@@ -1,0 +1,34 @@
+@base_URL = http://localhost:3001/api/users
+
+### get all users
+
+get {{base_URL}}
+
+### get by id
+
+get {{base_URL}}/65f592e8fa0b11de322fd820
+
+### post a new user
+
+post {{base_URL}}
+Content-Type: application/json
+
+{
+    "username": "admin4",
+    "email": "test4@hotmail.com",
+    "password": "testtest"
+}
+
+### login a user
+
+post http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test4@hotmail.com",
+    "password": "testtest"
+}
+
+### update a user
+get http://localhost:3001/api/users/jokers/6733b05fd48a7a967bd07249
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzNjYjE2NTM3YTI0MWRkNjY3YTdlZDYiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzMyMDMwODQxLCJleHAiOjE3MzIxMTcyNDF9.jc_tBXp-lmhIt5VY9bedHZ84guCILTcv6WhYQqjjtMc

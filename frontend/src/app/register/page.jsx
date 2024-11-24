@@ -40,7 +40,7 @@ export default function Register() {
 				email: email.toLowerCase(),
 				password,
 			};
-			const response = await fetch("http://localhost:3001/api/users/", {
+			const response = await fetch(process.env.API_URL + "/users/", {
 				method: "POST",
 				headers: new Headers({
 					"Content-Type": "application/json",

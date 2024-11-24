@@ -27,7 +27,7 @@ export default function Login() {
 		// TODO: replace with api call login()
 
 		try {
-			const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch(process.env.API_URL + "/auth/login", {
 				method: "POST",
 				headers: new Headers({
 					"Content-Type": "application/json",

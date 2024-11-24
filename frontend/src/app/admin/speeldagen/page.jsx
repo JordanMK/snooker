@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Form, Button, ListGroup, Card, Row, Col } from "react-bootstrap";
 
@@ -24,6 +24,14 @@ import "reactjs-popup/dist/index.css";
 import "@/styles/style.css";
 
 export default function Speeldagen() {
+  return (
+    <Suspense>
+      <SpeeldagenPage />
+    </Suspense>
+  )
+}
+
+function SpeeldagenPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const seizoenId = searchParams.get("seizoenId");

@@ -1,4 +1,4 @@
-const whitelist = ["http://localhost:3000"];
+const whitelist = ["http://localhost:3000", "https://snookerpocket.localhost"];
 const corsOptions = {
 	origin: (origin, callback) => {
 		if (whitelist.includes(origin) || !origin) {

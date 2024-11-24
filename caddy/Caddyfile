@@ -1,0 +1,12 @@
+{
+  local_certs
+}
+
+snookerpocket.localhost {
+  encode gzip
+  reverse_proxy web:3000
+}
+
+api.snookerpocket.localhost {
+  reverse_proxy api:3001
+}

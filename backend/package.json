@@ -4,6 +4,7 @@
   "description": "snooker pocket api",
   "main": "src/index.js",
   "scripts": {
+    "prod": "node src/index.js",
     "dev": "nodemon src/index.js",
     "swagger-autogen": "node src/swagger/swagger.js"
   },

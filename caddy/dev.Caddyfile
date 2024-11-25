@@ -4,9 +4,9 @@
 
 snookerpocket.localhost {
   encode gzip
-  reverse_proxy web:3000
+  reverse_proxy frontend:3000
 }
 
 api.snookerpocket.localhost {
-  reverse_proxy api:3001
+  reverse_proxy backend:3001
 }

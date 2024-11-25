@@ -3,8 +3,6 @@ name: snookerPocket
 services:
   mongo:
     image: mongo:7.0.12
-    ports:
-      - 27017:27017
     volumes:
       - mongo_data:/data/db
     networks:
@@ -13,49 +11,43 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      target: production
     restart: unless-stopped
     env_file: ./backend/.env
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     networks:
       - snooker_network
-    depends-on:
+    depends_on:
       - mongo
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      target: production
+      args:
+        API_URL: https://api.${DOMAIN_NAME}/api
     restart: unless-stopped
-    env_file: ./frontend/.env
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     networks:
-      -snooker_network
-    command: npm run dev
-    depends-on:
+      - snooker_network
+    depends_on:
       - backend
 
   caddy:
-    image: caddy:2-alpine
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
     ports:
       - 80:80
       - 443:443
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
     networks:
       - snooker_network
-    depends-on:
+    depends_on:
       - backend
       - frontend
-
-
-
 
 volumes:
   mongo_data:

@@ -21,7 +21,7 @@ services:
       - /app/node_modules
     networks:
       - snooker_network
-    depends-on:
+    depends_on:
       - mongo
 
   frontend:
@@ -38,7 +38,7 @@ services:
     networks:
       - snooker_network
     command: npm run dev
-    depends-on:
+    depends_on:
       - backend
 
   caddy:
@@ -52,7 +52,7 @@ services:
       - caddy_config:/config
     networks:
       - snooker_network
-    depends-on:
+    depends_on:
       - backend
       - frontend
 
